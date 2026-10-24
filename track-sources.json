@@ -1,0 +1,102 @@
+[
+  {
+    "id": "connect",
+    "video": "eNvD-D6Gw6c",
+    "duration": 273,
+    "publisher": "ClariS Official YouTube Channel",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=eNvD-D6Gw6c",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "magia",
+    "video": "ks8WPvlQpbg",
+    "duration": 319,
+    "publisher": "Kalafina Official YouTube Channel",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=ks8WPvlQpbg",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "luminous",
+    "video": "Rlp_4FQESts",
+    "duration": 250,
+    "publisher": "ClariS Official YouTube Channel",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=Rlp_4FQESts",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "colorful",
+    "video": "xV0ccSNorlM",
+    "duration": 274,
+    "publisher": "ClariS Official YouTube Channel",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=xV0ccSNorlM",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "silvergarden",
+    "video": "kFhhLSbuXvI",
+    "duration": 307,
+    "publisher": "Kalafina - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=kFhhLSbuXvI",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "freedomdive",
+    "video": "k-3y2LVF_SE",
+    "duration": 270,
+    "publisher": "xi - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=k-3y2LVF_SE",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "bluezenith",
+    "video": "vatcanQQJvQ",
+    "duration": 259,
+    "publisher": "xi - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=vatcanQQJvQ",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "ghost",
+    "video": "OjbjZcBctuM",
+    "duration": 350,
+    "publisher": "Camellia Official",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=OjbjZcBctuM",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "crystallized",
+    "video": "dkYHgxfQZBA",
+    "duration": 277,
+    "publisher": "Camellia Official",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=dkYHgxfQZBA",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "exit",
+    "video": "QsuAKlNe_rI",
+    "duration": 332,
+    "publisher": "Camellia Official",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=QsuAKlNe_rI",
+    "checked": "2026-10-25"
+  }
+]

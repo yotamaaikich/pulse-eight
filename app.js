@@ -1,6 +1,6 @@
-import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,customChart,isFullCombo,FLICK_KEYS} from './engine.mjs?v=creator-flick-1';
-import {createCreator} from './creator.mjs?v=creator-flick-1';
-import {createPiano} from './piano.mjs?v=creator-flick-1';
+import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,customChart,isFullCombo,FLICK_KEYS} from './engine.mjs?v=twenty-tracks-1';
+import {createCreator} from './creator.mjs?v=twenty-tracks-1';
+import {createPiano} from './piano.mjs?v=twenty-tracks-1';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs';
@@ -25,7 +25,7 @@ let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
 if(typeof name!=='string')name='PLAYER';
 const bests=read('pulse-bests',{});
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
-let activeChart=null;
+let activeChart=null,libraryPack='all';
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
 const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[];
@@ -47,14 +47,17 @@ function renderKeyGuide(){for(let hand=0;hand<2;hand++){$(hand?'rightKeys':'left
 function syncSettings(){for(const key of ['speed','volume','pianoVolume','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':['volume','pianoVolume'].includes(key)?prefs[key]+'%':prefs[key]+' ms';}}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
 function renderSongs(){
-  $('songs').innerHTML=SONGS.map((s,i)=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" style="background:${s.color}">${String(s.rank).padStart(2,'0')}</span><span class="song-info"><strong>${s.title}</strong><small>${s.artist}</small></span></button>`).join('');
+  $('songs').innerHTML=SONGS.map((s,i)=>({s,i})).filter(({s})=>libraryPack==='all'||s.pack===libraryPack).map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" style="background:${s.color}">${String(s.rank).padStart(2,'0')}</span><span class="song-info"><strong>${s.title}</strong><small>${s.artist} · ${s.pack==='madoka'?'まどマギ':s.pack==='osu'?'osu!定番':'ボカロ'}</small></span></button>`).join('');
+  $('trackCount').textContent=SONGS.filter(s=>libraryPack==='all'||s.pack===libraryPack).length+' TRACKS';
+  document.querySelectorAll('[data-pack]').forEach(button=>{button.classList.toggle('active',button.dataset.pack===libraryPack);button.setAttribute('aria-pressed',String(button.dataset.pack===libraryPack));});
   document.querySelectorAll('[data-song]').forEach(b=>b.addEventListener('click',()=>selectSong(Number(b.dataset.song))));
 }
+function moveSong(direction){const choices=SONGS.map((s,i)=>({s,i})).filter(({s})=>libraryPack==='all'||s.pack===libraryPack).map(({i})=>i),current=choices.indexOf(selected);if(!choices.length)return;selectSong(choices[current<0?(direction>0?0:choices.length-1):(current+direction+choices.length)%choices.length]);}
 function selectSong(index){
   if(mode==='paused'){const target=(index+SONGS.length)%SONGS.length;if(target!==selected)requestSelection(target,difficulty);return;}
   if(mode!=='idle')return;const previous=selected;selected=(index+SONGS.length)%SONGS.length;if(previous!==selected)activeChart=null;renderSongs();const s=song();
   $('trackTitle').textContent=s.title;$('trackArtist').textContent=s.artist+' / '+s.vocal;$('bpm').textContent=s.bpm;$('miniArt').textContent=String(s.rank).padStart(2,'0');$('miniArt').style.background=s.color;
-  $('originalLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').href=s.source;$('chartInfo').textContent=activeChart?activeChart.title:s.chartLabel||'公開採譜を参考にした簡略フレーズ';resetTimer();
+  $('originalLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').href=s.source;$('sheetLink').textContent=s.sourceLabel||'参考楽譜 ↗';$('chartInfo').textContent=activeChart?activeChart.title:s.chartLabel||'公開採譜を参考にした簡略フレーズ';resetTimer();
   if(ready&&previous!==selected)player.cueVideoById(s.video);updateChartControls();updateBest();loadLeaders();
 }
 function selectDifficulty(index){if(mode==='paused'){const target=(index+3)%3;if(target!==difficulty||activeChart)requestSelection(selected,target);return;}if(mode!=='idle'||activeChart)return;difficulty=(index+3)%3;document.querySelectorAll('[data-difficulty]').forEach(b=>{b.classList.toggle('active',Number(b.dataset.difficulty)===difficulty);b.setAttribute('aria-pressed',Number(b.dataset.difficulty)===difficulty);});$('leaderDifficulty').textContent=DIFFICULTIES[difficulty];updateBest();loadLeaders();}
@@ -213,7 +216,7 @@ function draw(now){
   for(let i=0;i<=8;i++){ctx.lineWidth=i===4?2:1;ctx.setLineDash(i===4?[8,7]:[]);ctx.strokeStyle=i===4?'#ffffffaa':i===0||i===8?'#ffffff66':'#ffffff40';ctx.beginPath();ctx.moveTo(project(i*laneW,0),top);ctx.lineTo(i*laneW,hitY);ctx.stroke();}ctx.setLineDash([]);ctx.lineWidth=1;
   ctx.textAlign='center';ctx.font='700 11px "DM Sans",sans-serif';ctx.fillStyle='#f2a38e';ctx.fillText('左手',project(W/4,0),top-12);ctx.fillStyle='#b3e4c8';ctx.fillText('右手',project(W*3/4,0),top-12);
   const lookahead=2.2/prefs.speed;const beat=60/song().bpm;const visualTime=active?t:now/1000*.65;
-  for(let b=Math.floor(visualTime/beat);b<visualTime/beat+lookahead/beat+2;b++){const diff=b*beat-visualTime;if(diff<0||diff>lookahead)continue;const depth=1-diff/lookahead,y=top+span*depth*depth;ctx.strokeStyle=b%4===0?'#c2decd1f':'#c2decd0b';ctx.beginPath();ctx.moveTo(project(0,depth),y);ctx.lineTo(project(W,depth),y);ctx.stroke();}
+  for(let b=Math.floor(visualTime/beat);b<visualTime/beat+lookahead/beat+2;b++){const diff=b*beat-visualTime;if(diff<0||diff>lookahead)continue;const depth=1-diff/lookahead,y=top+span*depth*depth;ctx.strokeStyle=b%(song().meter||4)===0?'#c2decd1f':'#c2decd0b';ctx.beginPath();ctx.moveTo(project(0,depth),y);ctx.lineTo(project(W,depth),y);ctx.stroke();}
   let visibleNotes=notes;
   if(!active&&mode!=='results'){visibleNotes=Array.from({length:20},(_,i)=>({t:visualTime+(i*.31-(visualTime%3.1)),lane:[0,2,4,5,3,2,1,0,6,7][i%10],degree:[0,2,4,5,3,2,1,0,6,7][i%10]}));}
   const chords=new Map();
@@ -270,7 +273,7 @@ document.addEventListener('keydown',event=>{
   if(event.key==='?'&&!event.repeat){event.preventDefault();openDialog('helpDialog');return;}
   if(mode==='results'&&event.code==='KeyS'&&!event.repeat){event.preventDefault();saveScore();return;}
   if(mode==='idle'||mode==='paused'){
-    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.code)){event.preventDefault();if(event.repeat)return;if(event.code==='ArrowUp')selectSong(selected-1);if(event.code==='ArrowDown')selectSong(selected+1);if(event.code==='ArrowLeft')selectDifficulty(difficulty-1);if(event.code==='ArrowRight')selectDifficulty(difficulty+1);return;}
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.code)){event.preventDefault();if(event.repeat)return;if(event.code==='ArrowUp')moveSong(-1);if(event.code==='ArrowDown')moveSong(1);if(event.code==='ArrowLeft')selectDifficulty(difficulty-1);if(event.code==='ArrowRight')selectDifficulty(difficulty+1);return;}
   }
   if(event.code==='Escape'&&!event.repeat){event.preventDefault();if(mode==='paused'||mode==='results')quit();else pause();return;}
   if(event.code==='Enter'||event.code==='Space'){
@@ -294,6 +297,7 @@ $('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};saveP
 $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('remapHint').textContent='左から順に8つのキーを押してください。Escでキャンセル。';};
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
 $('refreshScores').onclick=loadLeaders;
+document.querySelectorAll('[data-pack]').forEach(button=>button.onclick=()=>{libraryPack=button.dataset.pack;renderSongs();});
 $('pauseChange').onclick=()=>requestSelection();$('changeSong').onchange=updateSelectionWarning;$('changeDifficulty').onchange=updateSelectionWarning;$('confirmTrackChange').onclick=confirmSelection;
 $('fullscreenButton').onclick=toggleFullscreen;$('playFullscreen').onclick=toggleFullscreen;
 $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mode==='paused'?resume():pause();

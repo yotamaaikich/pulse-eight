@@ -68,3 +68,8 @@ test('stock rankings retain the full-song replay path and draft submission canno
   assert.equal((await f.call('submit',{playerToken:token,runId:run.runId,name:'P',events:replay})).score,1000000);assert.ok(f.calls.some(c=>c.path==='rpc/pulse_keys_save_best'));
   const draft=await f.start({draft:{title:'Chart',notes:raw}});f.advance(181);await assert.rejects(f.call('submit',{playerToken:token,runId:draft.runId,name:'P',events}),/フルコンボしてから公開/);
 });
+test('expanded songs accept their complete HARD replay including flicks and more than 2000 notes',async()=>{
+  const f=fixture(),song=SONGS.find(s=>s.id==='ghost'),run=await f.start({song:song.id,difficulty:2});f.advance(song.duration);
+  const chart=makeChart(song,2).filter(n=>!n.assist),events=chart.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);
+  assert.ok(chart.length>2000);const result=await f.call('submit',{playerToken:token,runId:run.runId,name:'P',events});assert.equal(result.score,1000000);assert.equal(result.maxCombo,chart.length);
+});

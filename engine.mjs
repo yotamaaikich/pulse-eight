@@ -1,3 +1,4 @@
+import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 export const CHART_VERSION = 'piano8-full-v4';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
@@ -29,7 +30,8 @@ const REFERENCES = {
   mothergoose:'https://www.ymm.co.jp/p/detail.php?code=GTP01100045&dm=sl&dso=2',
   heat:'https://store.piascore.com/scores/332566',
 };
-for(const song of SONGS){song.source=REFERENCES[song.id];song.chartLabel='主旋律の輪郭を使った簡略アレンジ';}
+for(const song of SONGS){song.pack='vocaloid';song.source=REFERENCES[song.id];song.chartLabel='主旋律の輪郭を使った簡略アレンジ';}
+SONGS.push(...EXTRA_SONGS);
 
 // Short, reduced phrase contours; rhythm and transitions are an original arrangement.
 // Pitches are folded into C4–C5. Black notes are accompaniment, never scored.
@@ -53,6 +55,7 @@ const TRANSPOSE={mesmerizer:2,override:3,heat:2};
 // Identical, deterministic charts are used by the browser and score server.
 // These are original beat-grid charts, not transcriptions of commercial game charts.
 export function makeChart(song, difficulty) {
+  const expansion=makeExpansionChart(song,difficulty);if(expansion)return expansion;
   const beat = 60 / song.bpm;
   const notes = [];
   const busy=Array(8).fill(-1);

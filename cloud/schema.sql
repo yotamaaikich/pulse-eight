@@ -22,7 +22,7 @@ create table public.pulse_keys_scores (
   name text not null check(char_length(name) between 1 and 16),
   score integer not null check(score between 0 and 1000000),
   accuracy numeric(5,2) not null check(accuracy between 0 and 100),
-  max_combo integer not null check(max_combo between 0 and 2000),
+  max_combo integer not null check(max_combo between 0 and 4096),
   updated_at timestamptz not null default now(),
   primary key(player_hash,song,difficulty,chart_version)
 );

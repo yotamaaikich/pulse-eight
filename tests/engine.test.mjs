@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,customChart,validateCustomNotes,isFullCombo,scoreChartReplay} from '../engine.mjs';
 function perfectEvents(notes){return notes.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);}
 test('all tracks and difficulties support perfect and empty replays',()=>{
-  assert.equal(SONGS.length,10);
+  assert.equal(SONGS.length,20);
   for(const song of SONGS)for(let diff=0;diff<3;diff++){
     const chart=makeChart(song,diff),manual=chart.filter(n=>!n.assist);
+    assert.ok(manual.length<=4096,`${song.id}/${diff}: standard leaderboard limit`);
     assert.ok(manual.length>=30,`${song.id}/${diff}: chart too sparse`);
     for(let i=0;i<chart.length;i++){assert.ok(chart[i].t>0&&chart[i].t<song.duration);if(i)assert.ok(chart[i].t>=chart[i-1].t);}
     for(const n of manual)assert.ok(n.lane>=0&&n.lane<8);assert.ok(manual.some(n=>n.t>song.duration-4),song.id+' full length');
@@ -13,6 +14,14 @@ test('all tracks and difficulties support perfect and empty replays',()=>{
     assert.equal(result.score,1000000,`${song.id}/${diff}`);assert.equal(result.stats.miss,0);assert.equal(result.maxCombo,manual.length);
     assert.equal(scoreReplay(song,diff,[]).score,0);
   }
+});
+test('the expanded library has five Madoka and five osu selections with varied phrase rhythms',()=>{
+  assert.equal(SONGS.filter(s=>s.pack==='vocaloid').length,10);
+  for(const pack of ['madoka','osu']){const songs=SONGS.filter(s=>s.pack===pack);assert.equal(songs.length,5);for(const song of songs){
+    assert.ok(song.duration>=240&&song.duration<=600);assert.match(song.video,/^[A-Za-z0-9_-]{11}$/);assert.ok(song.source.startsWith('https://'));
+    const chart=makeChart(song,1),times=[...new Set(chart.map(n=>n.t))],gaps=new Set(times.slice(1).map((t,i)=>Math.round((t-times[i])*1000)));assert.ok(gaps.size>=3,song.id+' rhythm variation');
+  }}
+  assert.equal(SONGS.find(s=>s.id==='silvergarden').meter,3);
 });
 test('judgment boundaries and combo resets',()=>{
   assert.equal(judgment(.045),'perfect');assert.equal(judgment(-.09),'great');assert.equal(judgment(.14),'good');assert.equal(judgment(.17),'bad');assert.equal(judgment(.171),null);

@@ -1,6 +1,6 @@
 # PULSE EIGHT
 
-白鍵8つをキーボードで演奏する、ブラウザ音ゲー。
+ボカロ・まどマギ・osu!定番の20曲を、白鍵8つで演奏するブラウザ音ゲー。
 
 **プレイ： https://yotamaaikich.github.io/pulse-eight/**
 
@@ -29,7 +29,7 @@
 - Escで一時停止したまま選曲・難易度変更ができます。左右の選択ボタン、矢印キー、または一時停止画面の「曲・難易度を変更」を使用します。「今のプレイがリセットされます」の確認で確定するとスコア・コンボ・進行時間をリセットします。キャンセルではそのまま再開できます。全画面でも変更ダイアログを使用できます。
 - 全画面は譜面エリアだけを表示し、スコア・現在のコンボ・達成率も譜面内に表示します。右上の戻るボタンまたはVで解除できます。
 - 白鍵は手動、黒鍵は自動の補助。黒鍵には文字ラベルを表示せず、得点にも含めません。
-- 全曲フル尺（2:03〜4:46）。公式YouTubeプレイヤーの再生位置と同期し、バッファリング・一時停止中は譜面も止まります。
+- 全曲フル尺（2:03〜5:50）。公式YouTubeプレイヤーの再生位置と同期し、バッファリング・一時停止中は譜面も止まります。
 - 判定：PERFECT ±45ms / GREAT ±90ms / GOOD ±140ms / BAD ±170ms。
 - スコアは100万点満点。端末の自己ベストと、曲・難易度・譜面バージョンごとの世界TOP10。
 - ノーツ速度、動画音量、鍵盤音量、判定オフセット、キー配置を端末に保存。動画は初期50%、鍵盤は初期30%。以前の動画音量は初回のみ約70%へ下げ、0%は維持します。鍵盤音はWeb Audioで合成した柔らかい音で、読み込み・一時停止中には鳴りません。
@@ -44,7 +44,7 @@
 
 ## 収録曲と参照
 
-選曲元：[Billboard JAPAN「ニコニコ VOCALOID SONGS」2025年年間TOP10](https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16)。最新週間チャートではありません。
+ボカロ10曲の選曲元：[Billboard JAPAN「ニコニコ VOCALOID SONGS」2025年年間TOP10](https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16)。最新週間チャートではありません。
 
 | 曲 | 作者 | 主な参照 |
 | --- | --- | --- |
@@ -61,6 +61,26 @@
 
 譜面は、短い主旋律の輪郭を1オクターブに収めて反復・簡略化した練習用アレンジです。フル尺の時間範囲に配置しますが、曲全体の正確な採譜ではありません。拍・音域・一部の調を演奏しやすく変更しています。音源や楽譜本体は配布していません。原曲・映像・楽譜の権利は各権利者に帰属し、本ゲームは非公式です。
 
+
+### 追加セレクション（10曲）
+
+まどマギ5曲と、osu!のRanked・Loved等で親しまれている定番5曲を追加しました。最新ランキング順ではありません。動画は作者・権利者の公式チャンネルまたは公式配信のTopic音源を使用し、ClariSの3曲は公式セルフカバー「season 03」版です。2026-10-25に動画の長さと埋め込み可否を確認しました。
+
+| 曲 | 作者 | 動画の長さ | 選曲元・曲情報 |
+| --- | --- | --- | --- |
+| コネクト -season 03- | ClariS | 4:33 | [公式MV](https://www.youtube.com/watch?v=eNvD-D6Gw6c) |
+| Magia | Kalafina | 5:19 | [公式MV](https://www.youtube.com/watch?v=ks8WPvlQpbg) |
+| ルミナス -season 03- | ClariS | 4:10 | [公式Lyric Video](https://www.youtube.com/watch?v=Rlp_4FQESts) |
+| カラフル -season 03- | ClariS | 4:34 | [公式Lyric Video](https://www.youtube.com/watch?v=xV0ccSNorlM) |
+| 君の銀の庭 | Kalafina | 5:07 | [公式配信](https://www.youtube.com/watch?v=kFhhLSbuXvI) |
+| FREEDOM DiVE | xi | 4:30 | [osu!収録例](https://osu.ppy.sh/beatmapsets/39804) |
+| Blue Zenith | xi | 4:19 | [osu!収録例](https://osu.ppy.sh/beatmapsets/292301) |
+| GHOST | Camellia | 5:50 | [osu!収録例](https://osu.ppy.sh/beatmapsets/577187) |
+| crystallized | Camellia | 4:37 | [osu!収録例](https://osu.ppy.sh/beatmapsets/438613) |
+| Exit This Earth's Atomosphere | Camellia | 5:32 | [osu!収録例](https://osu.ppy.sh/beatmapsets/517474) |
+
+追加曲は、曲調・テンポをもとに強弱や休符、左右のフレーズを変えた独自の簡略リズム譜面です。正確な主旋律の全曲採譜や、osu!の既存譜面の変換ではありません。EASY / NORMAL / HARDの3段階、フル尺、長押し・同時押し・HARD限定フリックに対応します。「君の銀の庭」の編集グリッドは3拍子です。選曲欄で「ボカロ」「まどマギ」「osu!」を絞り込めます。
+
 ## ローカル起動
 
 Node.jsがあれば、追加パッケージは不要です。
@@ -75,7 +95,7 @@ node dev.mjs
 
 ビルド不要のHTML / CSS / JavaScript。GitHub Pagesは`main`ブランチのルートを配信します。`engine.mjs`はブラウザとサーバーで共有する譜面・判定処理、`geometry.mjs`はレーンとノーツで共有する遠近投影です。`npm test`で判定・長押し・同時押し・投影・再生待機・カスタム譜面を検証できます。
 
-オンライン機能はSupabase Edge Function `pulse-keys`と専用テーブルで保存します。初期構造は`cloud/schema.sql`、譜面公開の追加構造は`cloud/community.sql`です。`pulse_keys_charts`は公開譜面、`pulse_keys_chart_scores`は譜面ごとの記録、`pulse_keys_runs`は所有者付きプレイ情報、`pulse_keys_scores`は標準譜面の記録です。Edge Functionは`cloud/index.ts`をエントリーポイントとし、同じ配置の`cloud/service.mjs`とルートの`engine.mjs`を含めてデプロイします。
+オンライン機能はSupabase Edge Function `pulse-keys`と専用テーブルで保存します。初期構造は`cloud/schema.sql`、譜面公開の追加構造は`cloud/community.sql`です。`pulse_keys_charts`は公開譜面、`pulse_keys_chart_scores`は譜面ごとの記録、`pulse_keys_runs`は所有者付きプレイ情報、`pulse_keys_scores`は標準譜面の記録です。Edge Functionは`cloud/index.ts`をエントリーポイントとし、同じ配置の`cloud/service.mjs`とルートの`engine.mjs`と`expansion.mjs`を含めてデプロイします。長曲のコンボ上限拡張は`cloud/expanded-tracks.sql`です。
 
 ブラウザに置くのは公開用キーだけです。テーブルはRLS有効、`anon` / `authenticated`に直接の読み書き権限はありません。公開APIが名前・スコアなどの表示項目のみ返します。端末ごとのランダムなトークンでプレイの所有を確認し、サーバーで入力履歴からスコアを再計算します。開始回数制限、完走時間確認、二重登録防止、自己ベストの原子的更新を行います。
 
