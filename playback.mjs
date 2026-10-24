@@ -1,0 +1,23 @@
+// The public YouTube API has no ad event. Treat a stopped content clock as
+// waiting instead, and require fresh forward progress before resuming play.
+export class PlaybackGate {
+  constructor(){this.reset(0);}
+  reset(now,time=0){this.time=time;this.lastRaw=time;this.lastSample=now;this.lastMoving=now;this.progress=0;this.waiting=true;}
+  hold(now){this.waiting=true;this.progress=0;this.lastRaw=null;this.lastSample=now;this.lastMoving=now;}
+  observe(raw,state,now){
+    if(!Number.isFinite(raw)||raw<0){this.hold(now);return this.snapshot();}
+    const delta=this.lastRaw===null?0:raw-this.lastRaw;
+    const elapsed=Math.max(0,(now-this.lastSample)/1000);
+    this.lastRaw=raw;this.lastSample=now;
+    if(state!==1||raw<this.time-.15){this.waiting=true;this.progress=0;this.lastMoving=now;return this.snapshot();}
+    const seek=!this.waiting&&delta>Math.max(1.3,elapsed+1);
+    if(seek){this.hold(now);return this.snapshot(true);}
+    if(delta>0.0001){
+      this.lastMoving=now;this.progress+=Math.min(delta,elapsed+.1);
+      if(this.progress>=.35)this.waiting=false;
+    }else if(now-this.lastMoving>=1200){this.waiting=true;this.progress=0;}
+    if(!this.waiting)this.time=Math.max(this.time,raw);
+    return this.snapshot(seek);
+  }
+  snapshot(seek=false){return {time:this.time,waiting:this.waiting,seek};}
+}

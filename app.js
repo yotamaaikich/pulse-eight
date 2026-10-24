@@ -1,6 +1,7 @@
 import {SONGS,DIFFICULTIES,SESSION_SECONDS,makeChart,newStats,summary,CHART_VERSION,RhythmSession} from './engine.mjs';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
+import {PlaybackGate} from './playback.mjs';
 
 const $=id=>document.getElementById(id);
 const DEFAULT_KEYS=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
@@ -18,10 +19,11 @@ let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
 if(typeof name!=='string')name='PLAYER';
 const bests=read('pulse-bests',{});
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
-let ready=false,player=null,lastRaw=0,lastWall=performance.now(),clock=0,lastFrame=performance.now(),loadingStarted=0,sequence=0;
+let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
 const pressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[];
 const canvas=$('game'),ctx=canvas.getContext('2d');
+const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false;
 let W=600,H=535,dpr=1;
 const label=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]|| (code.startsWith('Key')?code.slice(3):code.startsWith('Digit')?code.slice(5):code));
 const song=()=>SONGS[selected];
@@ -46,17 +48,28 @@ function updateBest(){const b=bests[scoreKey()];$('personalBest').textContent=b?
 async function api(path,body){const response=await fetch(API_URL+path,{method:body?'POST':'GET',headers:{apikey:PUBLIC_KEY,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'クラウドへ接続できませんでした');return data;}
 async function loadLeaders(){const request=++leaderRequest;$('leaders').innerHTML='<li class="empty-state">ランキングを読み込み中…</li>';try{const data=await api(`/leaderboard?song=${song().id}&difficulty=${difficulty}`);if(request!==leaderRequest)return;$('cloudStatus').textContent='ONLINE';$('leaders').replaceChildren();if(!data.scores?.length){const li=document.createElement('li');li.className='empty-state';li.textContent='まだ記録がありません。\n最初のスコアを刻もう。';$('leaders').append(li);return;}data.scores.forEach((row,i)=>{const li=document.createElement('li'),num=document.createElement('span'),person=document.createElement('span'),strong=document.createElement('strong'),small=document.createElement('small'),score=document.createElement('span');num.className='leader-num';num.textContent=String(i+1).padStart(2,'0');person.className='leader-person';strong.textContent=row.name;small.textContent=row.accuracy.toFixed(2)+'% · '+row.max_combo+' COMBO';person.append(strong,small);score.className='leader-score';score.textContent=fmt(row.score);li.append(num,person,score);$('leaders').append(li);});}catch{if(request!==leaderRequest)return;$('cloudStatus').textContent='OFFLINE';$('leaders').innerHTML='<li class="empty-state">接続できませんでした。<br>↻ で再読み込みできます。</li>';}}
 function stateText(text){$('playState').textContent=text;}
-function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);}
+function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!['loading','buffering'].includes(mode));}
+function applyVolume(){if(!ready)return;const volume=['loading','buffering'].includes(mode)?0:prefs.volume;if(appliedVolume!==volume){player.setVolume(volume);appliedVolume=volume;}}
+function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;mode='buffering';playback.hold(performance.now());show(null);stateText('動画読み込み中');applyVolume();}
+function syncPlayback(now){
+  if(!ready||!playbackArmed||!['running','buffering','loading'].includes(mode))return;
+  const next=playback.observe(player.getCurrentTime(),player.getPlayerState(),now);
+  if(next.seek)eligible=false;
+  clock=next.time;
+  if(next.waiting){if(mode==='running'){mode='buffering';show(null);}stateText('動画読み込み中');}
+  else if(mode!=='running'){mode='running';syncHeldKeys();show(null);stateText('NOW PLAYING');canvas.focus();}
+  applyVolume();
+}
 function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
-  sequence++;const seq=sequence;mode='loading';document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;lastRaw=0;lastWall=performance.now();loadingStarted=performance.now();session=new RhythmSession(makeChart(song(),difficulty));notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
-  show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';stateText('LOADING OFFICIAL VIDEO');updateStats();canvas.focus();
+  sequence++;const seq=sequence;mode='loading';playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(makeChart(song(),difficulty));notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
+  show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';$('timer').textContent='00:00 / 01:00';stateText('動画読み込み中');updateStats();canvas.focus();
   runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
-  player.setVolume(prefs.volume);player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0,endSeconds:SESSION_SECONDS});
+  applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0,endSeconds:SESSION_SECONDS});
 }
 function pause(){if(!['running','buffering','loading'].includes(mode))return;mode='paused';player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
-function resume(){if(mode!=='paused')return;syncHeldKeys();mode='loading';loadingStarted=performance.now();show(null);stateText('RESUMING');player.playVideo();canvas.focus();}
+function resume(){if(mode!=='paused')return;syncHeldKeys();mode='loading';playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
 function quit(){sequence++;mode='idle';document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');$('timer').textContent='00:00 / 01:00';$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
 function updateStats(){
   const count=notes.filter(n=>!n.assist).length||1,result=summary(stats,count);
@@ -68,7 +81,7 @@ function updateStats(){
 }
 function finish(){if(mode==='results'||mode==='idle')return;mode='results';player.pauseVideo();pressed.clear();applyNotifications(session.finish());updateStats();const result=summary(stats,notes.filter(n=>!n.assist).length);$('resultRank').textContent=result.rank;$('resultScore').textContent=String(result.score).padStart(7,'0');$('resultDetail').textContent=`${result.accuracy.toFixed(2)}% ACCURACY / ${result.maxCombo} MAX COMBO`;$('resultCounts').innerHTML=['perfect','great','good','bad','miss'].map(key=>`<span>${key.toUpperCase()}<b>${stats[key]}</b></span>`).join('');const prev=bests[scoreKey()];const isBest=!prev||result.score>prev.score;if(isBest){bests[scoreKey()]=result;write('pulse-bests',bests);}$('bestBadge').style.display=isBest?'':'none';$('saveScore').disabled=!eligible;$('saveScore').textContent=eligible?'ランキングに登録 [S]':'練習プレイ（シーク・速度変更あり）';$('saveStatus').textContent='名前とスコアが公開されます';show('resultMessage');$('pauseButton').disabled=true;stateText('SESSION COMPLETE');$('progress').style.width='100%';updateBest();}
 async function saveScore(){if(mode!=='results'||submitted||!eligible)return;$('saveScore').disabled=true;$('saveStatus').textContent='クラウドへ登録中…';try{await runPromise;if(!runId)throw new Error('接続できませんでした。次のプレイで再度お試しください。');const result=await api('/submit',{runId,playerToken:token,name,events});submitted=true;$('saveScore').textContent=result.improved?'ランキング登録完了':'自己ベストをキープ';$('saveStatus').textContent='保存しました。ランキングを更新しました。';loadLeaders();toast('クラウドにスコアを保存しました');}catch(error){$('saveScore').disabled=false;$('saveStatus').textContent=error.message;}}
-function time(){if(mode!=='running')return clock;const raw=player.getCurrentTime()||0,now=performance.now();if(raw===0&&clock>1)return clock;if(Math.abs(raw-clock)>1.3&&raw>1)eligible=false;clock=raw;lastRaw=raw;lastWall=now;return clock;}
+function time(){return clock;}
 function recordEvent(t,lane,action){const ms=Math.round(t*1000);if(ms<0||ms>60200)return false;events.push([Math.max(ms,events.at(-1)?.[0]||0),lane,action]);return true;}
 function applyNotifications(list){
   const now=performance.now();let changed=false;
@@ -85,7 +98,30 @@ function inputTime(){return Math.round(((mode==='running'?time():clock)-prefs.of
 function syncHeldKeys(){if(!session)return;for(const lane of [...session.down])if(!pressed.has(lane))releaseLane(lane,true);for(const lane of pressed)if(!session.down.has(lane)){const t=inputTime();if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}}
 function hit(lane){flashes[lane]=performance.now();if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
 function releaseLane(lane,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,0))applyNotifications(session.release(t,lane));}
-function loadPlayer(){const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.onerror=()=>{stateText('VIDEO CONNECTION FAILED');$('startHint').textContent='YouTubeに接続できません。回線を確認してページを再読み込みしてください。';};window.onYouTubeIframeAPIReady=()=>{player=new window.YT.Player('youtubePlayer',{width:'100%',height:'100%',videoId:song().video,playerVars:{playsinline:1,controls:1,rel:0,origin:location.origin},events:{onReady:()=>{ready=true;player.setVolume(prefs.volume);$('startHint').textContent='ENTERでスタート · 黒鍵は自動サポート';$('videoStatus').innerHTML='公式動画をそのまま再生。<br>音楽に合わせて、世界のスコアに挑戦。';},onStateChange:event=>{if(event.data===1){if(['loading','buffering'].includes(mode)){clock=player.getCurrentTime()||0;lastWall=performance.now();mode='running';syncHeldKeys();stateText('NOW PLAYING');show(null);}else if(mode==='paused')player.pauseVideo();else if(['idle','results'].includes(mode))player.pauseVideo();}if(event.data===3&&mode==='running'){clock=player.getCurrentTime()||clock;mode='buffering';stateText('BUFFERING · ノーツも停止しています');}if(event.data===2&&mode==='running'){mode='paused';show('pauseMessage');stateText('PAUSED');}if(event.data===0&&['running','buffering','loading'].includes(mode)){if(Math.max(clock,player.getCurrentTime()||0)>=SESSION_SECONDS-2)finish();else{eligible=false;pause();toast('動画が終了しました。リトライしてください。');}}},onPlaybackRateChange:event=>{if(event.data!==1&&mode!=='idle'){eligible=false;toast('再生速度が変わったため練習プレイになりました。');}},onError:()=>{quit();stateText('VIDEO UNAVAILABLE');$('startHint').textContent='この動画は現在再生できません。別の曲を選んでください。';toast('公式動画の埋め込み再生に失敗しました。別の曲を選んでください。');},onAutoplayBlocked:()=>{if(mode==='loading'){mode='paused';show('pauseMessage');$('pauseMessage').querySelector('h2').textContent='READY?';stateText('ENTER TO ALLOW PLAYBACK');toast('Enterでもう一度再生してください。');}}}});};document.head.append(script);}
+function loadPlayer(){
+  const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';
+  script.onerror=()=>{stateText('VIDEO CONNECTION FAILED');$('startHint').textContent='YouTubeに接続できません。回線を確認してページを再読み込みしてください。';};
+  window.onYouTubeIframeAPIReady=()=>{
+    player=new window.YT.Player('youtubePlayer',{width:'100%',height:'100%',videoId:song().video,playerVars:{playsinline:1,controls:1,rel:0,origin:location.origin},events:{
+      onReady:()=>{ready=true;applyVolume();$('startHint').textContent='ENTERでスタート · 黒鍵は自動サポート';$('videoStatus').innerHTML='音楽はYouTubeの公式動画から再生します。<br>再生前・再生中に広告が入る場合があります。';},
+      onStateChange:event=>{
+        if(event.data===1){
+          if(['loading','buffering'].includes(mode)){playbackArmed=true;playback.hold(performance.now());}
+          else if(['paused','idle','results'].includes(mode))player.pauseVideo();
+        }
+        if(event.data===3&&mode==='running')waitForVideo();
+        if(event.data===2&&mode==='running')waitForVideo();
+        if(event.data===0&&['running','buffering','loading'].includes(mode)){
+          if(clock>=SESSION_SECONDS-2)finish();else waitForVideo();
+        }
+      },
+      onPlaybackRateChange:event=>{if(event.data!==1&&mode!=='idle'){eligible=false;toast('再生速度が変わったため練習プレイになりました。');}},
+      onError:()=>{quit();stateText('VIDEO UNAVAILABLE');$('startHint').textContent='この動画は現在再生できません。別の曲を選んでください。';toast('公式動画の埋め込み再生に失敗しました。別の曲を選んでください。');},
+      onAutoplayBlocked:()=>{if(mode==='loading'){mode='paused';show('pauseMessage');$('pauseMessage').querySelector('h2').textContent='READY?';stateText('ENTER TO ALLOW PLAYBACK');toast('Enterでもう一度再生してください。');}}
+    }});
+  };
+  document.head.append(script);
+}
 function resize(){const rect=canvas.getBoundingClientRect();W=rect.width;H=rect.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
 new ResizeObserver(resize).observe(canvas);
 function project(x,depth){return projectPoint(x,W,depth,40,H-99).x;}
@@ -93,13 +129,12 @@ function drawStaff(cx,cy,degree,scale=1,color='#24352f'){
   ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=.6;ctx.globalAlpha=.35;for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(-11,-8+i*4);ctx.lineTo(11,-8+i*4);ctx.stroke();}ctx.globalAlpha=1;const y=12-degree*2;if(degree===0){ctx.beginPath();ctx.moveTo(-6,y);ctx.lineTo(7,y);ctx.stroke();}ctx.beginPath();ctx.ellipse(0,y,3.5,2.3,-.3,0,Math.PI*2);ctx.fill();ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(3,y);ctx.lineTo(3,y-16);ctx.stroke();ctx.restore();
 }
 function draw(now){
-  const dt=Math.min((now-lastFrame)/16.67,3);lastFrame=now;
+  const dt=Math.min((now-lastFrame)/16.67,3);lastFrame=now;syncPlayback(now);
   const active=['running','buffering','loading','paused'].includes(mode);
   const t=(mode==='running'?time():clock)-prefs.offset/1000;
   if(mode==='running'){
     applyNotifications(session.advance(t));$('timer').textContent=`00:${String(Math.min(60,Math.floor(Math.max(0,t)))).padStart(2,'0')} / 01:00`;$('progress').style.width=Math.min(100,Math.max(0,t)/60*100)+'%';if(t>=SESSION_SECONDS)finish();
   }
-  if(mode==='loading'&&now-loadingStarted>18000){pause();toast('読み込みに時間がかかっています。Enterで再開できます。');}
   ctx.clearRect(0,0,W,H);const top=40,hitY=H-99,span=hitY-top,laneW=W/8;
   const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#172026');bg.addColorStop(1,'#24312f');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   for(let lane=0;lane<8;lane++){ctx.beginPath();ctx.moveTo(project(lane*laneW,0),top);ctx.lineTo(project((lane+1)*laneW,0),top);ctx.lineTo((lane+1)*laneW,hitY);ctx.lineTo(lane*laneW,hitY);ctx.closePath();ctx.fillStyle=lane%2?'#0e191c44':'#bbd8bd07';ctx.fill();if(pressed.has(lane)||now-flashes[lane]<170){const glow=ctx.createLinearGradient(0,hitY-160,0,hitY);glow.addColorStop(0,'transparent');glow.addColorStop(1,lane<4?'#ec634b55':'#a8e3cb55');ctx.fillStyle=glow;ctx.fill();}}
@@ -140,7 +175,6 @@ function draw(now){
   [1,2,4,5,6].forEach((boundary,i)=>{const x=boundary*laneW,down=now-blackFlashes[i]<130;ctx.fillStyle=down?'#719c88':'#172127';ctx.shadowColor='#0006';ctx.shadowBlur=4;ctx.beginPath();ctx.roundRect(x-laneW*.25,keyTop,laneW*.5,38,2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle=down?'#c4edd7':'#3c494a';ctx.beginPath();ctx.moveTo(x-laneW*.2,keyTop+33);ctx.lineTo(x+laneW*.2,keyTop+33);ctx.stroke();});
   const centerY=hitY-88;if(active&&stats.combo>1){ctx.textAlign='center';ctx.fillStyle='#e0ecdf';ctx.font='500 47px "Barlow Condensed",sans-serif';ctx.fillText(String(stats.combo),W/2,centerY);ctx.font='7px "DM Sans",sans-serif';ctx.fillStyle='#78968b';ctx.fillText('C O M B O',W/2,centerY+16);}
   if(active&&lastJudge&&now-judgeAt<650){ctx.globalAlpha=Math.max(0,1-(now-judgeAt)/650);ctx.textAlign='center';ctx.font='700 19px "Barlow Condensed",sans-serif';ctx.fillStyle=lastJudge==='miss'?'#ef937f':'#c5edcd';ctx.fillText(lastJudge.toUpperCase(),W/2,centerY-44);if(lastJudge!=='miss'&&lastJudge!=='hold'){ctx.font='8px "DM Sans",sans-serif';ctx.fillStyle='#87b3a3';ctx.fillText((judgeDelta>0?'LATE +':'EARLY ')+judgeDelta+' ms',W/2,centerY-28);}ctx.globalAlpha=1;}
-  if(['loading','buffering'].includes(mode)){ctx.textAlign='center';ctx.font='700 14px "DM Sans",sans-serif';ctx.fillStyle='#b4d1c2';ctx.fillText(mode==='loading'?'GET READY…':'BUFFERING…',W/2,hitY/2);}
   for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=.035*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,2,3);if(p.life<=0)particles.splice(i,1);}ctx.globalAlpha=1;
   document.querySelectorAll('[data-key]').forEach(k=>k.classList.toggle('pressed',pressed.has(prefs.keys.indexOf(k.dataset.key))));requestAnimationFrame(draw);
 }
@@ -174,9 +208,9 @@ $('settingsButton').onclick=() =>openDialog('settingsDialog');$('remapShortcut')
 document.querySelectorAll('.close-dialog').forEach(button=>button.onclick=()=>button.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(dialog=>{dialog.addEventListener('close',()=>{remapping=false;remapKeys=[];renderKeyGuide();});dialog.addEventListener('click',e=>{if(e.target===dialog){const rect=dialog.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)dialog.close();}});});
 document.querySelectorAll('[data-difficulty]').forEach(button=>button.onclick=()=>selectDifficulty(Number(button.dataset.difficulty)));
-for(const key of ['speed','volume','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='volume'&&ready)player.setVolume(prefs.volume);};
+for(const key of ['speed','volume','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='volume')applyVolume();};
 const toggleNotation=()=>{prefs.notation=!prefs.notation;savePrefs();};$('notationToggle').onchange=()=>{prefs.notation=$('notationToggle').checked;savePrefs();};$('notationButton').onclick=toggleNotation;
-$('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();if(ready)player.setVolume(prefs.volume);toast('設定を初期値に戻しました');};
+$('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();applyVolume();toast('設定を初期値に戻しました');};
 $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('remapHint').textContent='左から順に8つのキーを押してください。Escでキャンセル。';};
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
 $('refreshScores').onclick=loadLeaders;
