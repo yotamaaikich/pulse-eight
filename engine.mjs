@@ -1,19 +1,18 @@
-export const CHART_VERSION = 'piano8-hold-v2';
-export const SESSION_SECONDS = 60;
+export const CHART_VERSION = 'piano8-full-v3';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const DIFFICULTIES = ['EASY', 'NORMAL', 'HARD'];
 export const SONGS = [
-  {id:'monitoring',rank:1,title:'モニタリング',artist:'DECO*27',vocal:'初音ミク',video:'kbNdx0yqbZE',bpm:132,color:'#f1aac4',offset:0.12},
-  {id:'tetoris',rank:2,title:'テトリス',artist:'柊マグネタイト',vocal:'重音テトSV',video:'Soy4jGPHr3g',bpm:170,color:'#e8be54',offset:0.08},
-  {id:'mesmerizer',rank:3,title:'メズマライザー',artist:'サツキ',vocal:'初音ミク・重音テトSV',video:'19y8YTbvri8',bpm:185,color:'#89d8c6',offset:0.02},
-  {id:'override',rank:4,title:'オーバーライド',artist:'吉田夜世',vocal:'重音テトSV',video:'LLjfal8jCYI',bpm:145,color:'#b6b3ee',offset:0.05},
-  {id:'telepathy',rank:5,title:'テレパシ',artist:'DECO*27',vocal:'初音ミク',video:'c56TpxfO9q0',bpm:205,color:'#92c4e7',offset:0.02},
-  {id:'mimukauwa',rank:6,title:'みむかｩわナイストライ',artist:'ぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬ',vocal:'初音ミク',video:'Ljr2wMSBHqU',bpm:126,color:'#c6d98e',offset:0.12},
-  {id:'daikirai',rank:7,title:'ダイダイダイダイダイキライ',artist:'雨良 Amala',vocal:'初音ミク VS 重音テト',video:'klIxS5o65C4',bpm:130,color:'#ed9f94',offset:0.06},
-  {id:'rinne',rank:8,title:'いますぐ輪廻',artist:'なきそ',vocal:'初音ミク',video:'3iUgKH8c7p4',bpm:145,color:'#d0b4d9',offset:0.02},
-  {id:'mothergoose',rank:9,title:'アンノウン・マザーグース',artist:'wowaka',vocal:'初音ミク',video:'P_CSdxSGfaA',bpm:222,color:'#bac4cb',offset:0.03},
-  {id:'heat',rank:10,title:'熱異常',artist:'いよわ',vocal:'足立レイ',video:'b2NTglk9tvI',bpm:183,color:'#e5a079',offset:0.02},
+  {id:'monitoring',rank:1,title:'モニタリング',artist:'DECO*27',vocal:'初音ミク',video:'kbNdx0yqbZE',duration:181,bpm:132,color:'#f1aac4',offset:0.12},
+  {id:'tetoris',rank:2,title:'テトリス',artist:'柊マグネタイト',vocal:'重音テトSV',video:'Soy4jGPHr3g',duration:143,bpm:170,color:'#e8be54',offset:0.08},
+  {id:'mesmerizer',rank:3,title:'メズマライザー',artist:'サツキ',vocal:'初音ミク・重音テトSV',video:'19y8YTbvri8',duration:157,bpm:185,color:'#89d8c6',offset:0.02},
+  {id:'override',rank:4,title:'オーバーライド',artist:'吉田夜世',vocal:'重音テトSV',video:'LLjfal8jCYI',duration:139,bpm:145,color:'#b6b3ee',offset:0.05},
+  {id:'telepathy',rank:5,title:'テレパシ',artist:'DECO*27',vocal:'初音ミク',video:'c56TpxfO9q0',duration:145,bpm:205,color:'#92c4e7',offset:0.02},
+  {id:'mimukauwa',rank:6,title:'みむかｩわナイストライ',artist:'ぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬ',vocal:'初音ミク',video:'Ljr2wMSBHqU',duration:218,bpm:126,color:'#c6d98e',offset:0.12},
+  {id:'daikirai',rank:7,title:'ダイダイダイダイダイキライ',artist:'雨良 Amala',vocal:'初音ミク VS 重音テト',video:'klIxS5o65C4',duration:155,bpm:130,color:'#ed9f94',offset:0.06},
+  {id:'rinne',rank:8,title:'いますぐ輪廻',artist:'なきそ',vocal:'初音ミク',video:'3iUgKH8c7p4',duration:123,bpm:145,color:'#d0b4d9',offset:0.02},
+  {id:'mothergoose',rank:9,title:'アンノウン・マザーグース',artist:'wowaka',vocal:'初音ミク',video:'P_CSdxSGfaA',duration:286,bpm:222,color:'#bac4cb',offset:0.03},
+  {id:'heat',rank:10,title:'熱異常',artist:'いよわ',vocal:'足立レイ',video:'b2NTglk9tvI',duration:241,bpm:183,color:'#e5a079',offset:0.02},
 ];
 
 const REFERENCES = {
@@ -67,14 +66,14 @@ export function makeChart(song, difficulty) {
       const lane=WHITE.indexOf(p);
       if(t<busy[lane]+.08)return null;
       const hold=index% (difficulty===0?24:difficulty===1?16:12)===0;
-      const end=hold?Math.round(Math.min(58.8,t+beat*(difficulty===0?2:4))*1000)/1000:undefined;
+      const end=hold?Math.round(Math.min(song.duration-1.2,t+beat*(difficulty===0?2:4))*1000)/1000:undefined;
       const note={t,lane,degree:lane,assist:false,...(end&&end>t+.25?{end}:{})};
       if(note.end)busy[lane]=note.end;
       notes.push(note);return note;
     }
     return null;
   }
-  for(let b=8;b*beat+song.offset<SESSION_SECONDS-1;b+=.5,idx++){
+  for(let b=8;b*beat+song.offset<song.duration-1;b+=.5,idx++){
     const pitch=motif[idx%motif.length];
     if(difficulty===0&&idx%2===1)continue;
     // Phrase endings leave breathing room; harder charts retain repeated melody notes.
@@ -108,7 +107,7 @@ export function summary(stats, count) {
     rank:accuracy>=99?'SS':accuracy>=95?'S':accuracy>=90?'A':accuracy>=80?'B':accuracy>=65?'C':'D'};
 }
 export class RhythmSession {
-  constructor(chart){this.notes=chart.map(n=>({...n,done:false,started:false}));this.stats=newStats();this.down=new Set();this.holds=new Map();}
+  constructor(chart,duration=null){this.duration=duration??Math.max(0,...chart.map(n=>n.end??n.t))+.2;this.notes=chart.map(n=>({...n,done:false,started:false}));this.stats=newStats();this.down=new Set();this.holds=new Map();}
   complete(note,result,delta=0){if(note.done)return null;note.done=true;this.holds.delete(note.lane);addResult(this.stats,result);return {kind:'judge',note,result,delta};}
   advance(t){
     const due=[];
@@ -137,10 +136,31 @@ export class RhythmSession {
     if(n)notifications.push(this.complete(n,n.end-t<=HOLD_GRACE+1e-9?n.headJudge:'miss',n.headDelta));
     return notifications.filter(Boolean);
   }
-  finish(){const notifications=this.advance(SESSION_SECONDS+.2);for(const n of this.notes)if(!n.done&&!n.assist)notifications.push(this.complete(n,'miss'));return notifications.filter(Boolean);}
+  finish(){const notifications=this.advance(this.duration+.2);for(const n of this.notes)if(!n.done&&!n.assist)notifications.push(this.complete(n,'miss'));return notifications.filter(Boolean);}
 }
-export function scoreReplay(song,difficulty,events){
-  const session=new RhythmSession(makeChart(song,difficulty));
+export function scoreChartReplay(chart,duration,events){
+  const session=new RhythmSession(chart,duration);
   for(const [ms,lane,action=1]of events){if(action===1)session.press(ms/1000,lane);else session.release(ms/1000,lane);}
   session.finish();return {...summary(session.stats,session.notes.filter(n=>!n.assist).length),stats:session.stats};
 }
+export function scoreReplay(song,difficulty,events){return scoreChartReplay(makeChart(song,difficulty),song.duration,events);}
+export function isFullCombo(stats,count){return count>0&&stats.miss===0&&stats.bad===0&&stats.maxCombo===count&&stats.perfect+stats.great+stats.good===count;}
+
+// Compact custom note format: [time in ms, lane 0–7, hold length in ms (0 = tap)].
+export function validateCustomNotes(song,raw){
+  if(!Array.isArray(raw)||raw.length<1||raw.length>4096)throw Error('ノーツは1〜4096個で作成してください。');
+  const notes=raw.map(note=>{
+    if(!Array.isArray(note)||note.length!==3||!note.every(Number.isInteger))throw Error('ノーツの形式が正しくありません。');
+    const [t,lane,length]=note;
+    if(t<1000||t>song.duration*1000-170||lane<0||lane>7||length<0||(length>0&&length<100)||t+length>song.duration*1000-100)throw Error('ノーツは冒頭1秒より後、曲の終了前に配置してください。');
+    return [t,lane,length];
+  }).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+  const ends=Array(8).fill(-Infinity);
+  for(const [t,lane,length]of notes){if(t<ends[lane]+40)throw Error('同じレーンのノーツや長押しが重なっています。');ends[lane]=t+length;}
+  return notes;
+}
+export function customChart(song,raw){
+  const triples=validateCustomNotes(song,raw),counts=new Map();for(const [t]of triples)counts.set(t,(counts.get(t)||0)+1);
+  return triples.map(([ms,lane,length])=>({t:ms/1000,lane,degree:lane,assist:false,chord:counts.get(ms)>1,...(length?{end:(ms+length)/1000}:{})}));
+}
+export function draftKey(raw){let hash=2166136261;for(const char of JSON.stringify(raw)){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return (hash>>>0).toString(16);}

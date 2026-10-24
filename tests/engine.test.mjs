@@ -7,8 +7,8 @@ test('all tracks and difficulties support perfect and empty replays',()=>{
   for(const song of SONGS)for(let diff=0;diff<3;diff++){
     const chart=makeChart(song,diff),manual=chart.filter(n=>!n.assist);
     assert.ok(manual.length>=30,`${song.id}/${diff}: chart too sparse`);
-    for(let i=0;i<chart.length;i++){assert.ok(chart[i].t>0&&chart[i].t<60);if(i)assert.ok(chart[i].t>=chart[i-1].t);}
-    for(const n of manual)assert.ok(n.lane>=0&&n.lane<8);
+    for(let i=0;i<chart.length;i++){assert.ok(chart[i].t>0&&chart[i].t<song.duration);if(i)assert.ok(chart[i].t>=chart[i-1].t);}
+    for(const n of manual)assert.ok(n.lane>=0&&n.lane<8);assert.ok(manual.some(n=>n.t>song.duration-4),song.id+' full length');
     const result=scoreReplay(song,diff,perfectEvents(manual));
     assert.equal(result.score,1000000,`${song.id}/${diff}`);assert.equal(result.stats.miss,0);assert.equal(result.maxCombo,manual.length);
     assert.equal(scoreReplay(song,diff,[]).score,0);

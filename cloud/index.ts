@@ -1,4 +1,4 @@
-import {SONGS,CHART_VERSION,SESSION_SECONDS,makeChart,scoreReplay} from './engine.mjs';
+import {SONGS,CHART_VERSION,makeChart,scoreReplay} from './engine.mjs';
 
 const URL=Deno.env.get('SUPABASE_URL')!;
 const legacyService=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -50,14 +50,14 @@ Deno.serve(async(req:Request)=>{
       if(typeof data.runId!=='string'||!/^[a-f0-9-]{36}$/.test(data.runId))throw new ApiError('プレイ情報が見つかりません。');
       const runs=await db(`pulse_keys_runs?select=*&id=eq.${data.runId}&player_hash=eq.${playerHash}&used=eq.false&limit=1`);
       const run=runs[0];if(!run||run.chart_version!==CHART_VERSION)throw new ApiError('このプレイは登録済み、または期限切れです。',409);
-      const elapsed=(Date.now()-Date.parse(run.created_at))/1000;
-      if(elapsed<SESSION_SECONDS-2||elapsed>1800)throw new ApiError('60秒完走したプレイだけを登録できます。',422);
       const song=selection(run.song,run.difficulty);
+      const elapsed=(Date.now()-Date.parse(run.created_at))/1000;
+      if(elapsed<song.duration-2||elapsed>1800)throw new ApiError('1曲完走したプレイだけを登録できます。',422);
       if(typeof data.name!=='string'||!data.name.trim()||[...data.name].length>16||/[\u0000-\u001f\u007f]/.test(data.name))throw new ApiError('名前を1〜16文字で入力してください。');
       const chart=makeChart(song,run.difficulty).filter(n=>!n.assist);
       if(!Array.isArray(data.events)||data.events.length>chart.length*10)throw new ApiError('プレイデータが正しくありません。');
       let prev=-1;
-      for(const e of data.events){if(!Array.isArray(e)||e.length!==3||!Number.isInteger(e[0])||!Number.isInteger(e[1])||!Number.isInteger(e[2])||![0,1].includes(e[2])||e[0]<prev||e[0]<0||e[0]>SESSION_SECONDS*1000+200||e[1]<0||e[1]>7)throw new ApiError('プレイデータが正しくありません。');prev=e[0];}
+      for(const e of data.events){if(!Array.isArray(e)||e.length!==3||!Number.isInteger(e[0])||!Number.isInteger(e[1])||!Number.isInteger(e[2])||![0,1].includes(e[2])||e[0]<prev||e[0]<0||e[0]>song.duration*1000+200||e[1]<0||e[1]>7)throw new ApiError('プレイデータが正しくありません。');prev=e[0];}
       const result=scoreReplay(song,run.difficulty,data.events);
       // Claim once atomically. Concurrent retries cannot submit the same ticket twice.
       const claimed=await db(`pulse_keys_runs?id=eq.${run.id}&player_hash=eq.${playerHash}&used=eq.false`,'PATCH',{used:true},'return=representation');

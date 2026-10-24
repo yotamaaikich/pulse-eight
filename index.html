@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f3ee">
-  <meta name="description" content="ボカロ10曲を8つのキーで。60秒のキーボード音ゲー PULSE EIGHT。オンラインランキング対応。">
+  <meta name="description" content="ボカロ10曲を8つのキーで。フル尺のキーボード音ゲー PULSE EIGHT。オンラインランキング対応。">
   <title>PULSE EIGHT — 指先で、音をつかめ。</title>
-  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=playback-wait-1">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=white-guides-1">
 </head>
 <body>
   <header class="topbar">
@@ -13,7 +13,7 @@
     <nav><span class="status-dot"></span><span id="cloudStatus">CONNECTING</span><button id="fullscreenButton" class="fullscreen-button" aria-label="全画面にする" aria-pressed="false">⛶ 全画面 <kbd>V</kbd></button><button id="helpButton" class="text-button">遊び方 <kbd>?</kbd></button><button id="settingsButton" class="icon-button" aria-label="設定">⚙</button></nav>
   </header>
   <main>
-    <section class="intro"><div><div class="eyebrow">8 KEYS. ONE FLOW.</div><h1>指先で、音をつかめ<span>。</span></h1><p>好きなボカロを、8つのキーで。きみの60秒を刻もう。</p></div><div class="intro-mark"><span>VOL.</span><strong>01</strong><span>VOCALOID SELECTION</span></div></section>
+    <section class="intro"><div><div class="eyebrow">8 KEYS. ONE FLOW.</div><h1>指先で、音をつかめ<span>。</span></h1><p>好きなボカロを、8つのキーで。1曲まるごと、リズムを刻もう。</p></div><div class="intro-mark"><span>VOL.</span><strong>01</strong><span>VOCALOID SELECTION</span></div></section>
     <div class="workspace">
       <aside class="library">
         <div class="panel-heading"><h2>SELECT TRACK</h2><span>10 TRACKS</span></div>
@@ -26,7 +26,7 @@
         <div class="difficulty-bar"><div id="difficulties" role="group" aria-label="難易度"><button data-difficulty="0">EASY <span>LV.3</span></button><button data-difficulty="1" class="active">NORMAL <span>LV.7</span></button><button data-difficulty="2">HARD <span>LV.11</span></button></div><span><kbd>←</kbd><kbd>→</kbd></span></div>
         <p class="music-notice"><strong>YouTube広告について</strong>音楽はYouTubeの公式動画で再生するため、広告が入る場合があります。本編の再生待ち中は譜面を停止します。広告の種類によっては待機を判別できない場合があります。</p>
         <div class="stage" id="stage">
-          <div class="stage-top"><span><i></i> 8-KEY SESSION</span><span id="timer">00:00 / 01:00</span></div>
+          <div class="stage-top"><span><i></i> 8-KEY SESSION</span><span id="timer">00:00 / 03:01</span></div>
           <div class="chart-hud" aria-label="プレイ中の成績">
             <div class="chart-hud-score"><span>SCORE</span><strong id="stageScore">0000000</strong></div>
             <div><span>COMBO</span><strong id="stageCombo">0</strong></div>
@@ -36,14 +36,14 @@
           <div class="chart-fullscreen-controls"><button id="chartPause">Ⅱ <kbd>ESC</kbd></button><button id="exitChartFullscreen">⛶ 戻る <kbd>V</kbd></button></div>
           <canvas id="game" tabindex="-1" aria-label="8レーンのノーツ。A S D F J K L セミコロンで演奏"></canvas>
           <div id="videoLoading" class="video-loading hidden" role="status"><span class="loading-ring" aria-hidden="true"></span><strong>動画読み込み中</strong></div>
-          <div class="stage-message" id="stageMessage"><span class="pill">60 SECOND CHALLENGE</span><h2>FIND YOUR<br><em>PULSE.</em></h2><p>ラインに重なる瞬間、キーを叩こう。</p><button class="start-button" id="startButton"><span>PLAY TRACK</span><kbd>ENTER ↵</kbd></button><small id="startHint">音声は公式YouTubeプレイヤーから再生</small></div>
+          <div class="stage-message" id="stageMessage"><span class="pill">FULL TRACK SESSION</span><h2>FIND YOUR<br><em>PULSE.</em></h2><p>ラインに重なる瞬間、キーを叩こう。</p><button class="start-button" id="startButton"><span>PLAY TRACK</span><kbd>ENTER ↵</kbd></button><small id="startHint">音声は公式YouTubeプレイヤーから再生</small></div>
           <div class="stage-message hidden" id="pauseMessage"><span class="eyebrow">TAKE A BREATH</span><h2>PAUSED<span>.</span></h2><button id="resumeButton" class="start-button">つづける <kbd>ENTER ↵</kbd></button><small>長押し中は対応キーを押したまま再開</small><div class="pause-actions"><button id="retryButton">リトライ <kbd>R</kbd></button><button id="quitButton">選曲へ <kbd>ESC</kbd></button></div></div>
           <div class="stage-message hidden" id="resultMessage"><span class="eyebrow">SESSION COMPLETE</span><div class="result-rank" id="resultRank">A</div><div class="result-score" id="resultScore">0000000</div><p id="resultDetail"></p><div id="resultCounts" class="result-counts"></div><span id="bestBadge" class="pill">NEW PERSONAL BEST</span><button id="saveScore" class="save-score">ランキングに登録 [S]</button><small id="saveStatus">名前とスコアが公開されます</small><button id="resultRetry" class="start-button">もう一度プレイ <kbd>ENTER ↵</kbd></button><button id="resultBack" class="plain-light">選曲へ戻る <kbd>ESC</kbd></button></div>
           <div class="progress-track"><div id="progress"></div></div>
         </div>
-        <div class="play-toolbar"><span><span class="tiny-dot"></span><span id="playState">READY TO PLAY</span></span><button id="pauseButton" class="text-button" disabled>一時停止 <kbd>ESC</kbd></button><button id="notationButton" class="text-button" aria-label="音符ガイド切り替え">♪ 音符 ON [N]</button><button id="playFullscreen" class="text-button" aria-label="全画面切り替え">⛶ 全画面 [V]</button><span id="speedLabel">SPEED 1.0×</span></div>
+        <div class="play-toolbar"><span><span class="tiny-dot"></span><span id="playState">READY TO PLAY</span></span><button id="pauseButton" class="text-button" disabled>一時停止 <kbd>ESC</kbd></button><button id="playFullscreen" class="text-button" aria-label="全画面切り替え">⛶ 全画面 [V]</button><span id="speedLabel">SPEED 1.0×</span></div>
         <div class="keyboard-guide"><div><span class="hand-label">LEFT HAND</span><div id="leftKeys"></div></div><span class="keyboard-divider"></span><div><span class="hand-label">RIGHT HAND</span><div id="rightKeys"></div></div><button id="remapShortcut" aria-label="キー配置を変更">キー設定 ↗</button></div>
-        <p class="chart-caption"><span id="chartInfo"></span> · <a id="sheetLink" target="_blank" rel="noopener">参考楽譜 ↗</a><br>オリジナルの簡略メロディ譜面・全曲60秒 / 通信の遅れは設定で調整できます。</p>
+        <p class="chart-caption"><span id="chartInfo"></span> · <a id="sheetLink" target="_blank" rel="noopener">参考楽譜 ↗</a><br>オリジナルの簡略メロディ譜面・全曲フル尺 / 通信の遅れは設定で調整できます。</p>
       </section>
       <aside class="right-column">
         <section class="session-panel"><div class="panel-heading"><h2>YOUR SESSION</h2><span>LIVE</span></div><span class="metric-label">SCORE</span><strong class="live-score" id="score">0000000</strong><div class="session-metrics"><div><span>ACCURACY</span><strong id="accuracy">—<small>%</small></strong></div><div><span>MAX COMBO</span><strong id="maxCombo">0</strong></div></div><div class="best-row"><span>PERSONAL BEST</span><strong id="personalBest">—</strong></div></section>
@@ -53,10 +53,10 @@
     <section class="bottom-row"><div class="official-player"><div id="youtubePlayer"></div><div id="playerPlaceholder">OFFICIAL VIDEO<br><small>曲を始めると、ここで公式動画を再生します。</small></div></div><div class="bottom-copy"><span class="eyebrow">MUSIC CONNECTS US.</span><h2>その一打が、<br>次の自己ベストになる。</h2><p id="videoStatus">公式動画をそのまま再生。<br>原曲を楽しみながら、世界のスコアに挑戦。</p><a id="originalLink" href="https://www.youtube.com/watch?v=kbNdx0yqbZE" target="_blank" rel="noopener">作者の公式動画を見る ↗</a></div><div class="quick-tips"><span>QUICK GUIDE</span><p><kbd>↑</kbd><kbd>↓</kbd> 選曲</p><p><kbd>←</kbd><kbd>→</kbd> 難易度</p><p><kbd>ENTER</kbd> スタート / リトライ</p><p><kbd>ESC</kbd> 一時停止 / 戻る</p><p><kbd>R</kbd> リトライ　<kbd>O</kbd> 設定　<kbd>V</kbd> 全画面</p></div></section>
   </main>
   <footer><span>PULSE EIGHT <span class="footer-dim">/ A LITTLE RHYTHM, EVERY DAY.</span></span><span>8 LANES · KEYBOARD ONLY · MADE TO PLAY</span></footer>
-  <dialog id="settingsDialog"><div class="dialog-title"><div><span class="eyebrow">MAKE IT YOURS</span><h2>プレイ設定</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><label class="setting">ノーツ速度 <output id="speedOutput">1.0×</output><input id="speed" type="range" min="0.5" max="2" step="0.1" value="1"></label><label class="setting">音量 <output id="volumeOutput">70%</output><input id="volume" type="range" min="0" max="100" step="5" value="70"></label><label class="setting">判定タイミング <output id="offsetOutput">0 ms</output><input id="offset" type="range" min="-500" max="500" step="5" value="0"></label><p class="setting-help">＋で判定を遅らせます。ノーツと音がずれるときに調整してください。</p><div class="setting">キー配置 <button id="remapButton" class="small-button">8キーを変更</button><div id="mappingKeys" class="mapping-keys"></div></div><p id="remapHint" class="setting-help">変更ボタンを押して、左から順に使いたいキーを8つ押します。</p><label class="notation-setting"><input id="notationToggle" type="checkbox" checked> 五線の音符ガイドを表示 <kbd>N</kbd></label><button id="resetSettings" class="small-button">初期設定に戻す</button></dialog>
+  <dialog id="settingsDialog"><div class="dialog-title"><div><span class="eyebrow">MAKE IT YOURS</span><h2>プレイ設定</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><label class="setting">ノーツ速度 <output id="speedOutput">1.0×</output><input id="speed" type="range" min="0.5" max="2" step="0.1" value="1"></label><label class="setting">音量 <output id="volumeOutput">70%</output><input id="volume" type="range" min="0" max="100" step="5" value="70"></label><label class="setting">判定タイミング <output id="offsetOutput">0 ms</output><input id="offset" type="range" min="-500" max="500" step="5" value="0"></label><p class="setting-help">＋で判定を遅らせます。ノーツと音がずれるときに調整してください。</p><div class="setting">キー配置 <button id="remapButton" class="small-button">8キーを変更</button><div id="mappingKeys" class="mapping-keys"></div></div><p id="remapHint" class="setting-help">変更ボタンを押して、左から順に使いたいキーを8つ押します。</p><button id="resetSettings" class="small-button">初期設定に戻す</button></dialog>
   <dialog id="profileDialog"><div class="dialog-title"><div><span class="eyebrow">HELLO, PLAYER</span><h2>プレイヤー名</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><form id="profileForm"><label>ランキングに表示する名前<input id="nameInput" type="text" maxlength="16" required autocomplete="nickname" placeholder="PLAYER"></label><p class="setting-help">名前とプレイ結果は公開ランキングに表示されます。端末ごとにベストを保存します。</p><button class="coral-button" type="submit">名前を保存</button></form></dialog>
-  <dialog id="helpDialog"><div class="dialog-title"><div><span class="eyebrow">HOW TO PLAY</span><h2>音に合わせて、8つのキー。</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><p>上から落ちるノーツが下のラインに重なる瞬間に、対応するキーを押します。帯付きノーツは終端まで長押し、金色ノーツは同時押しです。途中で離すとMISSになります。</p><div class="help-step"><b>01</b><span>↑ ↓ で選曲、← → で難易度を選択</span></div><div class="help-step"><b>02</b><span>Enter で公式動画を再生してプレイ開始</span></div><div class="help-step"><b>03</b><span>A S D F / J K L ; で演奏、Esc で一時停止</span></div><p>60秒完走でクラウドのランキングへ登録できます。動画の読み込み中は譜面も止まります。動画側の操作やシークを行ったプレイはランキング対象外です。</p><p class="setting-help">収録曲：Billboard JAPAN「ニコニコ VOCALOID SONGS」2025年年間TOP10。公開採譜のフレーズを参考に、リズムと音域を遊びやすく簡略化した独自アレンジです。完全採譜ではありません。公式ゲーム・作者との提携はありません。原曲・映像の権利は各権利者に帰属します。</p><a href="https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16" target="_blank" rel="noopener">選曲元のランキング ↗</a></dialog>
+  <dialog id="helpDialog"><div class="dialog-title"><div><span class="eyebrow">HOW TO PLAY</span><h2>音に合わせて、8つのキー。</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><p>上から落ちるノーツが下のラインに重なる瞬間に、対応するキーを押します。帯付きノーツは終端まで長押し、白い横線でつながったノーツは同時押しです。途中で離すとMISSになります。</p><div class="help-step"><b>01</b><span>↑ ↓ で選曲、← → で難易度を選択</span></div><div class="help-step"><b>02</b><span>Enter で公式動画を再生してプレイ開始</span></div><div class="help-step"><b>03</b><span>A S D F / J K L ; で演奏、Esc で一時停止</span></div><p>1曲完走でクラウドのランキングへ登録できます。動画の読み込み中は譜面も止まります。動画側の操作やシークを行ったプレイはランキング対象外です。</p><p class="setting-help">収録曲：Billboard JAPAN「ニコニコ VOCALOID SONGS」2025年年間TOP10。公開採譜のフレーズを参考に、リズムと音域を遊びやすく簡略化した独自アレンジです。完全採譜ではありません。公式ゲーム・作者との提携はありません。原曲・映像の権利は各権利者に帰属します。</p><a href="https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16" target="_blank" rel="noopener">選曲元のランキング ↗</a></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./app.js?v=playback-wait-1"></script>
+  <script type="module" src="./app.js?v=white-guides-1"></script>
 </body>
 </html>
