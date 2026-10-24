@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,customChart,validateCustomNotes,isFullCombo,scoreChartReplay} from '../engine.mjs';
 function perfectEvents(notes){return notes.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);}
 test('all tracks and difficulties support perfect and empty replays',()=>{
-  assert.equal(SONGS.length,20);
+  assert.equal(SONGS.length,25);
   for(const song of SONGS)for(let diff=0;diff<3;diff++){
     const chart=makeChart(song,diff),manual=chart.filter(n=>!n.assist);
     assert.ok(manual.length<=4096,`${song.id}/${diff}: standard leaderboard limit`);
@@ -27,6 +28,12 @@ test('judgment boundaries and combo resets',()=>{
   assert.equal(judgment(.045),'perfect');assert.equal(judgment(-.09),'great');assert.equal(judgment(.14),'good');assert.equal(judgment(.17),'bad');assert.equal(judgment(.171),null);
   const s=newStats();for(const r of ['perfect','great','bad','perfect','miss'])addResult(s,r);
   assert.equal(s.combo,0);assert.equal(s.maxCombo,2);assert.equal(summary(s,5).score,600000);
+});
+test('five Taiko songs use verified full soundtrack sources and different rhythm phrases',()=>{
+  const songs=SONGS.filter(s=>s.pack==='taiko'),sources=JSON.parse(fs.readFileSync(new URL('../track-sources.json',import.meta.url),'utf8'));assert.equal(songs.length,5);
+  for(const song of songs){const source=sources.find(s=>s.id===song.id);assert.ok(source);assert.equal(source.video,song.video);assert.equal(source.duration,song.duration);assert.equal(source.embeddable,true);assert.equal(source.status,'OK');assert.ok(song.duration>=120&&song.duration<180);
+    const chart=makeChart(song,1),times=[...new Set(chart.map(n=>n.t))],gaps=new Set(times.slice(1).map((t,i)=>Math.round((t-times[i])*1000)));assert.ok(gaps.size>=3,song.id+' phrase rhythms');
+  }
 });
 test('repeated presses cannot inflate score',()=>{
   const song=SONGS[0],notes=makeChart(song,1).filter(n=>!n.assist),replay=perfectEvents(notes);

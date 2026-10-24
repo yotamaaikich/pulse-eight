@@ -1,6 +1,6 @@
 # PULSE EIGHT
 
-ボカロ・まどマギ・osu!定番の20曲を、白鍵8つで演奏するブラウザ音ゲー。
+ボカロ・まどマギ・osu!定番・太鼓の達人収録曲の25曲を、白鍵8つで演奏するブラウザ音ゲー。
 
 **プレイ： https://yotamaaikich.github.io/pulse-eight/**
 
@@ -29,7 +29,7 @@
 - Escで一時停止したまま選曲・難易度変更ができます。左右の選択ボタン、矢印キー、または一時停止画面の「曲・難易度を変更」を使用します。「今のプレイがリセットされます」の確認で確定するとスコア・コンボ・進行時間をリセットします。キャンセルではそのまま再開できます。全画面でも変更ダイアログを使用できます。
 - 全画面は譜面エリアだけを表示し、スコア・現在のコンボ・達成率も譜面内に表示します。右上の戻るボタンまたはVで解除できます。
 - 白鍵は手動、黒鍵は自動の補助。黒鍵には文字ラベルを表示せず、得点にも含めません。
-- 全曲フル尺（2:03〜5:50）。公式YouTubeプレイヤーの再生位置と同期し、バッファリング・一時停止中は譜面も止まります。
+- 全曲フル尺（2:01〜5:50）。公式YouTubeプレイヤーの再生位置と同期し、バッファリング・一時停止中は譜面も止まります。
 - 判定：PERFECT ±45ms / GREAT ±90ms / GOOD ±140ms / BAD ±170ms。
 - スコアは100万点満点。端末の自己ベストと、曲・難易度・譜面バージョンごとの世界TOP10。
 - ノーツ速度、動画音量、鍵盤音量、判定オフセット、キー配置を端末に保存。動画は初期50%、鍵盤は初期30%。以前の動画音量は初回のみ約70%へ下げ、0%は維持します。鍵盤音はWeb Audioで合成した柔らかい音で、読み込み・一時停止中には鳴りません。
@@ -81,6 +81,20 @@
 
 追加曲は、曲調・テンポをもとに強弱や休符、左右のフレーズを変えた独自の簡略リズム譜面です。正確な主旋律の全曲採譜や、osu!の既存譜面の変換ではありません。EASY / NORMAL / HARDの3段階、フル尺、長押し・同時押し・HARD限定フリックに対応します。「君の銀の庭」の編集グリッドは3拍子です。選曲欄で「ボカロ」「まどマギ」「osu!」を絞り込めます。
 
+### 太鼓の達人セレクション（5曲）
+
+公式サウンドトラックで配信されている5曲を追加し、合計25曲になりました。選曲欄の「太鼓」で絞り込めます。全曲とも公式配信（太鼓の達人 / Bandai Namco Game Music）のYouTube埋め込みを使用し、2026-10-25にフル音源の長さ・再生・埋め込み可否を確認しました。
+
+| 曲 | 主なクレジット | フル音源の長さ | 出典 |
+| --- | --- | --- | --- |
+| きたさいたま2000 | LindaAI-CUE | 2:01 | [公式サントラ](https://www.youtube.com/watch?v=TABWSPDMXaE) |
+| まださいたま2000 | LindaAI-CUE | 2:09 | [公式サントラ](https://www.youtube.com/watch?v=j4LWHsmAufw) |
+| 幽玄ノ乱 | 世阿弥 | 2:06 | [公式サントラ](https://www.youtube.com/watch?v=0xOwiA2gCtw) |
+| ドンカマ2000 | LindaAI-CUE | 2:13 | [公式サントラ](https://www.youtube.com/watch?v=LEoxASk_V2g) |
+| エンジェル ドリーム | 歌：たかみつようこ / 作曲：岡部啓一 | 2:26 | [公式サントラ](https://www.youtube.com/watch?v=qcfupB_h59M) |
+
+譜面はフル尺・EASY / NORMAL / HARDの8鍵向けオリジナル簡略リズムアレンジです。左右の掛け合い、同時押し、長押しとHARD限定フリックを使います。原作のドン・カッ譜面やスクロールギミックを移植したものではなく、「ドンカマ2000」は120 BPMを基準にした簡略アレンジです。既存20曲の譜面・ランキングバージョンは変更しません。
+
 ## ローカル起動
 
 Node.jsがあれば、追加パッケージは不要です。
@@ -95,7 +109,7 @@ node dev.mjs
 
 ビルド不要のHTML / CSS / JavaScript。GitHub Pagesは`main`ブランチのルートを配信します。`engine.mjs`はブラウザとサーバーで共有する譜面・判定処理、`geometry.mjs`はレーンとノーツで共有する遠近投影です。`npm test`で判定・長押し・同時押し・投影・再生待機・カスタム譜面を検証できます。
 
-オンライン機能はSupabase Edge Function `pulse-keys`と専用テーブルで保存します。初期構造は`cloud/schema.sql`、譜面公開の追加構造は`cloud/community.sql`です。`pulse_keys_charts`は公開譜面、`pulse_keys_chart_scores`は譜面ごとの記録、`pulse_keys_runs`は所有者付きプレイ情報、`pulse_keys_scores`は標準譜面の記録です。Edge Functionは`cloud/index.ts`をエントリーポイントとし、同じ配置の`cloud/service.mjs`とルートの`engine.mjs`と`expansion.mjs`を含めてデプロイします。長曲のコンボ上限拡張は`cloud/expanded-tracks.sql`です。
+オンライン機能はSupabase Edge Function `pulse-keys`と専用テーブルで保存します。初期構造は`cloud/schema.sql`、譜面公開の追加構造は`cloud/community.sql`です。`pulse_keys_charts`は公開譜面、`pulse_keys_chart_scores`は譜面ごとの記録、`pulse_keys_runs`は所有者付きプレイ情報、`pulse_keys_scores`は標準譜面の記録です。Edge Functionは`cloud/index.ts`をエントリーポイントとし、同じ配置の`cloud/service.mjs`とルートの`engine.mjs`・`expansion.mjs`・`taiko.mjs`を含めてデプロイします。長曲のコンボ上限拡張は`cloud/expanded-tracks.sql`です。
 
 ブラウザに置くのは公開用キーだけです。テーブルはRLS有効、`anon` / `authenticated`に直接の読み書き権限はありません。公開APIが名前・スコアなどの表示項目のみ返します。端末ごとのランダムなトークンでプレイの所有を確認し、サーバーで入力履歴からスコアを再計算します。開始回数制限、完走時間確認、二重登録防止、自己ベストの原子的更新を行います。
 

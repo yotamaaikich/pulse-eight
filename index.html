@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f3ee">
-  <meta name="description" content="ボカロ・まどマギ・osu!定番20曲を8つのキーで。フル尺のキーボード音ゲー PULSE EIGHT。オンラインランキング対応。">
+  <meta name="description" content="ボカロ・まどマギ・osu!・太鼓収録曲の25曲を8つのキーで。フル尺のキーボード音ゲー PULSE EIGHT。オンラインランキング対応。">
   <title>PULSE EIGHT — 指先で、音をつかめ。</title>
-  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=twenty-tracks-1"><link rel="stylesheet" href="./creator.css?v=twenty-tracks-1">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=taiko-pack-1"><link rel="stylesheet" href="./creator.css?v=taiko-pack-1">
 </head>
 <body>
   <header class="topbar">
@@ -13,11 +13,11 @@
     <nav><span class="status-dot"></span><span id="cloudStatus">CONNECTING</span><button id="fullscreenButton" class="fullscreen-button" aria-label="全画面にする" aria-pressed="false">⛶ 全画面 <kbd>V</kbd></button><button id="helpButton" class="text-button">遊び方 <kbd>?</kbd></button><button id="settingsButton" class="icon-button" aria-label="設定">⚙</button></nav>
   </header>
   <main>
-    <section class="intro"><div><div class="eyebrow">8 KEYS. ONE FLOW.</div><h1>指先で、音をつかめ<span>。</span></h1><p>好きな曲を、8つのキーで。1曲まるごと、リズムを刻もう。</p></div><div class="intro-mark"><span>VOL.</span><strong>01</strong><span>VOCALOID / MADOKA / osu!</span></div></section>
+    <section class="intro"><div><div class="eyebrow">8 KEYS. ONE FLOW.</div><h1>指先で、音をつかめ<span>。</span></h1><p>好きな曲を、8つのキーで。1曲まるごと、リズムを刻もう。</p></div><div class="intro-mark"><span>VOL.</span><strong>01</strong><span>VOCALOID / MADOKA / osu! / TAIKO</span></div></section>
     <div class="workspace">
       <aside class="library">
-        <div class="panel-heading"><h2>SELECT TRACK</h2><span id="trackCount">20 TRACKS</span></div>
-        <div class="pack-filters" role="group" aria-label="曲のジャンル"><button data-pack="all" class="active" aria-pressed="true">すべて</button><button data-pack="vocaloid" aria-pressed="false">ボカロ</button><button data-pack="madoka" aria-pressed="false">まどマギ</button><button data-pack="osu" aria-pressed="false">osu!</button></div><div class="library-hint"><kbd>↑</kbd><kbd>↓</kbd> 選曲</div>
+        <div class="panel-heading"><h2>SELECT TRACK</h2><span id="trackCount">25 TRACKS</span></div>
+        <div class="pack-filters" role="group" aria-label="曲のジャンル"><button data-pack="all" class="active" aria-pressed="true">すべて</button><button data-pack="vocaloid" aria-pressed="false">ボカロ</button><button data-pack="madoka" aria-pressed="false">まどマギ</button><button data-pack="osu" aria-pressed="false">osu!</button><button data-pack="taiko" aria-pressed="false">太鼓</button></div><div class="library-hint"><kbd>↑</kbd><kbd>↓</kbd> 選曲</div>
         <div id="songs" class="song-list" role="group" aria-label="選曲"></div>
         <a class="source-link" href="https://github.com/yotamaaikich/pulse-eight#収録曲と参照" target="_blank" rel="noopener">収録曲・選曲元の情報 ↗</a>
       </aside>
@@ -57,7 +57,7 @@
   <footer><span>PULSE EIGHT <span class="footer-dim">/ A LITTLE RHYTHM, EVERY DAY.</span></span><span>8 LANES · KEYBOARD ONLY · MADE TO PLAY</span></footer>
   <dialog id="settingsDialog"><div class="dialog-title"><div><span class="eyebrow">MAKE IT YOURS</span><h2>プレイ設定</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><label class="setting">ノーツ速度 <output id="speedOutput">1.0×</output><input id="speed" type="range" min="0.5" max="2" step="0.1" value="1"></label><label class="setting">動画音量 <output id="volumeOutput">50%</output><input id="volume" type="range" min="0" max="100" step="5" value="50"></label><label class="setting">鍵盤の音量 <output id="pianoVolumeOutput">30%</output><input id="pianoVolume" type="range" min="0" max="100" step="5" value="30"></label><label class="setting">判定タイミング <output id="offsetOutput">0 ms</output><input id="offset" type="range" min="-500" max="500" step="5" value="0"></label><p class="setting-help">＋で判定を遅らせます。ノーツと音がずれるときに調整してください。</p><div class="setting">キー配置 <button id="remapButton" class="small-button">8キーを変更</button><div id="mappingKeys" class="mapping-keys"></div></div><p id="remapHint" class="setting-help">変更ボタンを押して、左から順に使いたいキーを8つ押します。</p><button id="resetSettings" class="small-button">初期設定に戻す</button></dialog>
   <dialog id="profileDialog"><div class="dialog-title"><div><span class="eyebrow">HELLO, PLAYER</span><h2>プレイヤー名</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><form id="profileForm"><label>ランキングに表示する名前<input id="nameInput" type="text" maxlength="16" required autocomplete="nickname" placeholder="PLAYER"></label><p class="setting-help">名前とプレイ結果は公開ランキングに表示されます。端末ごとにベストを保存します。</p><button class="coral-button" type="submit">名前を保存</button></form></dialog>
-  <dialog id="helpDialog"><div class="dialog-title"><div><span class="eyebrow">HOW TO PLAY</span><h2>音に合わせて、8つのキー。</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><p>上から落ちるノーツが下のラインに重なる瞬間に、対応するキーを押します。帯付きノーツは終端まで長押し、白い横線でつながったノーツは同時押しです。途中で離すとMISSになります。</p><p><b>HARD限定フリック：</b>「A↑Q」のノーツはAを押してから0.22秒以内にQ。左手はA→Q・S→W・D→E・F→R、右手はJ→U・K→I・L→O・;→Pです。先に上段を押しても成功にはなりません。HARD中はShift+Rでリトライ、Shift+Oで設定を開きます。</p><p>「譜面をつくる」でノーツを手動配置できます。フルコンボで完走した下書きだけを公開でき、「みんなの譜面」から遊べます。編集した内容には再度フルコンボが必要です。</p><div class="help-step"><b>01</b><span>↑ ↓ で選曲、← → で難易度を選択</span></div><div class="help-step"><b>02</b><span>Enter で公式動画を再生してプレイ開始</span></div><div class="help-step"><b>03</b><span>A S D F / J K L ; で演奏、Esc で一時停止。一時停止中も曲・難易度を変更できます。</span></div><p>1曲完走でクラウドのランキングへ登録できます。動画の読み込み中は譜面も止まります。動画側の操作やシークを行ったプレイはランキング対象外です。</p><p class="setting-help">収録曲：ボカロ10曲、まどマギ5曲、osu!の定番5曲。まどマギのClariS楽曲は公式セルフカバー版です。osu!系はRanked・Lovedなどの収録曲から選んだ定番セレクションで、最新人気順ではありません。譜面は曲調に合わせた独自の簡略アレンジで、osu!の既存譜面の移植ではありません。完全採譜ではありません。公式ゲーム・作者との提携はありません。原曲・映像の権利は各権利者に帰属します。</p><a href="https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16" target="_blank" rel="noopener">選曲元のランキング ↗</a></dialog>
+  <dialog id="helpDialog"><div class="dialog-title"><div><span class="eyebrow">HOW TO PLAY</span><h2>音に合わせて、8つのキー。</h2></div><button class="close-dialog" aria-label="閉じる">×</button></div><p>上から落ちるノーツが下のラインに重なる瞬間に、対応するキーを押します。帯付きノーツは終端まで長押し、白い横線でつながったノーツは同時押しです。途中で離すとMISSになります。</p><p><b>HARD限定フリック：</b>「A↑Q」のノーツはAを押してから0.22秒以内にQ。左手はA→Q・S→W・D→E・F→R、右手はJ→U・K→I・L→O・;→Pです。先に上段を押しても成功にはなりません。HARD中はShift+Rでリトライ、Shift+Oで設定を開きます。</p><p>「譜面をつくる」でノーツを手動配置できます。フルコンボで完走した下書きだけを公開でき、「みんなの譜面」から遊べます。編集した内容には再度フルコンボが必要です。</p><div class="help-step"><b>01</b><span>↑ ↓ で選曲、← → で難易度を選択</span></div><div class="help-step"><b>02</b><span>Enter で公式動画を再生してプレイ開始</span></div><div class="help-step"><b>03</b><span>A S D F / J K L ; で演奏、Esc で一時停止。一時停止中も曲・難易度を変更できます。</span></div><p>1曲完走でクラウドのランキングへ登録できます。動画の読み込み中は譜面も止まります。動画側の操作やシークを行ったプレイはランキング対象外です。</p><p class="setting-help">収録曲：ボカロ10曲、まどマギ5曲、osu!の定番5曲、太鼓の達人の収録曲5曲。まどマギのClariS楽曲は公式セルフカバー版です。osu!系はRanked・Lovedなどの収録曲から選んだ定番セレクションで、最新人気順ではありません。譜面は曲調に合わせた独自の簡略アレンジで、osu!や太鼓の達人の既存譜面の移植ではありません。太鼓枠は公式サウンドトラックのフル音源で、8鍵向けの簡略リズム譜面です。完全採譜ではありません。公式ゲーム・作者との提携はありません。原曲・映像の権利は各権利者に帰属します。</p><a href="https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16" target="_blank" rel="noopener">選曲元のランキング ↗</a></dialog>
   <dialog id="creatorDialog" class="creator-dialog">
     <div class="dialog-title"><div><span class="eyebrow">CHART STUDIO</span><h2>自分の譜面をつくる</h2><p id="editorSong"></p></div><button class="close-dialog" aria-label="エディタを閉じる">×</button></div>
     <label class="editor-name">譜面名<input id="editorName" type="text" maxlength="32" placeholder="譜面名を入力"></label>
@@ -70,6 +70,6 @@
   </dialog>
   <dialog id="communityDialog" class="community-dialog"><div class="dialog-title"><div><span class="eyebrow">COMMUNITY CHARTS</span><h2>みんなの譜面</h2><p id="communitySong"></p></div><button class="close-dialog" aria-label="譜面一覧を閉じる">×</button></div><p class="publish-rule">作成者がフルコンボで完走した譜面だけを公開しています。</p><div id="communityList" class="community-list" role="status"></div><button id="communityRefresh" class="small-button">再読み込み</button></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./app.js?v=twenty-tracks-1"></script>
+  <script type="module" src="./app.js?v=taiko-pack-1"></script>
 </body>
 </html>

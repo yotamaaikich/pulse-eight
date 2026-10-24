@@ -98,5 +98,55 @@
     "status": "OK",
     "source": "https://www.youtube.com/watch?v=QsuAKlNe_rI",
     "checked": "2026-10-25"
+  },
+  {
+    "id": "kitasaitama",
+    "video": "TABWSPDMXaE",
+    "duration": 121,
+    "publisher": "Taiko no Tatsujin - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=TABWSPDMXaE",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "madasaitama",
+    "video": "j4LWHsmAufw",
+    "duration": 129,
+    "publisher": "Taiko no Tatsujin - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=j4LWHsmAufw",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "yuugen",
+    "video": "0xOwiA2gCtw",
+    "duration": 126,
+    "publisher": "Taiko no Tatsujin - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=0xOwiA2gCtw",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "donkama",
+    "video": "LEoxASk_V2g",
+    "duration": 133,
+    "publisher": "Taiko no Tatsujin - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=LEoxASk_V2g",
+    "checked": "2026-10-25"
+  },
+  {
+    "id": "angeldream",
+    "video": "qcfupB_h59M",
+    "duration": 146,
+    "publisher": "Taiko no Tatsujin - Topic",
+    "embeddable": true,
+    "status": "OK",
+    "source": "https://www.youtube.com/watch?v=qcfupB_h59M",
+    "checked": "2026-10-25"
   }
 ]

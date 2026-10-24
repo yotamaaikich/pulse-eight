@@ -1,4 +1,4 @@
-import {validateCustomNotes,draftKey} from './engine.mjs?v=twenty-tracks-1';
+import {validateCustomNotes,draftKey} from './engine.mjs?v=taiko-pack-1';
 const $=id=>document.getElementById(id);
 const keyLabel=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]||code.replace(/^Key|^Digit/,''));
 export function createCreator({onPlay,onEdit}){
