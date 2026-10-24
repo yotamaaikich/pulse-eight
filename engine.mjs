@@ -1,6 +1,8 @@
-export const CHART_VERSION = 'piano8-full-v3';
+export const CHART_VERSION = 'piano8-full-v4';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
+export const FLICK_WINDOW = 0.22;
+export const FLICK_KEYS = ['KeyQ','KeyW','KeyE','KeyR','KeyU','KeyI','KeyO','KeyP'];
 export const DIFFICULTIES = ['EASY', 'NORMAL', 'HARD'];
 export const SONGS = [
   {id:'monitoring',rank:1,title:'モニタリング',artist:'DECO*27',vocal:'初音ミク',video:'kbNdx0yqbZE',duration:181,bpm:132,color:'#f1aac4',offset:0.12},
@@ -67,8 +69,9 @@ export function makeChart(song, difficulty) {
       if(t<busy[lane]+.08)return null;
       const hold=index% (difficulty===0?24:difficulty===1?16:12)===0;
       const end=hold?Math.round(Math.min(song.duration-1.2,t+beat*(difficulty===0?2:4))*1000)/1000:undefined;
-      const note={t,lane,degree:lane,assist:false,...(end&&end>t+.25?{end}:{})};
-      if(note.end)busy[lane]=note.end;
+      const flick=difficulty===2&&!hold&&index%12===8;
+      const note={t,lane,degree:lane,assist:false,...(end&&end>t+.25?{end}:{}),...(flick?{flick:true}:{})};
+      if(note.end)busy[lane]=note.end;else if(flick)busy[lane]=t+WINDOW+FLICK_WINDOW;
       notes.push(note);return note;
     }
     return null;
@@ -107,13 +110,14 @@ export function summary(stats, count) {
     rank:accuracy>=99?'SS':accuracy>=95?'S':accuracy>=90?'A':accuracy>=80?'B':accuracy>=65?'C':'D'};
 }
 export class RhythmSession {
-  constructor(chart,duration=null){this.duration=duration??Math.max(0,...chart.map(n=>n.end??n.t))+.2;this.notes=chart.map(n=>({...n,done:false,started:false}));this.stats=newStats();this.down=new Set();this.holds=new Map();}
-  complete(note,result,delta=0){if(note.done)return null;note.done=true;this.holds.delete(note.lane);addResult(this.stats,result);return {kind:'judge',note,result,delta};}
+  constructor(chart,duration=null){this.duration=duration??Math.max(0,...chart.map(n=>n.end??n.t))+.5;this.notes=chart.map(n=>({...n,done:false,started:false}));this.stats=newStats();this.down=new Set();this.upperDown=new Set();this.holds=new Map();this.flicks=new Map();}
+  complete(note,result,delta=0){if(note.done)return null;note.done=true;this.holds.delete(note.lane);this.flicks.delete(note.lane);addResult(this.stats,result);return {kind:'judge',note,result,delta};}
   advance(t){
     const due=[];
     for(const n of this.notes){
       if(n.done)continue;
       if(n.assist&&n.t<=t)due.push({at:n.t,n,type:'assist'});
+      else if(n.started&&n.flick&&n.deadline<t)due.push({at:n.deadline,n,type:'miss'});
       else if(n.started&&n.end<=t)due.push({at:n.end,n,type:'tail'});
       else if(!n.assist&&!n.started&&n.t+WINDOW<t)due.push({at:n.t+WINDOW,n,type:'miss'});
     }
@@ -127,7 +131,8 @@ export class RhythmSession {
     const n=this.notes.find(n=>!n.done&&!n.started&&!n.assist&&n.lane===lane&&Math.abs(n.t-t)<=WINDOW);
     if(!n)return notifications;
     const result=judgment(t-n.t),delta=t-n.t;
-    if(n.end){n.started=true;n.headJudge=result;n.headDelta=delta;this.holds.set(lane,n);notifications.push({kind:'holdstart',note:n,result,delta});}
+    if(n.flick){n.started=true;n.headJudge=result;n.headDelta=delta;n.headAt=t;n.deadline=t+FLICK_WINDOW;this.flicks.set(lane,n);notifications.push({kind:'flickstart',note:n,result,delta});}
+    else if(n.end){n.started=true;n.headJudge=result;n.headDelta=delta;this.holds.set(lane,n);notifications.push({kind:'holdstart',note:n,result,delta});}
     else notifications.push(this.complete(n,result,delta));
     return notifications.filter(Boolean);
   }
@@ -136,31 +141,41 @@ export class RhythmSession {
     if(n)notifications.push(this.complete(n,n.end-t<=HOLD_GRACE+1e-9?n.headJudge:'miss',n.headDelta));
     return notifications.filter(Boolean);
   }
+  pressFlick(t,lane){
+    const notifications=this.advance(t);if(this.upperDown.has(lane))return notifications;this.upperDown.add(lane);
+    const n=this.flicks.get(lane);
+    if(n&&t>=n.headAt&&t<=n.deadline)notifications.push(this.complete(n,n.headJudge,n.headDelta));
+    return notifications.filter(Boolean);
+  }
+  releaseFlick(t,lane){const notifications=this.advance(t);this.upperDown.delete(lane);return notifications;}
   finish(){const notifications=this.advance(this.duration+.2);for(const n of this.notes)if(!n.done&&!n.assist)notifications.push(this.complete(n,'miss'));return notifications.filter(Boolean);}
 }
 export function scoreChartReplay(chart,duration,events){
   const session=new RhythmSession(chart,duration);
-  for(const [ms,lane,action=1]of events){if(action===1)session.press(ms/1000,lane);else session.release(ms/1000,lane);}
+  for(const [ms,lane,action=1]of events){if(action===1)session.press(ms/1000,lane);else if(action===2)session.pressFlick(ms/1000,lane);else if(action===3)session.releaseFlick(ms/1000,lane);else session.release(ms/1000,lane);}
   session.finish();return {...summary(session.stats,session.notes.filter(n=>!n.assist).length),stats:session.stats};
 }
 export function scoreReplay(song,difficulty,events){return scoreChartReplay(makeChart(song,difficulty),song.duration,events);}
 export function isFullCombo(stats,count){return count>0&&stats.miss===0&&stats.bad===0&&stats.maxCombo===count&&stats.perfect+stats.great+stats.good===count;}
 
-// Compact custom note format: [time in ms, lane 0–7, hold length in ms (0 = tap)].
-export function validateCustomNotes(song,raw){
+// [time in ms, lane 0–7, hold length in ms, optional 1 = HARD flick].
+export function validateCustomNotes(song,raw,difficulty=2){
+  if(!Number.isInteger(difficulty)||difficulty<0||difficulty>2)throw Error('難易度が正しくありません。');
   if(!Array.isArray(raw)||raw.length<1||raw.length>4096)throw Error('ノーツは1〜4096個で作成してください。');
   const notes=raw.map(note=>{
-    if(!Array.isArray(note)||note.length!==3||!note.every(Number.isInteger))throw Error('ノーツの形式が正しくありません。');
-    const [t,lane,length]=note;
+    if(!Array.isArray(note)||![3,4].includes(note.length)||!note.every(Number.isInteger))throw Error('ノーツの形式が正しくありません。');
+    const [t,lane,length,flick=0]=note;
+    if((note.length===4&&flick!==1)||(flick&&(difficulty!==2||length!==0)))throw Error('フリックはHARDの単押しだけに配置できます。');
     if(t<1000||t>song.duration*1000-170||lane<0||lane>7||length<0||(length>0&&length<100)||t+length>song.duration*1000-100)throw Error('ノーツは冒頭1秒より後、曲の終了前に配置してください。');
-    return [t,lane,length];
+    if(flick&&t+(WINDOW+FLICK_WINDOW)*1000>song.duration*1000-100)throw Error('フリックは曲の終了より前に配置してください。');
+    return flick?[t,lane,length,1]:[t,lane,length];
   }).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
   const ends=Array(8).fill(-Infinity);
-  for(const [t,lane,length]of notes){if(t<ends[lane]+40)throw Error('同じレーンのノーツや長押しが重なっています。');ends[lane]=t+length;}
+  for(const [t,lane,length,flick]of notes){if(t<ends[lane]+40)throw Error('同じレーンのノーツや長押しが重なっています。');ends[lane]=t+(flick?(WINDOW+FLICK_WINDOW)*1000:length);}
   return notes;
 }
-export function customChart(song,raw){
-  const triples=validateCustomNotes(song,raw),counts=new Map();for(const [t]of triples)counts.set(t,(counts.get(t)||0)+1);
-  return triples.map(([ms,lane,length])=>({t:ms/1000,lane,degree:lane,assist:false,chord:counts.get(ms)>1,...(length?{end:(ms+length)/1000}:{})}));
+export function customChart(song,raw,difficulty=2){
+  const triples=validateCustomNotes(song,raw,difficulty),counts=new Map();for(const [t]of triples)counts.set(t,(counts.get(t)||0)+1);
+  return triples.map(([ms,lane,length,flick])=>({t:ms/1000,lane,degree:lane,assist:false,chord:counts.get(ms)>1,...(length?{end:(ms+length)/1000}:{}),...(flick?{flick:true}:{})}));
 }
 export function draftKey(raw){let hash=2166136261;for(const char of JSON.stringify(raw)){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return (hash>>>0).toString(16);}

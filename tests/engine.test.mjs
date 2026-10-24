@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession} from '../engine.mjs';
-function perfectEvents(notes){return notes.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0]]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);}
+import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,customChart,validateCustomNotes,isFullCombo,scoreChartReplay} from '../engine.mjs';
+function perfectEvents(notes){return notes.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);}
 test('all tracks and difficulties support perfect and empty replays',()=>{
   assert.equal(SONGS.length,10);
   for(const song of SONGS)for(let diff=0;diff<3;diff++){
@@ -40,6 +40,24 @@ test('hold release grace is bounded at 120 milliseconds',()=>{
 });
 test('frame-by-frame live scoring matches event replay on server',()=>{
   const song=SONGS[0],chart=makeChart(song,2),manual=chart.filter(n=>!n.assist),events=perfectEvents(manual),live=new RhythmSession(chart);let clock=0;
-  for(const [ms,lane,action]of events){while(clock<ms/1000){live.advance(clock);clock+=.007;}if(action)live.press(ms/1000,lane);else live.release(ms/1000,lane);}
+  for(const [ms,lane,action]of events){while(clock<ms/1000){live.advance(clock);clock+=.007;}if(action===1)live.press(ms/1000,lane);else if(action===2)live.pressFlick(ms/1000,lane);else if(action===3)live.releaseFlick(ms/1000,lane);else live.release(ms/1000,lane);}
   live.finish();const remote=scoreReplay(song,2,events);assert.deepEqual(live.stats,remote.stats);
+});
+test('flicks exist only on HARD and require the base key followed by a fresh upper key',()=>{
+  for(const song of SONGS){assert.ok(makeChart(song,2).some(n=>n.flick),song.id);for(const diff of [0,1])assert.ok(!makeChart(song,diff).some(n=>n.flick));}
+  const chart=[{t:1,lane:0,flick:true}],good=new RhythmSession(chart);good.press(1,0);assert.equal(good.stats.perfect,0);good.release(1.025,0);good.pressFlick(1.15,0);assert.equal(good.stats.perfect,1);
+  const early=new RhythmSession(chart);early.pressFlick(.8,0);early.press(1,0);early.pressFlick(1.1,0);early.advance(1.4);assert.equal(early.stats.miss,1);
+  const late=new RhythmSession(chart);late.press(1,0);late.pressFlick(1.221,0);assert.equal(late.stats.miss,1);
+  const fresh=new RhythmSession(chart);fresh.pressFlick(.8,0);fresh.press(1,0);fresh.releaseFlick(1.05,0);fresh.pressFlick(1.1,0);assert.equal(fresh.stats.perfect,1);
+});
+test('custom charts validate bounds, overlapping holds, and HARD-only flicks',()=>{
+  const song=SONGS[0];assert.throws(()=>validateCustomNotes(song,[]));assert.throws(()=>validateCustomNotes(song,[[999,0,0]]));assert.throws(()=>validateCustomNotes(song,[[2000,8,0]]));assert.throws(()=>validateCustomNotes(song,[[2000,0,50]]));
+  assert.throws(()=>validateCustomNotes(song,[[2000,0,1000],[2500,0,0]]));assert.throws(()=>validateCustomNotes(song,[[2000,0,0,1]],1));assert.throws(()=>validateCustomNotes(song,[[2000,0,500,1]],2));assert.throws(()=>validateCustomNotes(song,[[2000,0,0,1],[2300,0,0]],2));
+  const raw=[[3000,4,0],[2000,0,500],[3000,0,0],[4000,7,0,1]],copy=structuredClone(raw),chart=customChart(song,raw,2);assert.deepEqual(raw,copy);assert.equal(chart.filter(n=>n.chord).length,2);assert.equal(chart.at(-1).flick,true);
+  const result=scoreChartReplay(chart,song.duration,perfectEvents(chart));assert.equal(isFullCombo(result.stats,chart.length),true);
+  const fail=scoreChartReplay(chart,song.duration,[]);assert.equal(isFullCombo(fail.stats,chart.length),false);
+});
+test('full combo accepts every successful note and rejects BAD, missed tails, or an empty chart',()=>{
+  const s=newStats();for(const r of ['perfect','great','good'])addResult(s,r);assert.equal(isFullCombo(s,3),true);addResult(s,'bad');assert.equal(isFullCombo(s,4),false);assert.equal(isFullCombo(newStats(),0),false);
+  const chart=customChart(SONGS[0],[[2000,0,1000]],1),result=scoreChartReplay(chart,SONGS[0].duration,[[2000,0,1],[2200,0,0]]);assert.equal(isFullCombo(result.stats,1),false);
 });
