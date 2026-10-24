@@ -1,6 +1,7 @@
 # PULSE EIGHT
 
 ボカロ・まどマギ・osu!定番・太鼓の達人収録曲の25曲を、白鍵8つで演奏するブラウザ音ゲー。
+※現在ある譜面の創作にはcodexが使われています。
 
 **プレイ： https://yotamaaikich.github.io/pulse-eight/**
 
