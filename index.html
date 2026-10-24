@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#f4f3ee">
   <meta name="description" content="ボカロ10曲を8つのキーで。60秒のキーボード音ゲー PULSE EIGHT。オンラインランキング対応。">
   <title>PULSE EIGHT — 指先で、音をつかめ。</title>
-  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=ads-notice-1">
 </head>
 <body>
   <header class="topbar">
@@ -24,6 +24,7 @@
       <section class="play-column" aria-label="ゲーム">
         <div class="track-heading"><div class="mini-art" id="miniArt">01</div><div class="track-title"><span id="trackArtist">DECO*27 / 初音ミク</span><h2 id="trackTitle">モニタリング</h2></div><span class="bpm"><strong id="bpm">132</strong> BPM</span></div>
         <div class="difficulty-bar"><div id="difficulties" role="group" aria-label="難易度"><button data-difficulty="0">EASY <span>LV.3</span></button><button data-difficulty="1" class="active">NORMAL <span>LV.7</span></button><button data-difficulty="2">HARD <span>LV.11</span></button></div><span><kbd>←</kbd><kbd>→</kbd></span></div>
+        <p class="music-notice"><strong>YouTube広告について</strong>音楽はYouTubeの公式動画で再生するため、再生前・再生中に広告が入る場合があります。スキップ可能になったら、動画内の「スキップ」を押してください。</p>
         <div class="stage" id="stage">
           <div class="stage-top"><span><i></i> 8-KEY SESSION</span><span id="timer">00:00 / 01:00</span></div>
           <div class="chart-hud" aria-label="プレイ中の成績">
@@ -31,6 +32,7 @@
             <div><span>COMBO</span><strong id="stageCombo">0</strong></div>
             <div><span>ACCURACY</span><strong><span id="stageAccuracy">—</span><small>%</small></strong></div>
           </div>
+          <p class="chart-ad-notice">音楽はYouTubeの公式動画で再生するため、広告が入る場合があります。<br>広告の操作は <kbd>V</kbd> で全画面を解除し、動画内の「スキップ」から。</p>
           <div class="chart-fullscreen-controls"><button id="chartPause">Ⅱ <kbd>ESC</kbd></button><button id="exitChartFullscreen">⛶ 戻る <kbd>V</kbd></button></div>
           <canvas id="game" tabindex="-1" aria-label="8レーンのノーツ。A S D F J K L セミコロンで演奏"></canvas>
           <div class="stage-message" id="stageMessage"><span class="pill">60 SECOND CHALLENGE</span><h2>FIND YOUR<br><em>PULSE.</em></h2><p>ラインに重なる瞬間、キーを叩こう。</p><button class="start-button" id="startButton"><span>PLAY TRACK</span><kbd>ENTER ↵</kbd></button><small id="startHint">音声は公式YouTubeプレイヤーから再生</small></div>
