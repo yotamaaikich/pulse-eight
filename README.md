@@ -1,6 +1,6 @@
 # PULSE EIGHT
 
-ボカロ・まどマギ・osu!定番・太鼓の達人収録曲の25曲を、白鍵8つで演奏するブラウザ音ゲー。
+ボカロ・まどマギ・osu!定番・太鼓の達人収録曲の35曲を、白鍵8つで演奏するブラウザ音ゲー。
 ※現在ある譜面の創作にはcodexが使われています。
 
 **プレイ： https://yotamaaikich.github.io/pulse-eight/**
@@ -45,7 +45,7 @@
 
 ## 収録曲と参照
 
-ボカロ10曲の選曲元：[Billboard JAPAN「ニコニコ VOCALOID SONGS」2025年年間TOP10](https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16)。最新週間チャートではありません。
+当初のボカロ10曲の選曲元：[Billboard JAPAN「ニコニコ VOCALOID SONGS」2025年年間TOP10](https://www.hanshin.co.jp/press/docs/20251205_billboard%20japan2025.pdf#page=16)。最新週間チャートではありません。
 
 | 曲 | 作者 | 主な参照 |
 | --- | --- | --- |
@@ -96,6 +96,27 @@
 
 譜面はフル尺・EASY / NORMAL / HARDの8鍵向けオリジナル簡略リズムアレンジです。左右の掛け合い、同時押し、長押しとHARD限定フリックを使います。原作のドン・カッ譜面やスクロールギミックを移植したものではなく、「ドンカマ2000」は120 BPMを基準にした簡略アレンジです。既存20曲の譜面・ランキングバージョンは変更しません。
 
+### ボカロ追加曲（プロセカ高難度セレクション・10曲）
+
+既存の「ボカロ」に10曲を追加し、ボカロ20曲・全体35曲にしました。ジャンルの別枠は増やしません。プロセカのULTIMATE採用曲や高難度の定番から選んでおり、最新の難易度順トップ10という意味ではありません。
+
+| 曲 | 作者 | 公式動画の長さ | 公式音源 |
+| --- | --- | --- | --- |
+| 初音ミクの消失 | cosMo＠暴走P | 4:50 | [公式リメイク版](https://www.youtube.com/watch?v=VWVtIg5cdDU) |
+| 初音ミクの激唱 | cosMo＠暴走P | 5:01 | [2018Remake](https://www.youtube.com/watch?v=MFEaIgMkR_0) |
+| マシンガンポエムドール | cosMo＠暴走P | 2:24 | [公式動画](https://www.youtube.com/watch?v=UgZFpO_Y6qo) |
+| 人生 | gcmstyle（アンメルツP） | 2:29 | [6人歌唱の公式動画](https://www.youtube.com/watch?v=wpVa0cnEeIw) |
+| ヤミナベ!!!! | cosMo＠暴走P | 2:15 | [公式動画](https://www.youtube.com/watch?v=NFT6GMPeYJI) |
+| What's up? Pop! | Capchii | 2:45 | [公式動画](https://www.youtube.com/watch?v=pS31mdpYuh4) |
+| おぎゃりないざー | Ponchi♪ | 2:10 | [公式動画](https://www.youtube.com/watch?v=1AliuyQ3II4) |
+| ダイジョブですか？ | cosMo＠暴走P | 2:36 | [公式動画](https://www.youtube.com/watch?v=2AD1jTs516E) |
+| 腐れ外道とチョコレゐト | ピノキオピー | 3:21 | [公式動画](https://www.youtube.com/watch?v=sHnvEsNU1X0) |
+| ÅMARA(大未来電脳) | sasakure.UK | 3:17 | [公式動画](https://www.youtube.com/watch?v=p6snD1650ck) |
+
+全曲とも作者の公式動画を全尺で再生し、独自の8鍵向け簡略リズム譜面をEASY / NORMAL / HARDで用意しています。HARDは連続した左右交互打ち、同時押し、長押し中の別キー入力とフリックを組み合わせます。「ヤミナベ!!!!」はおおまかなテンポ区間を分けて配置し、他の変速曲は基準BPMを用いた簡略アレンジです。プロセカの既存譜面や難易度値の移植、正確な全曲採譜ではありません。消失・激唱はゲーム内の短縮版とは異なる公式リメイク版です。
+
+選曲参考：[公式1周年告知（マシンガンポエムドール）](https://pjsekai.sega.jp/1st/index.html)、[作者による「人生」ULTIMATE採用報告](https://www.gcmstyle.com/winning-contest-jinsei/)、[公式大会規約（ÅMARA MASTER Lv34）](https://pjsekai.sega.jp/championship2024autumn/pjsekai_Championship2024Autumn_regulation.pdf)、[収録曲・難易度一覧](https://appmedia.jp/pjsekai/5298052)。一覧は更新停止のため最新順位の根拠には使用していません。全10曲の動画長と埋め込み可否は2026-10-25に確認しました。
+
 ## ローカル起動
 
 Node.jsがあれば、追加パッケージは不要です。
@@ -110,7 +131,7 @@ node dev.mjs
 
 ビルド不要のHTML / CSS / JavaScript。GitHub Pagesは`main`ブランチのルートを配信します。`engine.mjs`はブラウザとサーバーで共有する譜面・判定処理、`geometry.mjs`はレーンとノーツで共有する遠近投影です。`npm test`で判定・長押し・同時押し・投影・再生待機・カスタム譜面を検証できます。
 
-オンライン機能はSupabase Edge Function `pulse-keys`と専用テーブルで保存します。初期構造は`cloud/schema.sql`、譜面公開の追加構造は`cloud/community.sql`です。`pulse_keys_charts`は公開譜面、`pulse_keys_chart_scores`は譜面ごとの記録、`pulse_keys_runs`は所有者付きプレイ情報、`pulse_keys_scores`は標準譜面の記録です。Edge Functionは`cloud/index.ts`をエントリーポイントとし、同じ配置の`cloud/service.mjs`とルートの`engine.mjs`・`expansion.mjs`・`taiko.mjs`を含めてデプロイします。長曲のコンボ上限拡張は`cloud/expanded-tracks.sql`です。
+オンライン機能はSupabase Edge Function `pulse-keys`と専用テーブルで保存します。初期構造は`cloud/schema.sql`、譜面公開の追加構造は`cloud/community.sql`です。`pulse_keys_charts`は公開譜面、`pulse_keys_chart_scores`は譜面ごとの記録、`pulse_keys_runs`は所有者付きプレイ情報、`pulse_keys_scores`は標準譜面の記録です。Edge Functionは`cloud/index.ts`をエントリーポイントとし、同じ配置の`cloud/service.mjs`とルートの`engine.mjs`・`expansion.mjs`・`taiko.mjs`・`proseka.mjs`を含めてデプロイします。長曲のコンボ上限拡張は`cloud/expanded-tracks.sql`です。
 
 ブラウザに置くのは公開用キーだけです。テーブルはRLS有効、`anon` / `authenticated`に直接の読み書き権限はありません。公開APIが名前・スコアなどの表示項目のみ返します。端末ごとのランダムなトークンでプレイの所有を確認し、サーバーで入力履歴からスコアを再計算します。開始回数制限、完走時間確認、二重登録防止、自己ベストの原子的更新を行います。
 

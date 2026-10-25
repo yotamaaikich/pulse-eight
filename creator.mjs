@@ -1,4 +1,4 @@
-import {validateCustomNotes,draftKey} from './engine.mjs?v=taiko-pack-1';
+import {validateCustomNotes,draftKey} from './engine.mjs?v=vocaloid-20-1';
 const $=id=>document.getElementById(id);
 const keyLabel=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]||code.replace(/^Key|^Digit/,''));
 export function createCreator({onPlay,onEdit}){

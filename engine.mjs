@@ -1,5 +1,6 @@
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
+import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
 export const CHART_VERSION = 'piano8-full-v4';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
@@ -32,7 +33,7 @@ const REFERENCES = {
   heat:'https://store.piascore.com/scores/332566',
 };
 for(const song of SONGS){song.pack='vocaloid';song.source=REFERENCES[song.id];song.chartLabel='主旋律の輪郭を使った簡略アレンジ';}
-SONGS.push(...EXTRA_SONGS,...TAIKO_SONGS);
+SONGS.push(...EXTRA_SONGS,...TAIKO_SONGS,...PROSEKA_SONGS);
 
 // Short, reduced phrase contours; rhythm and transitions are an original arrangement.
 // Pitches are folded into C4–C5. Black notes are accompaniment, never scored.
@@ -56,6 +57,7 @@ const TRANSPOSE={mesmerizer:2,override:3,heat:2};
 // Identical, deterministic charts are used by the browser and score server.
 // These are original beat-grid charts, not transcriptions of commercial game charts.
 export function makeChart(song, difficulty) {
+  const proseka=makeProsekaChart(song,difficulty);if(proseka)return proseka;
   const taiko=makeTaikoChart(song,difficulty);if(taiko)return taiko;
   const expansion=makeExpansionChart(song,difficulty);if(expansion)return expansion;
   const beat = 60 / song.bpm;
