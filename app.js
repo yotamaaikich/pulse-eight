@@ -1,6 +1,6 @@
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,customChart,isFullCombo,FLICK_KEYS} from './engine.mjs?v=vocaloid-20-1';
 import {createCreator} from './creator.mjs?v=vocaloid-20-1';
-import {createPiano} from './piano.mjs?v=vocaloid-20-1';
+import {createPiano} from './piano.mjs?v=piano-touch-2';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs';
@@ -172,7 +172,7 @@ function syncHeldKeys(){
     for(const lane of upperPressed)if(!session.upperDown.has(lane)){const t=inputTime();if(recordEvent(t,lane,2))applyNotifications(session.pressFlick(t,lane));}
   }
 }
-function hit(lane){flashes[lane]=performance.now();if(mode!=='running')return;piano.start(lane);const t=inputTime();if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
+function hit(lane){flashes[lane]=performance.now();if(mode==='idle'||mode==='running')piano.start(lane);if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
 function releaseLane(lane,force=false){piano.stop(lane);if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,0))applyNotifications(session.release(t,lane));}
 function hitUpper(lane){if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,2))applyNotifications(session.pressFlick(t,lane));}
 function releaseUpper(lane,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,3))applyNotifications(session.releaseFlick(t,lane));}
@@ -309,3 +309,5 @@ savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer
 let tutorial=null;
 async function openTutorial(){if(['running','buffering','loading'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=tutorial-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty,piano});}tutorial.open();}
 $('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
+
+$('testPiano').onclick=()=>{piano.start(0);setTimeout(()=>piano.stop(0),350);};
