@@ -2,12 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {LESSONS,TutorialAttempt,lessonsFor} from '../tutorial.mjs';
 
-test('tutorial teaches tap, sustained hold, chord and both flick hands with real judgment',()=>{
+test('tutorial teaches tap, sustained hold, chord and Space flick and held-Space sweep with real judgment',()=>{
   for(const lesson of LESSONS){
     const attempt=new TutorialAttempt(lesson);
-    for(const lane of lesson.lanes)attempt.update(2.4,'press',lane);
+    for(const [index,lane] of lesson.lanes.entries()){const t=2.4+(lesson.sweep?index*.7:0);attempt.update(t,'press',lane);if(lesson.flick)attempt.update(t+.08,'pressFlick',lane);}
     if(lesson.hold){assert.equal(attempt.status,'running');attempt.update(3.6);}
-    if(lesson.flick){assert.equal(attempt.status,'running');attempt.update(2.5,'pressFlick',lesson.lanes[0]);}
     assert.equal(attempt.status,'success',lesson.title);
   }
 });
