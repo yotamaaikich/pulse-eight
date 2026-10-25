@@ -25,5 +25,6 @@ test('short taps retain a piano attack and release tail, with silent zero volume
     assert.equal(sources.length,count,'release creates no new oscillator');
     const release=voiceEnvelope.gain.calls.findLast(c=>c[0]==='set');
     assert.ok(release[1]<.65*.3*.56,'release never jumps above the already decaying note');
+    piano.start(0,66);assert.ok(Math.abs(sources.at(-1).frequency.value-440*2**((66-69)/12))<.001,'the same lane can play an explicit chart pitch');
   }finally{delete globalThis.AudioContext;}
 });

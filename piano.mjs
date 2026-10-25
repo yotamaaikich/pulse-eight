@@ -22,13 +22,14 @@ export function createPiano(volume){
     voice.envelope.gain.setTargetAtTime(0,releaseAt,.12);
     for(const source of voice.sources)source.stop(releaseAt+.65);
   }
-  function start(lane){
+  function start(lane,midi=MIDI[lane]){
     if(!Number.isInteger(lane)||lane<0||lane>=MIDI.length)return;
+    if(!Number.isFinite(midi)||midi<36||midi>96)return;
     unlock();const level=Math.max(0,Math.min(100,Number(volume())||0))/100*.65;if(!context||!output||!wave||!level)return;stop(lane,true);
     const now=context.currentTime,envelope=context.createGain(),filter=context.createBiquadFilter(),sources=[];
     envelope.gain.setValueAtTime(0,now);envelope.gain.linearRampToValueAtTime(level,now+.004);envelope.gain.exponentialRampToValueAtTime(level*.56,now+.18);envelope.gain.exponentialRampToValueAtTime(.0001,now+3.4);
     filter.type='lowpass';filter.frequency.setValueAtTime(6500,now);filter.frequency.exponentialRampToValueAtTime(1300,now+1.3);filter.Q.value=.35;filter.connect(envelope);envelope.connect(output);
-    const frequency=440*2**((MIDI[lane]-69)/12);
+    const frequency=440*2**((midi-69)/12);
     [0,-3,3].forEach((detune,index)=>{const oscillator=context.createOscillator(),gain=context.createGain();oscillator.setPeriodicWave(wave);oscillator.frequency.value=frequency;oscillator.detune.value=detune;gain.gain.value=[.62,.19,.19][index];oscillator.connect(gain);gain.connect(filter);oscillator.start(now);oscillator.stop(now+3.6);oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};sources.push(oscillator);});
     const noise=context.createBufferSource(),noiseGain=context.createGain();noise.buffer=hammer;noiseGain.gain.value=.11;noise.connect(noiseGain);noiseGain.connect(filter);noise.start(now);noise.stop(now+.03);noise.onended=()=>{noise.disconnect();noiseGain.disconnect();};sources.push(noise);
     const voice={envelope,sources,started:now,level};voices.set(lane,voice);sources[0].addEventListener('ended',()=>{if(voices.get(lane)===voice)voices.delete(lane);filter.disconnect();envelope.disconnect();},{once:true});

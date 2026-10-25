@@ -1,6 +1,6 @@
+import {voiceChart,noteForKey,pitchForKey} from './melodies.mjs';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,customChart,isFullCombo,FLICK_KEYS} from './engine.mjs?v=vocaloid-20-1';
-import {createCreator} from './creator.mjs?v=vocaloid-20-1';
-import {createPiano} from './piano.mjs?v=piano-keydown-3';
+import {createPiano} from './piano.mjs?v=melody-1';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs';
@@ -72,7 +72,6 @@ function updateBest(){const b=bests[scoreKey()];$('personalBest').textContent=b?
 async function api(path,body){const response=await fetch(API_URL+path,{method:body?'POST':'GET',headers:{apikey:PUBLIC_KEY,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'クラウドへ接続できませんでした');return data;}
 async function loadLeaders(){
   const request=++leaderRequest;$('leaders').innerHTML='<li class="empty-state">ランキングを読み込み中…</li>';
-  if(activeChart?.kind==='draft'){$('leaders').innerHTML='<li class="empty-state">フルコンボで完走すると<br>この譜面を公開できます。</li>';return;}
   try{
     const data=await api(activeChart?.kind==='published'?'/leaderboard?chart='+activeChart.id:`/leaderboard?song=${song().id}&difficulty=${difficulty}`);if(request!==leaderRequest)return;
     $('cloudStatus').textContent='ONLINE';$('leaders').replaceChildren();
@@ -82,19 +81,17 @@ async function loadLeaders(){
 }
 function updateChartControls(){
   const busy=!['idle','results'].includes(mode);
-  $('creatorButton').disabled=busy;$('communityButton').disabled=busy;$('standardChartButton').disabled=busy;$('standardChartButton').hidden=!activeChart;
-  $('chartSource').textContent=activeChart?(activeChart.kind==='draft'?'下書き / ':'公開譜面 / ')+activeChart.title:'標準譜面';$('chartSource').title=$('chartSource').textContent;
-  $('leaderDifficulty').textContent=activeChart?(activeChart.kind==='draft'?'DRAFT':'CUSTOM'):DIFFICULTIES[difficulty];
-  $('resultEdit').hidden=activeChart?.kind!=='draft';
+  $('communityButton').disabled=busy;$('standardChartButton').disabled=busy;$('standardChartButton').hidden=!activeChart;
+  $('chartSource').textContent=activeChart?'公開譜面 / '+activeChart.title:'標準譜面';$('chartSource').title=$('chartSource').textContent;
+  $('leaderDifficulty').textContent=activeChart?'CUSTOM':DIFFICULTIES[difficulty];
   document.querySelectorAll('[data-difficulty]').forEach(button=>{button.disabled=mode==='paused'?false:busy||!!activeChart;button.classList.toggle('active',!activeChart&&Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(!activeChart&&Number(button.dataset.difficulty)===difficulty));});
 }
 async function leaveExpanded(){document.body.classList.remove('chart-expanded');if(document.fullscreenElement)await document.exitFullscreen();syncExpandedControls();}
-async function openCreator(){if(!['idle','results'].includes(mode))return;await leaveExpanded();creator.open(song(),prefs.keys,difficulty);}
 async function browseCharts(){if(!['idle','results'].includes(mode))return;await leaveExpanded();$('communitySong').textContent=song().title;$('communityDialog').showModal();await refreshCharts();}
 async function refreshCharts(){
   const selectedSong=song().id,list=$('communityList');list.textContent='譜面を読み込み中…';
   try{const data=await api('/charts?song='+selectedSong);if(song().id!==selectedSong)return;list.replaceChildren();
-    if(!data.charts?.length){list.textContent='まだ公開譜面がありません。譜面を作って最初のフルコンボを目指そう。';return;}
+    if(!data.charts?.length){list.textContent='公開済みの譜面はありません。標準譜面から遊べます。';return;}
     for(const chart of data.charts){const button=document.createElement('button'),info=document.createElement('span'),title=document.createElement('strong'),detail=document.createElement('small'),badge=document.createElement('span');button.className='community-chart';title.textContent=chart.title;detail.textContent=chart.creator_name+' · '+DIFFICULTIES[chart.difficulty]+' · '+chart.note_count+' NOTES';badge.className='verified-chart';badge.textContent='作成者フルコンボ済み';info.append(title,detail);button.append(info,badge);button.onclick=async()=>{button.disabled=true;try{const loaded=await api('/chart?id='+chart.id);if(song().id!==selectedSong||!['idle','results'].includes(mode)||!$('communityDialog').open)return;if(mode==='results')quit();activeChart={...loaded.chart,kind:'published'};difficulty=loaded.chart.difficulty;$('communityDialog').close();selectSong(selected);toast('公開譜面を選びました。Enterでプレイ');}catch(error){toast(error.message);button.disabled=false;}};list.append(button);}
   }catch(error){list.textContent=error.message;}
 }
@@ -124,10 +121,10 @@ function syncPlayback(now){
 function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
-  let chart;try{chart=activeChart?customChart(song(),activeChart.notes,difficulty):makeChart(song(),difficulty);}catch(error){toast(error.message);return;}
+  let chart;try{chart=voiceChart(song(),activeChart?customChart(song(),activeChart.notes,difficulty):makeChart(song(),difficulty));}catch(error){toast(error.message);return;}
   piano.unlock();piano.stopAll();upperPressed.clear();sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
-  runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION,...(activeChart?.kind==='draft'?{draft:{title:activeChart.title,notes:activeChart.notes}}:activeChart?.kind==='published'?{chartId:activeChart.id}:{})}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
+  runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION,...(activeChart?{chartId:activeChart.id}:{})}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
 }
 function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';countdownUntil=0;countdownReady=false;piano.stopAll();player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
@@ -146,17 +143,16 @@ function finish(){
   $('resultRank').textContent=result.rank;$('resultScore').textContent=String(result.score).padStart(7,'0');$('resultDetail').textContent=`${result.accuracy.toFixed(2)}% ACCURACY / ${result.maxCombo} MAX COMBO`;
   $('resultCounts').innerHTML=['perfect','great','good','bad','miss'].map(key=>`<span>${key.toUpperCase()}<b>${stats[key]}</b></span>`).join('');$('fullComboBadge').hidden=!fullCombo;
   const previous=bests[scoreKey()],isBest=!previous||result.score>previous.score;if(isBest){bests[scoreKey()]=result;write('pulse-bests',bests);}$('bestBadge').style.display=isBest?'':'none';
-  const draft=activeChart?.kind==='draft';$('saveScore').disabled=!eligible||(draft&&!fullCombo);
-  $('saveScore').textContent=!eligible?'練習プレイ（シーク・速度変更あり）':draft?(fullCombo?'フルコンボした譜面を公開 [S]':'公開にはフルコンボが必要'):'ランキングに登録 [S]';
-  $('saveStatus').textContent=draft?'公開すると譜面・譜面名・作成者名がみんなに表示されます':'名前とスコアが公開されます';show('resultMessage');$('pauseButton').disabled=true;stateText('TRACK COMPLETE');$('progress').style.width='100%';updateBest();
+  $('saveScore').disabled=!eligible;
+  $('saveScore').textContent=!eligible?'練習プレイ（シーク・速度変更あり）':'ランキングに登録 [S]';
+  $('saveStatus').textContent='名前とスコアが公開されます';show('resultMessage');$('pauseButton').disabled=true;stateText('TRACK COMPLETE');$('progress').style.width='100%';updateBest();
 }
 async function saveScore(){
-  if(mode!=='results'||submitted||!eligible)return;const draft=activeChart?.kind==='draft';if(draft&&!isFullCombo(stats,notes.filter(n=>!n.assist).length))return;
-  const seq=sequence,snapshot=activeChart,recorded=events.map(e=>[...e]);$('saveScore').disabled=true;$('saveStatus').textContent=draft?'フルコンボを確認して公開中…':'クラウドへ登録中…';
+  if(mode!=='results'||submitted||!eligible)return;
+  const seq=sequence,recorded=events.map(e=>[...e]);$('saveScore').disabled=true;$('saveStatus').textContent='クラウドへ登録中…';
   try{await runPromise;if(seq!==sequence)return;if(!runId)throw new Error('接続できませんでした。次のプレイで再度お試しください。');
-    const result=await api(draft?'/publish':'/submit',{runId,playerToken:token,name,events:recorded});if(seq!==sequence)return;submitted=true;
-    if(draft){activeChart={...snapshot,kind:'published',id:result.chartId,creator_name:name};$('saveScore').textContent='譜面を公開しました';$('saveStatus').textContent='みんなの譜面から選んで遊べます。';bests[scoreKey()]=summary(stats,notes.filter(n=>!n.assist).length);write('pulse-bests',bests);updateBest();updateChartControls();toast('フルコンボを確認し、譜面を公開しました');}
-    else{$('saveScore').textContent=result.improved?'ランキング登録完了':'自己ベストをキープ';$('saveStatus').textContent='保存しました。ランキングを更新しました。';toast('クラウドにスコアを保存しました');}loadLeaders();
+    const result=await api('/submit',{runId,playerToken:token,name,events:recorded});if(seq!==sequence)return;submitted=true;
+    {$('saveScore').textContent=result.improved?'ランキング登録完了':'自己ベストをキープ';$('saveStatus').textContent='保存しました。ランキングを更新しました。';toast('クラウドにスコアを保存しました');}loadLeaders();
   }catch(error){if(seq!==sequence)return;$('saveScore').disabled=false;$('saveStatus').textContent=error.message;}
 }
 function time(){return clock;}
@@ -182,7 +178,7 @@ function syncHeldKeys(){
     for(const lane of upperPressed)if(!session.upperDown.has(lane)){const t=inputTime();if(recordEvent(t,lane,2))applyNotifications(session.pressFlick(t,lane));}
   }
 }
-function hit(lane){flashes[lane]=performance.now();if(mode==='idle'||mode==='running')piano.start(lane);if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
+function hit(lane){flashes[lane]=performance.now();if(mode==='idle'){piano.start(lane);return;}if(mode!=='running')return;const t=inputTime(),target=noteForKey(session.notes,lane,t);piano.start(lane,target?.midi??pitchForKey(session.notes,lane,t));if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
 function releaseLane(lane,force=false){piano.stop(lane);if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,0))applyNotifications(session.release(t,lane));}
 function hitUpper(lane){if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,2))applyNotifications(session.pressFlick(t,lane));}
 function releaseUpper(lane,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,3))applyNotifications(session.releaseFlick(t,lane));}
@@ -311,8 +307,7 @@ document.querySelectorAll('[data-pack]').forEach(button=>button.onclick=()=>{lib
 $('pauseChange').onclick=()=>requestSelection();$('changeSong').onchange=updateSelectionWarning;$('changeDifficulty').onchange=updateSelectionWarning;$('confirmTrackChange').onclick=confirmSelection;
 $('fullscreenButton').onclick=toggleFullscreen;$('playFullscreen').onclick=toggleFullscreen;
 $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mode==='paused'?resume():pause();
-const creator=createCreator({onPlay:draft=>{if(mode==='results')quit();activeChart=draft;difficulty=draft.difficulty;selectSong(selected);start();},onEdit:()=>{if(activeChart?.kind==='draft'){sequence++;runId=null;eligible=false;$('saveScore').disabled=true;$('saveStatus').textContent='編集したため、もう一度フルコンボしてください。';}}});
-$('creatorButton').onclick=openCreator;$('resultEdit').onclick=openCreator;$('communityButton').onclick=browseCharts;$('communityRefresh').onclick=refreshCharts;
+$('communityButton').onclick=browseCharts;$('communityRefresh').onclick=refreshCharts;
 $('standardChartButton').onclick=()=>{if(!['idle','results'].includes(mode))return;if(mode==='results')quit();activeChart=null;selectSong(selected);selectDifficulty(difficulty);};
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
