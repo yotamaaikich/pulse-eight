@@ -22,3 +22,5 @@
 .community-toolbar #standardChartButton{flex-basis:100%;font-size:11px;padding:9px}
 @media(max-width:750px){.community-toolbar>div{gap:8px}.community-toolbar .chart-action{min-height:60px;padding:10px;gap:8px}.chart-action strong{font-size:13px}.chart-action small{font-size:9px}.chart-action-icon{width:26px;height:28px;font-size:21px}.chart-action-arrow{display:none}}
 @media(max-width:390px){.community-toolbar .chart-action{flex-basis:100%}}
+
+.song-art::before,.mini-art::before{content:"";display:block;width:22px;height:24px;background:linear-gradient(currentColor,currentColor) left center/5px 12px no-repeat,linear-gradient(currentColor,currentColor) center/5px 24px no-repeat,linear-gradient(currentColor,currentColor) right center/5px 17px no-repeat;opacity:.55}

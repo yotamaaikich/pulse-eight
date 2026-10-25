@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#f4f3ee">
   <meta name="description" content="ボカロ・まどマギ・osu!・太鼓収録曲の35曲を8つのキーで。フル尺のキーボード音ゲー PULSE EIGHT。オンラインランキング対応。">
   <title>PULSE EIGHT</title>
-  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=genre-numbers-2"><link rel="stylesheet" href="./creator.css?v=genre-numbers-2">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=no-song-numbers-1"><link rel="stylesheet" href="./creator.css?v=no-song-numbers-1">
 </head>
 <body>
   <header class="topbar">
@@ -22,7 +22,7 @@
         <a class="source-link" href="https://github.com/yotamaaikich/pulse-eight#収録曲と参照" target="_blank" rel="noopener">収録曲・選曲元の情報 ↗</a>
       </aside>
       <section class="play-column" aria-label="ゲーム">
-        <div class="track-heading"><div class="mini-art" id="miniArt">01</div><div class="track-title"><span id="trackArtist">DECO*27 / 初音ミク</span><h2 id="trackTitle">モニタリング</h2></div><span class="bpm"><strong id="bpm">132</strong> BPM</span></div>
+        <div class="track-heading"><div class="mini-art" id="miniArt" aria-hidden="true"></div><div class="track-title"><span id="trackArtist">DECO*27 / 初音ミク</span><h2 id="trackTitle">モニタリング</h2></div><span class="bpm"><strong id="bpm">132</strong> BPM</span></div>
         <div class="difficulty-bar"><div id="difficulties" role="group" aria-label="難易度"><button data-difficulty="0">EASY <span>LV.3</span></button><button data-difficulty="1" class="active">NORMAL <span>LV.7</span></button><button data-difficulty="2">HARD <span>LV.11</span></button></div><span><kbd>←</kbd><kbd>→</kbd></span></div>
         <p class="music-notice"><strong>YouTube広告について</strong>音楽はYouTubeの公式動画で再生するため、広告が入る場合があります。本編の再生待ち中は譜面を停止します。広告の種類によっては待機を判別できない場合があります。</p>
         <div class="community-toolbar"><span id="chartSource">標準譜面</span><div><button id="creatorButton" class="chart-action"><span class="chart-action-icon" aria-hidden="true">＋</span><span><strong>譜面を作る</strong><small>ノーツを配置して作成</small></span><span class="chart-action-arrow" aria-hidden="true">↗</span></button><button id="communityButton" class="chart-action"><span class="chart-action-icon" aria-hidden="true">▦</span><span><strong>みんなの譜面</strong><small>公開された譜面で遊ぶ</small></span><span class="chart-action-arrow" aria-hidden="true">→</span></button><button id="standardChartButton" hidden>標準に戻す</button></div></div>
@@ -70,6 +70,6 @@
   </dialog>
   <dialog id="communityDialog" class="community-dialog"><div class="dialog-title"><div><span class="eyebrow">COMMUNITY CHARTS</span><h2>みんなの譜面</h2><p id="communitySong"></p></div><button class="close-dialog" aria-label="譜面一覧を閉じる">×</button></div><p class="publish-rule">作成者がフルコンボで完走した譜面だけを公開しています。</p><div id="communityList" class="community-list" role="status"></div><button id="communityRefresh" class="small-button">再読み込み</button></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./app.js?v=genre-numbers-2"></script>
+  <script type="module" src="./app.js?v=no-song-numbers-1"></script>
 </body>
 </html>
