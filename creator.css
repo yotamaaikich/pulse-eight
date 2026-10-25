@@ -43,3 +43,7 @@
 .tutorial-dialog #tutorialCanvas{height:min(34dvh,360px);object-fit:contain}.tutorial-description{min-height:0;margin:8px 0}.tutorial-key-prompt{margin:8px 0;font-size:22px}
 
 .tutorial-hero{display:flex;align-items:center;justify-content:space-between;gap:28px;background:#e76550;color:#fff;border:1px solid #ca503e;border-radius:9px;min-height:64px;width:330px;max-width:100%;padding:13px 18px;margin-top:20px;text-align:left;box-shadow:0 3px 0 #bd4c3829;cursor:pointer}.tutorial-hero strong{display:block;font-size:18px;font-weight:800;line-height:1.4}.tutorial-hero small{display:block;font-size:11px;line-height:1.5;margin-top:3px}.tutorial-hero>span:last-child{font-size:27px}.tutorial-hero:hover{background:#d95843;transform:translateY(-1px)}.tutorial-hero:focus-visible{outline:3px solid #344e43;outline-offset:4px}
+
+.play-countdown{position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#142224d9;color:#eef5eb;pointer-events:none}.play-countdown>span{font-size:16px;font-weight:700;letter-spacing:2px}.play-countdown>strong{font-size:clamp(74px,13vh,140px);font-weight:800;color:#c1e7ce;line-height:1.1}.play-countdown>small{font-size:12px;color:#bdd0c3}
+
+.play-countdown.hidden{display:none}

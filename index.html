@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#f4f3ee">
   <meta name="description" content="ボカロ・まどマギ・osu!・太鼓収録曲の35曲を8つのキーで。フル尺のキーボード音ゲー PIANO PULSE。オンラインランキング対応。">
   <title>PIANO PULSE</title>
-  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=tutorial-entry-2"><link rel="stylesheet" href="./creator.css?v=tutorial-entry-2">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=ready-countdown-1"><link rel="stylesheet" href="./creator.css?v=ready-countdown-1">
 </head>
 <body>
   <header class="topbar">
@@ -37,6 +37,7 @@
           <div class="chart-fullscreen-controls"><button id="chartPause">Ⅱ <kbd>ESC</kbd></button><button id="exitChartFullscreen">⛶ 戻る <kbd>V</kbd></button></div>
           <canvas id="game" tabindex="-1" aria-label="8レーンのノーツ。A S D F J K L セミコロンで演奏"></canvas>
           <div id="videoLoading" class="video-loading hidden" role="status"><span class="loading-ring" aria-hidden="true"></span><strong>動画読み込み中</strong></div>
+          <div id="playCountdown" class="play-countdown hidden" role="status" aria-live="polite"><span>まもなくスタート</span><strong id="countdownNumber">3</strong><small>キーに指を置いて待とう</small></div>
           <div class="stage-message" id="stageMessage"><span class="pill">FULL TRACK SESSION</span><h2>FIND YOUR<br><em>PULSE.</em></h2><p>ラインに重なる瞬間、キーを叩こう。</p><button class="start-button" id="startButton"><span>PLAY TRACK</span><kbd>ENTER ↵</kbd></button><small id="startHint">音声は公式YouTubeプレイヤーから再生</small></div>
           <div class="stage-message hidden" id="pauseMessage"><span class="eyebrow">TAKE A BREATH</span><h2>PAUSED<span>.</span></h2><button id="resumeButton" class="start-button">つづける <kbd>ENTER ↵</kbd></button><small>長押し中は対応キーを押したまま再開</small><button id="pauseChange" class="plain-light">曲・難易度を変更</button><div class="pause-actions"><button id="retryButton">リトライ <kbd>R</kbd></button><button id="quitButton">選曲へ <kbd>ESC</kbd></button></div></div>
           <div class="stage-message hidden" id="resultMessage"><span class="eyebrow">SESSION COMPLETE</span><div class="result-rank" id="resultRank">A</div><div class="result-score" id="resultScore">0000000</div><p id="resultDetail"></p><div id="resultCounts" class="result-counts"></div><span id="bestBadge" class="pill">NEW PERSONAL BEST</span><span id="fullComboBadge" class="pill" hidden>FULL COMBO</span><button id="saveScore" class="save-score">ランキングに登録 [S]</button><small id="saveStatus">名前とスコアが公開されます</small><button id="resultRetry" class="start-button">もう一度プレイ <kbd>ENTER ↵</kbd></button><button id="resultEdit" class="plain-light" hidden>譜面を編集</button><button id="resultBack" class="plain-light">選曲へ戻る <kbd>ESC</kbd></button></div>
@@ -79,6 +80,6 @@
     <p class="tutorial-note">現在のキー設定を使用 · 失敗しても自動で再挑戦 · Escで終了 · スコアは記録されません</p>
   </dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./app.js?v=tutorial-entry-2"></script>
+  <script type="module" src="./app.js?v=ready-countdown-1"></script>
 </body>
 </html>
