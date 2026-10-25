@@ -46,7 +46,7 @@ document.addEventListener('fullscreenchange',syncExpandedControls);
 function renderKeyGuide(){for(let hand=0;hand<2;hand++){$(hand?'rightKeys':'leftKeys').innerHTML=prefs.keys.slice(hand*4,hand*4+4).map(code=>`<span class="guide-key"><kbd data-key="${code}">${label(code)}</kbd></span>`).join('');}$('mappingKeys').innerHTML=prefs.keys.map((code,i)=>`<kbd class="${remapping&&i===remapKeys.length?'current':''}">${remapping?(remapKeys[i]?label(remapKeys[i]):'·'):label(code)}</kbd>`).join('');}
 function syncSettings(){for(const key of ['speed','volume','pianoVolume','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':['volume','pianoVolume'].includes(key)?prefs[key]+'%':prefs[key]+' ms';}}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
-function songNumber(index){const visible=SONGS.map((s,i)=>({s,i})).filter(({s})=>libraryPack==='all'||s.pack===libraryPack);const position=visible.findIndex(({i})=>i===index);return String(position<0?index+1:position+1).padStart(2,'0');}
+function songNumber(index){const pack=SONGS[index].pack;return String(SONGS.slice(0,index+1).filter(s=>s.pack===pack).length).padStart(2,'0');}
 function renderSongs(){
   $('songs').innerHTML=SONGS.map((s,i)=>({s,i})).filter(({s})=>libraryPack==='all'||s.pack===libraryPack).map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" style="background:${s.color}">${songNumber(i)}</span><span class="song-info"><strong>${s.title}</strong><small>${s.artist} · ${s.pack==='madoka'?'まどマギ':s.pack==='osu'?'osu!定番':s.pack==='taiko'?'太鼓':'ボカロ'}</small></span></button>`).join('');
   $('miniArt').textContent=songNumber(selected);
