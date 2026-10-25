@@ -308,7 +308,7 @@ savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer
 
 let tutorial=null;
 async function openTutorial(){if(['running','buffering','loading'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=tutorial-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty,piano});}tutorial.open();}
-$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
+$('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
 $('testPiano').onclick=()=>{piano.start(0);setTimeout(()=>piano.stop(0),350);};
 
