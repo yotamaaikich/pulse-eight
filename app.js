@@ -1,25 +1,22 @@
 import {drawAirRibbons,drawAirHead} from './air.mjs';
-import {voiceChart,noteForKey,pitchForKey} from './melodies.mjs';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=vocaloid-20-1';
-import {createPiano} from './piano.mjs?v=melody-1';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs';
 
 const $=id=>document.getElementById(id);
 const DEFAULT_KEYS=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
-const DEFAULTS={speed:1,volume:50,pianoVolume:30,mixVersion:1,offset:0,keys:DEFAULT_KEYS};
+const DEFAULTS={speed:1,volume:50,mixVersion:1,offset:0,keys:DEFAULT_KEYS};
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
 const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));}catch{/* Storage is optional. */}};
 const savedPrefs=read('pulse-prefs',{});
 let prefs={...DEFAULTS,...savedPrefs};delete prefs.notation;
 if(savedPrefs.mixVersion!==1&&Number.isFinite(savedPrefs.volume))prefs.volume=Math.round(savedPrefs.volume*.7);prefs.mixVersion=1;
-const piano=createPiano(()=>prefs.pianoVolume);
+delete prefs.pianoVolume;
 if(!Array.isArray(prefs.keys)||prefs.keys.length!==8||new Set(prefs.keys).size!==8||prefs.keys.some(code=>['Space','KeyV','KeyR','KeyO'].includes(code)))prefs.keys=[...DEFAULT_KEYS];
 prefs.speed=Math.min(2,Math.max(.5,Number(prefs.speed)||1));
 prefs.offset=Math.min(500,Math.max(-500,Number(prefs.offset)||0));
 prefs.volume=Math.min(100,Math.max(0,Number(prefs.volume)||0));
-prefs.pianoVolume=Math.min(100,Math.max(0,Number(prefs.pianoVolume)||0));
 let token=read('pulse-device',null);
 if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)){token=Array.from(crypto.getRandomValues(new Uint8Array(32)),n=>n.toString(16).padStart(2,'0')).join('');write('pulse-device',token);}
 let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
@@ -45,7 +42,7 @@ async function toggleFullscreen(){if(document.body.classList.contains('chart-exp
 function syncExpandedControls(){const on=!!document.fullscreenElement||document.body.classList.contains('chart-expanded');$('fullscreenButton').setAttribute('aria-pressed',String(on));$('fullscreenButton').setAttribute('aria-label',on?'譜面の全画面を終了':'譜面を全画面にする');$('fullscreenButton').innerHTML=(on?'⛶ 戻す':'⛶ 譜面全画面')+' <kbd>V</kbd>';$('playFullscreen').textContent=(on?'⛶ 戻す':'⛶ 譜面全画面')+' [V]';}
 document.addEventListener('fullscreenchange',syncExpandedControls);
 function renderKeyGuide(){for(let hand=0;hand<2;hand++){$(hand?'rightKeys':'leftKeys').innerHTML=prefs.keys.slice(hand*4,hand*4+4).map(code=>`<span class="guide-key"><kbd data-key="${code}">${label(code)}</kbd></span>`).join('');}$('mappingKeys').innerHTML=prefs.keys.map((code,i)=>`<kbd class="${remapping&&i===remapKeys.length?'current':''}">${remapping?(remapKeys[i]?label(remapKeys[i]):'·'):label(code)}</kbd>`).join('');}
-function syncSettings(){for(const key of ['speed','volume','pianoVolume','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':['volume','pianoVolume'].includes(key)?prefs[key]+'%':prefs[key]+' ms';}}
+function syncSettings(){for(const key of ['speed','volume','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
 function renderSongs(){
   $('songs').innerHTML=SONGS.map((s,i)=>({s,i})).filter(({s})=>libraryPack==='all'||s.pack===libraryPack).map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" aria-hidden="true" style="background:${s.color}"></span><span class="song-info"><strong>${s.title}</strong><small>${s.artist} · ${s.pack==='madoka'?'まどマギ':s.pack==='osu'?'osu!定番':s.pack==='taiko'?'太鼓':'ボカロ'}</small></span></button>`).join('');
@@ -88,9 +85,9 @@ function updateChartControls(){
 function stateText(text){$('playState').textContent=text;}
 function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!['loading','buffering'].includes(mode));$('playCountdown').classList.toggle('hidden',mode!=='countdown');updateChartControls();}
 function applyVolume(){if(!ready)return;const volume=['loading','buffering','countdown'].includes(mode)?0:prefs.volume;if(appliedVolume!==volume){player.setVolume(volume);appliedVolume=volume;}}
-function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;piano.stopAll();mode='buffering';playback.hold(performance.now());show(null);stateText('動画読み込み中');applyVolume();}
+function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;mode='buffering';playback.hold(performance.now());show(null);stateText('動画読み込み中');applyVolume();}
 function beginCountdown(now){
-  mode='countdown';countdownUntil=now+3000;countdownReady=false;playbackArmed=false;piano.stopAll();
+  mode='countdown';countdownUntil=now+3000;countdownReady=false;playbackArmed=false;
   player.pauseVideo();player.seekTo(clock,true);player.pauseVideo();$('countdownNumber').textContent='3';show(null);stateText('GET READY · 3');applyVolume();
 }
 function syncPlayback(now){
@@ -104,22 +101,22 @@ function syncPlayback(now){
   if(next.seek)eligible=false;
   if(!next.waiting&&mode!=='running'&&!countdownReady){beginCountdown(now);return;}
   clock=next.time;
-  if(next.waiting){if(mode==='running'){piano.stopAll();mode='buffering';show(null);}stateText('動画読み込み中');}
+  if(next.waiting){if(mode==='running'){mode='buffering';show(null);}stateText('動画読み込み中');}
   else if(mode!=='running'){countdownReady=false;mode='running';syncHeldKeys();show(null);stateText('NOW PLAYING');canvas.focus();}
   applyVolume();
 }
 function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
-  let chart;try{chart=voiceChart(song(),makeChart(song(),difficulty));}catch(error){toast(error.message);return;}
-  piano.unlock();piano.stopAll();upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
+  let chart;try{chart=makeChart(song(),difficulty);}catch(error){toast(error.message);return;}
+  upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
   runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
 }
-function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';countdownUntil=0;countdownReady=false;piano.stopAll();player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
+function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';countdownUntil=0;countdownReady=false;player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
 function resume(){if(mode!=='paused')return;syncHeldKeys();mode='loading';countdownReady=false;playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
-function quit(){piano.stopAll();upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
+function quit(){upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
 function updateStats(){
   const count=notes.filter(n=>!n.assist).length||1,result=summary(stats,count);
   const score=String(result.score).padStart(7,'0');
@@ -129,7 +126,7 @@ function updateStats(){
   $('stageScore').textContent=score;$('stageCombo').textContent=stats.combo;$('stageAccuracy').textContent=accuracy;
 }
 function finish(){
-  if(mode==='results'||mode==='idle')return;mode='results';piano.stopAll();upperPressed.clear();spaceHeld=false;player.pauseVideo();pressed.clear();applyNotifications(session.finish());updateStats();const count=notes.filter(n=>!n.assist).length,result=summary(stats,count),fullCombo=isFullCombo(stats,count);
+  if(mode==='results'||mode==='idle')return;mode='results';upperPressed.clear();spaceHeld=false;player.pauseVideo();pressed.clear();applyNotifications(session.finish());updateStats();const count=notes.filter(n=>!n.assist).length,result=summary(stats,count),fullCombo=isFullCombo(stats,count);
   $('resultRank').textContent=result.rank;$('resultScore').textContent=String(result.score).padStart(7,'0');$('resultDetail').textContent=`${result.accuracy.toFixed(2)}% ACCURACY / ${result.maxCombo} MAX COMBO`;
   $('resultCounts').innerHTML=['perfect','great','good','bad','miss'].map(key=>`<span>${key.toUpperCase()}<b>${stats[key]}</b></span>`).join('');$('fullComboBadge').hidden=!fullCombo;
   const previous=bests[scoreKey()],isBest=!previous||result.score>previous.score;if(isBest){bests[scoreKey()]=result;write('pulse-bests',bests);}$('bestBadge').style.display=isBest?'':'none';
@@ -168,8 +165,8 @@ function syncHeldKeys(){
     for(const lane of upperPressed)if(!session.upperDown.has(lane)){const t=inputTime();if(recordEvent(t,lane,2))applyNotifications(session.pressFlick(t,lane));}
   }
 }
-function hit(lane){flashes[lane]=performance.now();if(mode==='idle'){piano.start(lane);return;}if(mode!=='running')return;const t=inputTime(),target=noteForKey(session.notes,lane,t);piano.start(lane,target?.midi??pitchForKey(session.notes,lane,t));if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
-function releaseLane(lane,force=false){piano.stop(lane);if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,0))applyNotifications(session.release(t,lane));}
+function hit(lane){flashes[lane]=performance.now();if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,1))applyNotifications(session.press(t,lane));}
+function releaseLane(lane,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,0))applyNotifications(session.release(t,lane));}
 function hitUpper(lane){if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,2))applyNotifications(session.pressFlick(t,lane));}
 function releaseUpper(lane,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,3))applyNotifications(session.releaseFlick(t,lane));}
 function loadPlayer(){
@@ -283,14 +280,14 @@ document.addEventListener('keydown',event=>{
   const lane=prefs.keys.indexOf(event.code);if(lane!==-1){event.preventDefault();if(event.repeat||pressed.has(lane))return;pressed.add(lane);hit(lane);if(difficulty===2&&spaceHeld){upperPressed.add(lane);hitUpper(lane);}}
 });
 document.addEventListener('keyup',event=>{if(event.code==='Space'){spaceHeld=false;for(const lane of upperPressed)releaseUpper(lane,mode==='buffering');upperPressed.clear();return;}const lane=prefs.keys.indexOf(event.code);if(lane!==-1){pressed.delete(lane);releaseLane(lane,mode==='buffering');if(upperPressed.delete(lane))releaseUpper(lane,mode==='buffering');}});
-window.addEventListener('blur',()=>{piano.stopAll();upperPressed.clear();spaceHeld=false;pressed.clear();if(['running','buffering','loading','countdown'].includes(mode))pause();});
+window.addEventListener('blur',()=>{upperPressed.clear();spaceHeld=false;pressed.clear();if(['running','buffering','loading','countdown'].includes(mode))pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&['running','buffering','loading','countdown'].includes(mode))pause();});
 $('startButton').onclick=start;$('resumeButton').onclick=resume;$('pauseButton').onclick=pause;$('retryButton').onclick=()=>{mode='retrying';start();};$('quitButton').onclick=quit;$('resultRetry').onclick=start;$('resultBack').onclick=quit;$('saveScore').onclick=saveScore;
 $('settingsButton').onclick=() =>openDialog('settingsDialog');$('remapShortcut').onclick=()=>openDialog('settingsDialog');$('helpButton').onclick=()=>openDialog('helpDialog');$('profileButton').onclick=()=>{setName();openDialog('profileDialog');};
 document.querySelectorAll('.close-dialog').forEach(button=>button.onclick=()=>button.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(dialog=>{dialog.addEventListener('close',()=>{remapping=false;remapKeys=[];renderKeyGuide();});dialog.addEventListener('click',e=>{if(e.target===dialog){const rect=dialog.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)dialog.close();}});});
 document.querySelectorAll('[data-difficulty]').forEach(button=>button.onclick=()=>selectDifficulty(Number(button.dataset.difficulty)));
-for(const key of ['speed','volume','pianoVolume','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='volume')applyVolume();if(key==='pianoVolume')piano.stopAll();};
+for(const key of ['speed','volume','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='volume')applyVolume();};
 $('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();applyVolume();toast('設定を初期値に戻しました');};
 $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('remapHint').textContent='左から順に8つのキーを押してください。Escでキャンセル。';};
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
@@ -302,11 +299,7 @@ $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mo
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
 let tutorial=null;
-async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=air-ribbon-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty,piano});}tutorial.open();}
+async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=music-only-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
 $('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
-$('testPiano').onclick=()=>{piano.start(0);setTimeout(()=>piano.stop(0),350);};
 
-// Prepare audio on a user gesture before the first played key.
-document.addEventListener('pointerdown',()=>piano.unlock(),{capture:true,once:true});
-window.addEventListener('keydown',event=>{if(prefs.keys.includes(event.code)&&!event.repeat)piano.unlock();},{capture:true});

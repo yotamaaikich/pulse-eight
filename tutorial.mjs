@@ -20,11 +20,11 @@ export class TutorialAttempt{
   }
 }
 
-export function createTutorial({dialog,getKeys,getDifficulty,piano}){
+export function createTutorial({dialog,getKeys,getDifficulty}){
   const $=id=>dialog.querySelector('#'+id),canvas=$('tutorialCanvas'),ctx=canvas.getContext('2d');
   let lessons=LESSONS,step=0,attempt=null,started=0,frame=0,retryAt=0,held=new Set();
   const keyLabel=code=>code==='Semicolon'?';':code.replace(/^Key|^Digit/,'');
-  function release(){held.clear();piano.stopAll();}
+  function release(){held.clear();}
   function showLesson(){
     attempt=null;retryAt=0;release();const lesson=lessons[step],keys=getKeys();
     $('tutorialProgress').textContent=`${step+1} / ${lessons.length}`;
@@ -39,7 +39,7 @@ export function createTutorial({dialog,getKeys,getDifficulty,piano}){
   function update(t,action,lane){
     if(!attempt||attempt.status!=='running')return;
     const events=attempt.update(t,action,lane);
-    if(attempt.status==='success'){$('tutorialStatus').textContent=step===lessons.length-1?'全レッスンクリア！ 選んだ難易度の曲で試してみよう。':'成功！ 次の操作へ進もう。';$('tutorialNext').textContent=step===lessons.length-1?'練習を終える [Enter]':'次へ [Enter]';$('tutorialNext').hidden=false;piano.stopAll();}
+    if(attempt.status==='success'){$('tutorialStatus').textContent=step===lessons.length-1?'全レッスンクリア！ 選んだ難易度の曲で試してみよう。':'成功！ 次の操作へ進もう。';$('tutorialNext').textContent=step===lessons.length-1?'練習を終える [Enter]':'次へ [Enter]';$('tutorialNext').hidden=false;}
     else if(attempt.status==='retry'){$('tutorialStatus').textContent='もう一度！ キーを離して、次のノーツを待とう。';retryAt=performance.now()+1400;release();}
     else if(events.some(e=>e.kind==='holdstart'))$('tutorialStatus').textContent='そのまま押し続けて…';
     else if(events.some(e=>e.kind==='flickstart'))$('tutorialStatus').textContent='キーを押したままSpace！';
@@ -74,8 +74,8 @@ export function createTutorial({dialog,getKeys,getDifficulty,piano}){
     if(down&&event.code==='Enter'){event.preventDefault();event.stopImmediatePropagation();if(!event.repeat&&(!attempt||attempt.status==='success'))next();return;}
     if(lane<0&&!space)return;
     event.preventDefault();event.stopImmediatePropagation();
-    if(down){if(event.repeat||held.has(event.code))return;held.add(event.code);if(lane>=0)piano.start(lane);}
-    else{held.delete(event.code);if(lane>=0)piano.stop(lane);}
+    if(down){if(event.repeat||held.has(event.code))return;held.add(event.code);}
+    else{held.delete(event.code);}
     if(attempt?.status==='running'){
       const t=(performance.now()-started)/1000;
       if(space){for(let i=0;i<8;i++)if(held.has(keys[i])||!down)update(t,down?'pressFlick':'releaseFlick',i);}
@@ -89,5 +89,5 @@ export function createTutorial({dialog,getKeys,getDifficulty,piano}){
   $('tutorialNext').onclick=next;$('tutorialRetry').onclick=begin;$('tutorialBack').onclick=()=>{if(step>0){step--;showLesson();}};
   function chooseDifficulty(){const difficulty=Number($('tutorialDifficulty').value);$('tutorialFlick').disabled=difficulty!==2;lessons=lessonsFor(difficulty,$('tutorialFlick').checked);step=0;showLesson();}
   $('tutorialDifficulty').onchange=()=>{$('tutorialFlick').checked=Number($('tutorialDifficulty').value)===2;chooseDifficulty();};$('tutorialFlick').onchange=chooseDifficulty;
-  return {open(){$('tutorialDifficulty').value=String(getDifficulty());$('tutorialFlick').checked=getDifficulty()===2;chooseDifficulty();dialog.showModal();piano.unlock();cancelAnimationFrame(frame);frame=requestAnimationFrame(draw);}};
+  return {open(){$('tutorialDifficulty').value=String(getDifficulty());$('tutorialFlick').checked=getDifficulty()===2;chooseDifficulty();dialog.showModal();cancelAnimationFrame(frame);frame=requestAnimationFrame(draw);}};
 }
