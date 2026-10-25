@@ -11,14 +11,14 @@ export function createPiano(volume){
         const real=new Float32Array(10),imag=new Float32Array([0,1,.45,.23,.13,.08,.045,.027,.016,.009]);wave=context.createPeriodicWave(real,imag);
         hammer=context.createBuffer(1,Math.ceil(context.sampleRate*.025),context.sampleRate);const data=hammer.getChannelData(0);let seed=1973;for(let i=0;i<data.length;i++){seed=(seed*1664525+1013904223)>>>0;data[i]=((seed/4294967296)*2-1)*Math.exp(-i/(context.sampleRate*.004));}
       }
-      context.resume().catch(()=>{});
+      if(context.state!=='running')context.resume().catch(()=>{});
     }catch{/* Audio may be unavailable on this device. */}
   }
   function stop(lane,immediate=false){
     const voice=voices.get(lane);if(!voice||!context)return;voices.delete(lane);
     const releaseAt=immediate?context.currentTime:Math.max(context.currentTime,voice.started+.18);
     if(voice.envelope.gain.cancelAndHoldAtTime)voice.envelope.gain.cancelAndHoldAtTime(releaseAt);
-    else{voice.envelope.gain.cancelScheduledValues(releaseAt);voice.envelope.gain.setValueAtTime(voice.level*Math.exp(-Math.max(0,releaseAt-voice.started)*1.35),releaseAt);}
+    else{const age=Math.max(0,releaseAt-voice.started),level=voice.level;const value=age<.004?level*age/.004:age<.18?level*Math.pow(.56,(age-.004)/.176):level*.56*Math.pow(.0001/(level*.56),Math.min(1,(age-.18)/3.22));voice.envelope.gain.cancelScheduledValues(releaseAt);voice.envelope.gain.setValueAtTime(value,releaseAt);}
     voice.envelope.gain.setTargetAtTime(0,releaseAt,.12);
     for(const source of voice.sources)source.stop(releaseAt+.65);
   }

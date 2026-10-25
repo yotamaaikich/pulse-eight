@@ -1,6 +1,6 @@
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,customChart,isFullCombo,FLICK_KEYS} from './engine.mjs?v=vocaloid-20-1';
 import {createCreator} from './creator.mjs?v=vocaloid-20-1';
-import {createPiano} from './piano.mjs?v=piano-touch-2';
+import {createPiano} from './piano.mjs?v=piano-keydown-3';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs';
@@ -311,3 +311,7 @@ async function openTutorial(){if(['running','buffering','loading'].includes(mode
 $('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
 $('testPiano').onclick=()=>{piano.start(0);setTimeout(()=>piano.stop(0),350);};
+
+// Prepare audio on a user gesture before the first played key.
+document.addEventListener('pointerdown',()=>piano.unlock(),{capture:true,once:true});
+window.addEventListener('keydown',event=>{if(prefs.keys.includes(event.code)&&!event.repeat)piano.unlock();},{capture:true});

@@ -16,5 +16,14 @@ test('short taps retain a piano attack and release tail, with silent zero volume
     assert.ok(gains.some(n=>n.gain.calls.some(c=>c[0]==='hold'&&c[1]===.18)));
     volume=0;piano.start(1);assert.equal(sources.length,6,'explicit mute stays silent');
     audio.currentTime=1;piano.stopAll();assert.equal(sources[3].stopAt,1.65);
+    volume=30;piano.start(2);
+    // Simulate a browser without cancelAndHoldAtTime on the new voice.
+    const voiceEnvelope=gains.findLast(n=>n.gain.calls.some(c=>c[0]==='linear'));
+    voiceEnvelope.gain.cancelAndHoldAtTime=undefined;
+    voiceEnvelope.gain.cancelScheduledValues=()=>{};
+    audio.currentTime=1.5;const count=sources.length;piano.stop(2);
+    assert.equal(sources.length,count,'release creates no new oscillator');
+    const release=voiceEnvelope.gain.calls.findLast(c=>c[0]==='set');
+    assert.ok(release[1]<.65*.3*.56,'release never jumps above the already decaying note');
   }finally{delete globalThis.AudioContext;}
 });
