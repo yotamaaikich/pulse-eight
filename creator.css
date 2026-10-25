@@ -26,3 +26,18 @@
 .song-art::before,.mini-art::before{content:"";position:static;transform:none;border-radius:0;display:block;width:22px;height:24px;background:linear-gradient(currentColor,currentColor) left center/5px 12px no-repeat,linear-gradient(currentColor,currentColor) center/5px 24px no-repeat,linear-gradient(currentColor,currentColor) right center/5px 17px no-repeat;opacity:.55}
 
 .song-art::after{display:none}
+
+.tutorial-launch{background:#344e43;color:#fff;font-size:12px;font-weight:700;border-radius:6px;padding:10px 13px}
+.tutorial-launch:hover{background:#243e33}.tutorial-launch:focus-visible{outline:3px solid #e76550;outline-offset:3px}
+.tutorial-dialog{width:850px;max-width:calc(100% - 28px);max-height:calc(100dvh - 28px);overflow:auto;padding:24px}
+.tutorial-dialog .dialog-title{margin-bottom:12px}.tutorial-dialog h2{font-size:27px}
+.tutorial-description{font-size:13px;line-height:1.8;min-height:46px}.tutorial-key-prompt{font-size:24px;font-weight:800;margin:12px 0;color:#344e43;letter-spacing:3px}
+#tutorialCanvas{display:block;width:100%;height:auto;border-radius:9px;background:#18282a}
+.tutorial-feedback{font-size:14px;font-weight:700;min-height:24px;margin:16px 0;color:#344e43}
+.tutorial-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.tutorial-actions .coral-button{margin-left:auto;font-size:13px;padding:12px 18px}.tutorial-actions .small-button{font-size:12px;padding:10px 14px}
+.tutorial-note{font-size:10px;color:#6a796b;line-height:1.8;margin:14px 0 0}#helpTutorial{font-size:13px;margin:8px 0 16px}
+@media(max-width:750px){.tutorial-dialog{padding:18px}.tutorial-description{font-size:12px}.tutorial-launch{padding:8px;font-size:10px}.tutorial-actions{gap:6px}.tutorial-actions .small-button{padding:9px}.tutorial-actions .coral-button{padding:10px}.tutorial-feedback{font-size:12px}}
+
+.tutorial-options{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:16px 0}.tutorial-options label{display:flex;align-items:center;gap:8px;font-size:12px}.tutorial-options select{padding:8px 12px;font:inherit;background:#fff;border:1px solid #9cad9f;border-radius:5px}.tutorial-options input{width:17px;height:17px;accent-color:#344e43}.tutorial-options label:has(input:disabled){opacity:.55}
+
+.tutorial-dialog #tutorialCanvas{height:min(34dvh,360px);object-fit:contain}.tutorial-description{min-height:0;margin:8px 0}.tutorial-key-prompt{margin:8px 0;font-size:22px}

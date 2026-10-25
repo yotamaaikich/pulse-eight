@@ -305,3 +305,7 @@ const creator=createCreator({onPlay:draft=>{if(mode==='results')quit();activeCha
 $('creatorButton').onclick=openCreator;$('resultEdit').onclick=openCreator;$('communityButton').onclick=browseCharts;$('communityRefresh').onclick=refreshCharts;
 $('standardChartButton').onclick=()=>{if(!['idle','results'].includes(mode))return;if(mode==='results')quit();activeChart=null;selectSong(selected);selectDifficulty(difficulty);};
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
+
+let tutorial=null;
+async function openTutorial(){if(['running','buffering','loading'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=tutorial-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty,piano});}tutorial.open();}
+$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
