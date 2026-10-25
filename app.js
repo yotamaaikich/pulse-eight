@@ -1,5 +1,6 @@
+import {drawAirRibbons,drawAirHead} from './air.mjs';
 import {voiceChart,noteForKey,pitchForKey} from './melodies.mjs';
-import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,customChart,isFullCombo} from './engine.mjs?v=vocaloid-20-1';
+import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=vocaloid-20-1';
 import {createPiano} from './piano.mjs?v=melody-1';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
@@ -25,7 +26,7 @@ let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
 if(typeof name!=='string')name='PLAYER';
 const bests=read('pulse-bests',{});
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
-let activeChart=null,libraryPack='all',spaceHeld=false;
+let libraryPack='all',spaceHeld=false;
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
 const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[];
@@ -36,7 +37,7 @@ const label=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]|| (code.
 const song=()=>SONGS[selected];
 const formatTime=seconds=>String(Math.floor(Math.max(0,seconds)/60)).padStart(2,'0')+':'+String(Math.floor(Math.max(0,seconds))%60).padStart(2,'0');
 const resetTimer=()=>{$('timer').textContent='00:00 / '+formatTime(song().duration);};
-const scoreKey=()=>activeChart?`${CHART_VERSION}:${activeChart.kind}:${activeChart.id||activeChart.fingerprint}:${difficulty}`:`${CHART_VERSION}:${song().id}:${difficulty}`;
+const scoreKey=()=>`${CHART_VERSION}:${song().id}:${difficulty}`;
 const fmt=n=>n.toLocaleString('en-US');
 function toast(text){$('toast').textContent=text;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3500);}
 function savePrefs(){write('pulse-prefs',prefs);$('speedLabel').textContent=`SPEED ${prefs.speed.toFixed(1)}×`;syncSettings();renderKeyGuide();}
@@ -55,25 +56,25 @@ function renderSongs(){
 function moveSong(direction){const choices=SONGS.map((s,i)=>({s,i})).filter(({s})=>libraryPack==='all'||s.pack===libraryPack).map(({i})=>i),current=choices.indexOf(selected);if(!choices.length)return;selectSong(choices[current<0?(direction>0?0:choices.length-1):(current+direction+choices.length)%choices.length]);}
 function selectSong(index){
   if(mode==='paused'){const target=(index+SONGS.length)%SONGS.length;if(target!==selected)requestSelection(target,difficulty);return;}
-  if(mode!=='idle')return;const previous=selected;selected=(index+SONGS.length)%SONGS.length;if(previous!==selected)activeChart=null;renderSongs();const s=song();
+  if(mode!=='idle')return;const previous=selected;selected=(index+SONGS.length)%SONGS.length;renderSongs();const s=song();
   $('trackTitle').textContent=s.title;$('trackArtist').textContent=s.artist+' / '+s.vocal;$('bpm').textContent=s.bpm;$('miniArt').style.background=s.color;
-  $('originalLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').href=s.source;$('sheetLink').textContent=s.sourceLabel||'参考楽譜 ↗';$('chartInfo').textContent=activeChart?activeChart.title:s.chartLabel||'公開採譜を参考にした簡略フレーズ';resetTimer();
+  $('originalLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').href=s.source;$('sheetLink').textContent=s.sourceLabel||'参考楽譜 ↗';$('chartInfo').textContent=s.chartLabel||'公開採譜を参考にした簡略フレーズ';resetTimer();
   if(ready&&previous!==selected)player.cueVideoById(s.video);updateChartControls();updateBest();loadLeaders();
 }
-function selectDifficulty(index){if(mode==='paused'){const target=(index+3)%3;if(target!==difficulty||activeChart)requestSelection(selected,target);return;}if(mode!=='idle'||activeChart)return;difficulty=(index+3)%3;document.querySelectorAll('[data-difficulty]').forEach(b=>{b.classList.toggle('active',Number(b.dataset.difficulty)===difficulty);b.setAttribute('aria-pressed',Number(b.dataset.difficulty)===difficulty);});$('leaderDifficulty').textContent=DIFFICULTIES[difficulty];updateBest();loadLeaders();}
+function selectDifficulty(index){if(mode==='paused'){const target=(index+3)%3;if(target!==difficulty)requestSelection(selected,target);return;}if(mode!=='idle')return;difficulty=(index+3)%3;document.querySelectorAll('[data-difficulty]').forEach(b=>{b.classList.toggle('active',Number(b.dataset.difficulty)===difficulty);b.setAttribute('aria-pressed',Number(b.dataset.difficulty)===difficulty);});$('leaderDifficulty').textContent=DIFFICULTIES[difficulty];updateBest();loadLeaders();}
 function requestSelection(nextSong=selected,nextDifficulty=difficulty){
   if(mode!=='paused')return;
   $('changeSong').replaceChildren();for(const [index,track]of SONGS.entries()){const option=document.createElement('option');option.value=index;option.textContent=track.title;$('changeSong').append(option);}
   $('changeSong').value=nextSong;$('changeDifficulty').value=nextDifficulty;updateSelectionWarning();$('changeTrackDialog').showModal();
 }
-function updateSelectionWarning(){const changed=Number($('changeSong').value)!==selected||Number($('changeDifficulty').value)!==difficulty||!!activeChart;$('confirmTrackChange').disabled=!changed;}
-function confirmSelection(){if(mode!=='paused')return;const nextSong=Number($('changeSong').value),nextDifficulty=Number($('changeDifficulty').value);$('changeTrackDialog').close();quit();activeChart=null;selectSong(nextSong);selectDifficulty(nextDifficulty);toast('プレイをリセットして変更しました。Enterでスタート');}
+function updateSelectionWarning(){const changed=Number($('changeSong').value)!==selected||Number($('changeDifficulty').value)!==difficulty;$('confirmTrackChange').disabled=!changed;}
+function confirmSelection(){if(mode!=='paused')return;const nextSong=Number($('changeSong').value),nextDifficulty=Number($('changeDifficulty').value);$('changeTrackDialog').close();quit();selectSong(nextSong);selectDifficulty(nextDifficulty);toast('プレイをリセットして変更しました。Enterでスタート');}
 function updateBest(){const b=bests[scoreKey()];$('personalBest').textContent=b?fmt(b.score):'—';}
 async function api(path,body){const response=await fetch(API_URL+path,{method:body?'POST':'GET',headers:{apikey:PUBLIC_KEY,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'クラウドへ接続できませんでした');return data;}
 async function loadLeaders(){
   const request=++leaderRequest;$('leaders').innerHTML='<li class="empty-state">ランキングを読み込み中…</li>';
   try{
-    const data=await api(activeChart?.kind==='published'?'/leaderboard?chart='+activeChart.id:`/leaderboard?song=${song().id}&difficulty=${difficulty}`);if(request!==leaderRequest)return;
+    const data=await api(`/leaderboard?song=${song().id}&difficulty=${difficulty}`);if(request!==leaderRequest)return;
     $('cloudStatus').textContent='ONLINE';$('leaders').replaceChildren();
     if(!data.scores?.length){const li=document.createElement('li');li.className='empty-state';li.textContent='まだ記録がありません。最初のスコアを刻もう。';$('leaders').append(li);return;}
     data.scores.forEach((row,i)=>{const li=document.createElement('li'),num=document.createElement('span'),person=document.createElement('span'),strong=document.createElement('strong'),small=document.createElement('small'),score=document.createElement('span');num.className='leader-num';num.textContent=String(i+1).padStart(2,'0');person.className='leader-person';strong.textContent=row.name;small.textContent=row.accuracy.toFixed(2)+'% · '+row.max_combo+' COMBO';person.append(strong,small);score.className='leader-score';score.textContent=fmt(row.score);li.append(num,person,score);$('leaders').append(li);});
@@ -81,19 +82,8 @@ async function loadLeaders(){
 }
 function updateChartControls(){
   const busy=!['idle','results'].includes(mode);
-  $('communityButton').disabled=busy;$('standardChartButton').disabled=busy;$('standardChartButton').hidden=!activeChart;
-  $('chartSource').textContent=activeChart?'公開譜面 / '+activeChart.title:'標準譜面';$('chartSource').title=$('chartSource').textContent;
-  $('leaderDifficulty').textContent=activeChart?'CUSTOM':DIFFICULTIES[difficulty];
-  document.querySelectorAll('[data-difficulty]').forEach(button=>{button.disabled=mode==='paused'?false:busy||!!activeChart;button.classList.toggle('active',!activeChart&&Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(!activeChart&&Number(button.dataset.difficulty)===difficulty));});
-}
-async function leaveExpanded(){document.body.classList.remove('chart-expanded');if(document.fullscreenElement)await document.exitFullscreen();syncExpandedControls();}
-async function browseCharts(){if(!['idle','results'].includes(mode))return;await leaveExpanded();$('communitySong').textContent=song().title;$('communityDialog').showModal();await refreshCharts();}
-async function refreshCharts(){
-  const selectedSong=song().id,list=$('communityList');list.textContent='譜面を読み込み中…';
-  try{const data=await api('/charts?song='+selectedSong);if(song().id!==selectedSong)return;list.replaceChildren();
-    if(!data.charts?.length){list.textContent='公開済みの譜面はありません。標準譜面から遊べます。';return;}
-    for(const chart of data.charts){const button=document.createElement('button'),info=document.createElement('span'),title=document.createElement('strong'),detail=document.createElement('small'),badge=document.createElement('span');button.className='community-chart';title.textContent=chart.title;detail.textContent=chart.creator_name+' · '+DIFFICULTIES[chart.difficulty]+' · '+chart.note_count+' NOTES';badge.className='verified-chart';badge.textContent='作成者フルコンボ済み';info.append(title,detail);button.append(info,badge);button.onclick=async()=>{button.disabled=true;try{const loaded=await api('/chart?id='+chart.id);if(song().id!==selectedSong||!['idle','results'].includes(mode)||!$('communityDialog').open)return;if(mode==='results')quit();activeChart={...loaded.chart,kind:'published'};difficulty=loaded.chart.difficulty;$('communityDialog').close();selectSong(selected);toast('公開譜面を選びました。Enterでプレイ');}catch(error){toast(error.message);button.disabled=false;}};list.append(button);}
-  }catch(error){list.textContent=error.message;}
+  $('leaderDifficulty').textContent=DIFFICULTIES[difficulty];
+  document.querySelectorAll('[data-difficulty]').forEach(button=>{button.disabled=mode==='paused'?false:busy;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
 }
 function stateText(text){$('playState').textContent=text;}
 function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!['loading','buffering'].includes(mode));$('playCountdown').classList.toggle('hidden',mode!=='countdown');updateChartControls();}
@@ -121,10 +111,10 @@ function syncPlayback(now){
 function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
-  let chart;try{chart=voiceChart(song(),activeChart?customChart(song(),activeChart.notes,difficulty):makeChart(song(),difficulty));}catch(error){toast(error.message);return;}
+  let chart;try{chart=voiceChart(song(),makeChart(song(),difficulty));}catch(error){toast(error.message);return;}
   piano.unlock();piano.stopAll();upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
-  runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION,...(activeChart?{chartId:activeChart.id}:{})}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
+  runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
 }
 function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';countdownUntil=0;countdownReady=false;piano.stopAll();player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
@@ -225,6 +215,7 @@ function draw(now){
   for(let b=Math.floor(visualTime/beat);b<visualTime/beat+lookahead/beat+2;b++){const diff=b*beat-visualTime;if(diff<0||diff>lookahead)continue;const depth=1-diff/lookahead,y=top+span*depth*depth;ctx.strokeStyle=b%(song().meter||4)===0?'#c2decd1f':'#c2decd0b';ctx.beginPath();ctx.moveTo(project(0,depth),y);ctx.lineTo(project(W,depth),y);ctx.stroke();}
   let visibleNotes=notes;
   if(!active&&mode!=='results'){visibleNotes=Array.from({length:20},(_,i)=>({t:visualTime+(i*.31-(visualTime%3.1)),lane:[0,2,4,5,3,2,1,0,6,7][i%10],degree:[0,2,4,5,3,2,1,0,6,7][i%10]}));}
+  drawAirRibbons(ctx,visibleNotes,{width:W,time:visualTime,lookahead,top,hitY,held:spaceHeld});
   const chords=new Map();
   for(const n of visibleNotes){if(n.done||n.started||n.assist||!n.chord)continue;const diff=n.t-visualTime;if(diff>lookahead||diff<-.17)continue;if(!chords.has(n.t))chords.set(n.t,[]);chords.get(n.t).push(n);}
   for(const [at,group]of chords){
@@ -243,7 +234,7 @@ function draw(now){
     const xBase=n.assist?n.boundary*laneW:(n.lane+.5)*laneW;
     const head=projectPoint(xBase,W,depth,top,hitY),x=head.x;
     const width=(n.assist?laneW*.32:laneW*.83)*head.scale,height=(n.assist?12:32)*(.35+.65*depth);
-    const color=n.assist?'#8a99a3':n.lane<4?'#f0937f':'#b3e4c8';
+    const color=n.assist?'#8a99a3':n.flick?'#baff5a':n.lane<4?'#f0937f':'#b3e4c8';
     if(n.end){
       const tailDepth=Math.min(1,Math.max(0,1-tailDiff/lookahead));
       const tail=projectPoint(xBase,W,tailDepth,top,hitY);
@@ -253,13 +244,14 @@ function draw(now){
       ctx.globalAlpha=.8;ctx.fillRect(tail.x-tailHalf,tail.y,tailHalf*2,3);
       ctx.strokeStyle=color;ctx.lineWidth=n.started?2:1;ctx.beginPath();ctx.moveTo(tail.x-tailHalf,tail.y);ctx.lineTo(x-headHalf,y);ctx.moveTo(tail.x+tailHalf,tail.y);ctx.lineTo(x+headHalf,y);ctx.stroke();
     }
+    if(n.flick){drawAirHead(ctx,x,y,width,head.scale,label(prefs.keys[n.lane]),spaceHeld);continue;}
     ctx.globalAlpha=n.assist?.32:.4+.6*depth;ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=depth>.7?8:0;
     ctx.beginPath();ctx.roundRect(x-width/2,y-height/2,width,height,Math.max(1,3*depth));ctx.fill();ctx.shadowBlur=0;ctx.globalAlpha=1;
-    if(!n.assist&&depth>.25){ctx.fillStyle='#244337';ctx.textAlign='center';ctx.font=`700 ${Math.max(7,(n.flick?12:15)*depth)}px \"DM Sans\",sans-serif`;ctx.fillText(n.flick?label(prefs.keys[n.lane])+'+SP':label(prefs.keys[n.lane]),x,y+5*depth);}
+    if(!n.assist&&depth>.25){ctx.fillStyle='#244337';ctx.textAlign='center';ctx.font=`700 ${Math.max(7,(n.flick?12:15)*depth)}px \"DM Sans\",sans-serif`;ctx.fillText(label(prefs.keys[n.lane]),x,y+5*depth);}
   }
   ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.fillRect(0,hitY-1,W,2);ctx.globalAlpha=1;ctx.shadowColor='#b3e4c8';ctx.shadowBlur=12;ctx.fillStyle='#b3e4c8';ctx.fillRect(0,hitY,W,1);ctx.shadowBlur=0;
   const keyTop=hitY+3,keyH=H-keyTop-4;
-  for(let i=0;i<8;i++){const down=pressed.has(i)||now-flashes[i]<100;const x=i*laneW;const keyGrad=ctx.createLinearGradient(0,keyTop,0,H);keyGrad.addColorStop(0,down?(i<4?'#f5ac98':'#b6e5d2'):'#f3f3e9');keyGrad.addColorStop(1,down?(i<4?'#d8765c':'#76b39b'):'#cbd2bf');ctx.fillStyle=keyGrad;ctx.beginPath();ctx.roundRect(x+1,keyTop,laneW-2,keyH,3);ctx.fill();ctx.fillStyle='#58644e';ctx.textAlign='center';ctx.font='700 12px "DM Sans",sans-serif';ctx.fillText(label(prefs.keys[i]),x+laneW/2,H-20);if(difficulty===2){ctx.font='700 9px \"DM Sans\",sans-serif';ctx.fillStyle='#6a7766';ctx.fillText('+ SPACE',x+laneW/2,H-36);}}
+  for(let i=0;i<8;i++){const down=pressed.has(i)||now-flashes[i]<100;const x=i*laneW;const keyGrad=ctx.createLinearGradient(0,keyTop,0,H);keyGrad.addColorStop(0,down?(i<4?'#f5ac98':'#b6e5d2'):'#f3f3e9');keyGrad.addColorStop(1,down?(i<4?'#d8765c':'#76b39b'):'#cbd2bf');ctx.fillStyle=keyGrad;ctx.beginPath();ctx.roundRect(x+1,keyTop,laneW-2,keyH,3);ctx.fill();ctx.fillStyle='#58644e';ctx.textAlign='center';ctx.font='700 12px "DM Sans",sans-serif';ctx.fillText(label(prefs.keys[i]),x+laneW/2,H-20);if(difficulty===2){ctx.font='700 9px \"DM Sans\",sans-serif';ctx.fillStyle='#6a7766';ctx.fillText('AIR',x+laneW/2,H-36);}}
   [1,2,4,5,6].forEach((boundary,i)=>{const x=boundary*laneW,down=now-blackFlashes[i]<130;ctx.fillStyle=down?'#719c88':'#172127';ctx.shadowColor='#0006';ctx.shadowBlur=4;ctx.beginPath();ctx.roundRect(x-laneW*.25,keyTop,laneW*.5,38,2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle=down?'#c4edd7':'#3c494a';ctx.beginPath();ctx.moveTo(x-laneW*.2,keyTop+33);ctx.lineTo(x+laneW*.2,keyTop+33);ctx.stroke();});
   ctx.strokeStyle='#ffffffdd';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(W/2,keyTop+42);ctx.lineTo(W/2,H);ctx.stroke();
   ctx.font='700 10px "DM Sans",sans-serif';ctx.textAlign='center';ctx.fillStyle='#6b4b40';ctx.fillText('左手',W/4,H-5);ctx.fillStyle='#355749';ctx.fillText('右手',W*3/4,H-5);
@@ -307,12 +299,10 @@ document.querySelectorAll('[data-pack]').forEach(button=>button.onclick=()=>{lib
 $('pauseChange').onclick=()=>requestSelection();$('changeSong').onchange=updateSelectionWarning;$('changeDifficulty').onchange=updateSelectionWarning;$('confirmTrackChange').onclick=confirmSelection;
 $('fullscreenButton').onclick=toggleFullscreen;$('playFullscreen').onclick=toggleFullscreen;
 $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mode==='paused'?resume():pause();
-$('communityButton').onclick=browseCharts;$('communityRefresh').onclick=refreshCharts;
-$('standardChartButton').onclick=()=>{if(!['idle','results'].includes(mode))return;if(mode==='results')quit();activeChart=null;selectSong(selected);selectDifficulty(difficulty);};
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
 let tutorial=null;
-async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=space-flick-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty,piano});}tutorial.open();}
+async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=air-ribbon-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty,piano});}tutorial.open();}
 $('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
 $('testPiano').onclick=()=>{piano.start(0);setTimeout(()=>piano.stop(0),350);};

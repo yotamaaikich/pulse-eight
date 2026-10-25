@@ -1,3 +1,4 @@
+import {drawAirRibbons,drawAirHead} from './air.mjs';
 import {RhythmSession,isFullCombo} from './engine.mjs';
 import {projectPoint} from './geometry.mjs';
 
@@ -5,8 +6,8 @@ export const LESSONS=[
   {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、表示されたキーを1回押そう。'},
   {title:'長押し',lanes:[2],hold:1.2,text:'帯の先頭で押し、帯がなくなるまで押し続けよう。途中で離すと失敗。'},
   {title:'同時押し',lanes:[3,4],text:'白い横線でつながった2つのノーツを、左右の手で同時に押そう。'},
-  {title:'Spaceフリック',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
-  {title:'Spaceを押したままレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'Spaceを押し続け、流れるノーツに合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。'},
+  {title:'AIR：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
+  {title:'AIR：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'黄緑の帯に沿ってSpaceを押し続け、上向き矢印に合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。'},
 ];
 export function lessonsFor(difficulty,includeFlick=true){return LESSONS.slice(0,difficulty===0?2:difficulty===1||!includeFlick?3:5);}
 export class TutorialAttempt{
@@ -54,10 +55,12 @@ export function createTutorial({dialog,getKeys,getDifficulty,piano}){
     ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,hit);ctx.lineTo(W,hit);ctx.stroke();
     const keys=getKeys();for(let lane=0;lane<8;lane++){ctx.fillStyle=held.has(keys[lane])?(lane<4?'#ef947d':'#a9dcbf'):'#eff0e6';ctx.fillRect(lane*laneW+2,hit+6,laneW-4,62);ctx.fillStyle='#273b34';ctx.font='bold 19px sans-serif';ctx.fillText(keyLabel(keys[lane]),(lane+.5)*laneW,hit+39);}
     const lesson=lessons[step],notes=attempt?.session.notes||[];
+    drawAirRibbons(ctx,notes,{width:W,time:t,lookahead:2.4,top:22,hitY:hit,held:held.has('Space')});
     const depth=at=>Math.max(0,Math.min(1.08,1-(at-t)/2.4));
     if(notes.length>1&&!lesson.sweep&&!notes.every(n=>n.done)){const d=depth(2.4),a=point((notes[0].lane+.5)*laneW,d),b=point((notes[1].lane+.5)*laneW,d);ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
     for(const n of notes){if(n.done)continue;const d=n.started?1:depth(n.t),head=point((n.lane+.5)*laneW,d),color=n.lane<4?'#ef947d':'#a9dcbf';ctx.fillStyle=color;
       if(n.end){const tail=point((n.lane+.5)*laneW,depth(n.end));ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(head.x-33*head.scale,head.y);ctx.lineTo(tail.x-33*tail.scale,tail.y);ctx.lineTo(tail.x+33*tail.scale,tail.y);ctx.lineTo(head.x+33*head.scale,head.y);ctx.fill();ctx.globalAlpha=1;}
+      if(n.flick){drawAirHead(ctx,head.x,head.y,84*head.scale,head.scale,keyLabel(keys[n.lane]),held.has('Space'));continue;}
       ctx.fillRect(head.x-42*head.scale,head.y-10*head.scale,84*head.scale,20*head.scale);ctx.fillStyle='#20332c';ctx.font=`bold ${Math.max(10,15*head.scale)}px sans-serif`;ctx.fillText(n.flick?keyLabel(keys[n.lane])+'+SP':keyLabel(keys[n.lane]),head.x,head.y+5*head.scale);
     }
     if(!attempt){ctx.fillStyle='#e1ebe3';ctx.font='bold 20px sans-serif';ctx.fillText('下のラインでキーを押す',W/2,150);}

@@ -5,6 +5,7 @@ import {webcrypto} from 'node:crypto';
 import * as engine from '../engine.mjs';
 import {projectPoint} from '../geometry.mjs';
 import {PlaybackGate} from '../playback.mjs';
+import {drawAirRibbons,drawAirHead} from '../air.mjs';
 import {voiceChart,noteForKey,pitchForKey} from '../melodies.mjs';
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map(),pianoNotes=[],pianoPitches=[];
 const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:()=>{}});
@@ -13,7 +14,7 @@ const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=
 const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.state=1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;return fakePlayer;}}};
 const createPiano=()=>({unlock(){},start:(lane,midi)=>{pianoNotes.push(lane);pianoPitches.push(midi); },stop(){},stopAll(){}}),createCreator=()=>({open(){}});
-const scope=vm.createContext({...engine,projectPoint,PlaybackGate,voiceChart,noteForKey,pitchForKey,createCreator,createPiano,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
+const scope=vm.createContext({...engine,projectPoint,PlaybackGate,drawAirRibbons,drawAirHead,voiceChart,noteForKey,pitchForKey,createCreator,createPiano,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
 vm.runInContext(source+`\nglobalThis.qa={start,draw,pause,resume,requestSelection,confirmSelection,selectSong,selectDifficulty,get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
 window.onYouTubeIframeAPIReady();fakePlayer.options.events.onReady();
