@@ -6,8 +6,8 @@ export const LESSONS=[
   {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、表示されたキーを1回押そう。'},
   {title:'長押し',lanes:[2],hold:1.2,text:'帯の先頭で押し、帯がなくなるまで押し続けよう。途中で離すと失敗。押し続ける間は0.25秒ごとにコンボが増えます。'},
   {title:'同時押し',lanes:[3,4],text:'白い横線でつながった2つのノーツを、左右の手で同時に押そう。'},
-  {title:'AIR：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
-  {title:'AIR：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'黄緑の帯に沿ってSpaceを押し続け、上向き矢印に合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。帯が終わったらSpaceを離そう。区間外で押すとコンボが切れます。'},
+  {title:'FLOAT（フロート）：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
+  {title:'FLOAT：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'黄緑の帯に沿ってSpaceを押し続け、上向き矢印に合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。帯が終わったらSpaceを離そう。区間外で押すとコンボが切れます。'},
 ];
 export function lessonsFor(difficulty,includeFlick=true){return LESSONS.slice(0,difficulty===0?2:difficulty===1||!includeFlick?3:5);}
 export class TutorialAttempt{
