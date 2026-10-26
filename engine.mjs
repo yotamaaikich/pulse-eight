@@ -1,7 +1,7 @@
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
-export const CHART_VERSION = 'piano8-full-v5';
+export const CHART_VERSION = 'piano8-full-v6';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const FLICK_WINDOW = 0.22;
@@ -67,7 +67,7 @@ const TRANSPOSE={mesmerizer:2,override:3,heat:2};
 
 // Identical, deterministic charts are used by the browser and score server.
 // These are original beat-grid charts, not transcriptions of commercial game charts.
-export function makeChart(song, difficulty) {
+function makeRawChart(song, difficulty) {
   const proseka=makeProsekaChart(song,difficulty);if(proseka)return proseka;
   const taiko=makeTaikoChart(song,difficulty);if(taiko)return taiko;
   const expansion=makeExpansionChart(song,difficulty);if(expansion)return expansion;
@@ -110,6 +110,29 @@ export function makeChart(song, difficulty) {
   const counts=new Map();for(const n of notes)if(!n.assist)counts.set(n.t,(counts.get(n.t)||0)+1);
   for(const n of notes)if(!n.assist)n.chord=counts.get(n.t)>1;
   return notes.sort((a,b)=>a.t-b.t||(a.lane??-1)-(b.lane??-1));
+}
+// Reuse the authored rhythm, but place AIR in short phrases with real release gaps.
+export function makeChart(song,difficulty){
+  const chart=makeRawChart(song,difficulty);
+  if(difficulty!==2)return chart;
+  const anchors=chart.filter(n=>n.flick&&!n.assist);
+  for(const n of chart)delete n.flick;
+  const manual=chart.filter(n=>!n.assist),eligible=[],nextAt=Array(8).fill(Infinity);
+  for(let i=manual.length-1;i>=0;i--){const n=manual[i];if(!n.end&&nextAt[n.lane]>=n.t+WINDOW+FLICK_WINDOW+.04)eligible.push(n);nextAt[n.lane]=n.t;}
+  eligible.reverse();
+  let previousEnd=-Infinity;
+  for(const anchor of anchors){
+    if(anchor.t<8||anchor.t>song.duration-6||anchor.t-previousEnd<6||!eligible.includes(anchor))continue;
+    const phrase=[anchor];
+    for(const n of eligible){
+      const last=phrase.at(-1);
+      if(n.t<=last.t+.24||n.t>last.t+1.0||n.t>anchor.t+1.8||n.lane===last.lane)continue;
+      phrase.push(n);if(phrase.length===3)break;
+    }
+    for(const n of phrase)n.flick=true;
+    previousEnd=phrase.at(-1).t;
+  }
+  return chart;
 }
 export function judgment(delta) {
   const d = Math.round(Math.abs(delta)*1000000)/1000000;

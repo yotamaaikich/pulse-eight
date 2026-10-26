@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,HOLD_TICK,customChart,validateCustomNotes,isFullCombo,scoreChartReplay} from '../engine.mjs';
+import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,airWindows,HOLD_TICK,customChart,validateCustomNotes,isFullCombo,scoreChartReplay} from '../engine.mjs';
 function spaceFlick(session,t,lane){session.pressSpace(t);return session.pressFlick(t,lane);}
 function holdTicks(notes){return notes.filter(n=>n.end).reduce((sum,n)=>sum+Math.max(0,Math.ceil((n.end-n.t)/HOLD_TICK-1e-8)-1),0);}
 function perfectEvents(notes){return notes.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round(n.t*1000),0,4],[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3],[Math.round((n.t+.12)*1000),0,5]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);}
@@ -106,4 +106,15 @@ test('AIR ribbons permit continuous Space only within the same short chain; fram
 
 test('an AIR action without an actual Space-down event cannot score on replay',()=>{
  const result=scoreChartReplay([{t:1,lane:0,flick:true}],2,[[1000,0,1],[1050,0,2]]);assert.equal(result.stats.miss,1);assert.equal(result.score,0);
+});
+
+test('every stock HARD chart has short AIR phrases with six-second release gaps and quiet intro/outro',()=>{
+  for(const song of SONGS){
+    const chart=makeChart(song,2),windows=airWindows(chart),air=chart.filter(n=>n.flick);assert.ok(windows.length>0,song.id);
+    assert.ok(air.some((n,i)=>i&&n.t-air[i-1].t<=1.2),song.id+' has an actual lane-move phrase');
+    for(const w of windows){assert.ok(w.start>=7.78-1e-9,song.id+' intro');assert.ok(w.end<=song.duration-3.5,song.id+' outro');assert.ok(w.end-w.start<=2.42,song.id+' bounded AIR length');}
+    for(let i=1;i<windows.length;i++)assert.ok(windows[i].start-windows[i-1].end>=5.38-1e-9,song.id+' release gap');
+    assert.ok(windows.reduce((sum,w)=>sum+w.end-w.start,0)/song.duration<.3,song.id+' AIR coverage');
+    for(const diff of [0,1])assert.ok(makeChart(song,diff).every(n=>!n.flick));
+  }
 });
