@@ -24,7 +24,7 @@ test('a stalled clock freezes scoring, then resumes without losing a held note',
 });
 test('buffering and an ad clock reset do not rewind the chart',()=>{
   const gate=new PlaybackGate();playing(gate,0,5);
-  assert.equal(gate.observe(5,3,5100).waiting,true);
+  assert.equal(gate.observe(5,3,5100).waiting,false);assert.equal(gate.observe(5,3,5500).waiting,true);
   for(let wall=5200;wall<=20000;wall+=100){const result=gate.observe(0,1,wall);assert.equal(result.waiting,true);assert.ok(result.time>=4.99);}
   const resumed=playing(gate,5,5.6,20100);assert.equal(resumed.waiting,false);assert.ok(resumed.time>=5.59);assert.equal(resumed.seek,false);
 });
@@ -33,4 +33,15 @@ test('a forward seek is flagged and a paused resume waits for fresh progress',()
   assert.equal(gate.observe(10,1,2100).seek,true);
   gate.reset(3000,10);assert.equal(gate.observe(10,1,3100).waiting,true);
   assert.equal(playing(gate,10.05,10.5,3150).waiting,false);
+});
+
+test('late pause and buffering notifications do not restart a just-completed countdown',()=>{
+  const gate=new PlaybackGate();gate.resume(1000,0);
+  assert.deepEqual(gate.observe(.01,1,1010),{time:.01,waiting:false,seek:false});
+  assert.equal(gate.observe(.01,2,1020).waiting,false);assert.equal(gate.observe(.01,3,1100).waiting,false);
+  assert.equal(gate.observe(.11,1,1200).waiting,false);assert.equal(gate.time,.11);
+  assert.equal(gate.observe(.11,3,1300).waiting,false);assert.equal(gate.observe(.11,3,1700).waiting,true);assert.equal(gate.time,.11);
+});
+test('a verified post-countdown resume exposes the first audio frame without another progress probe',()=>{
+  const gate=new PlaybackGate();gate.resume(5000,12);const first=gate.observe(12.02,1,5020);assert.equal(first.waiting,false);assert.equal(first.time,12.02);
 });

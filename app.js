@@ -3,7 +3,7 @@ import {drawAirRibbons,drawAirHead} from './air.mjs?v=hold-air-3';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hold-air-3';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
-import {PlaybackGate} from './playback.mjs';
+import {PlaybackGate} from './playback.mjs?v=countdown-sync-1';
 
 const $=id=>document.getElementById(id);
 const DEFAULT_KEYS=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
@@ -30,7 +30,7 @@ let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
 const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[];
 const canvas=$('game'),ctx=canvas.getContext('2d');
-const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownReady=false;
+const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownReady=false,countdownSettledAt=null;
 let W=600,H=535,dpr=1;
 const label=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]|| (code.startsWith('Key')?code.slice(3):code.startsWith('Digit')?code.slice(5):code));
 const song=()=>SONGS[selected];
@@ -89,21 +89,39 @@ function updateChartControls(){
   document.querySelectorAll('[data-difficulty]').forEach(button=>{const info=difficultyMetrics(song(),Number(button.dataset.difficulty));button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+1）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
 }
 function stateText(text){$('playState').textContent=text;}
-function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!['loading','buffering'].includes(mode));$('playCountdown').classList.toggle('hidden',mode!=='countdown');updateChartControls();}
+function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil)));$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil);updateChartControls();}
 function applyVolume(){if(!ready)return;const volume=['loading','buffering','countdown'].includes(mode)?0:prefs.volume;if(appliedVolume!==volume){player.setVolume(volume);appliedVolume=volume;}}
 function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;mode='buffering';playback.hold(performance.now());show(null);stateText('動画読み込み中');applyVolume();}
-function beginCountdown(now){
-  mode='countdown';countdownUntil=now+3000;countdownReady=false;playbackArmed=false;
-  player.pauseVideo();player.seekTo(clock,true);player.pauseVideo();$('countdownNumber').textContent='3';show(null);stateText('GET READY · 3');applyVolume();
+function beginCountdown(now,alreadyCounted=false){
+  mode='countdown';countdownUntil=0;countdownSettledAt=null;countdownReady=alreadyCounted;playbackArmed=false;
+  player.pauseVideo();player.seekTo(clock,true);player.pauseVideo();$('countdownNumber').textContent='3';show(null);stateText('動画読み込み中');applyVolume();
 }
+function playAfterCountdown(now){mode='loading';countdownReady=true;playback.reset(now,clock);playbackArmed=true;show(null);stateText('動画読み込み中');player.playVideo();}
 function syncPlayback(now){
   if(mode==='countdown'){
+    // Do not start the 3 seconds until the asynchronous rewind has actually settled.
+    if(!countdownUntil){
+      const raw=player.getCurrentTime(),settled=player.getPlayerState()===2&&Number.isFinite(raw)&&Math.abs(raw-clock)<=.25;
+      if(!settled){countdownSettledAt=null;return;}
+      countdownSettledAt??=now;
+      if(now-countdownSettledAt<150)return;
+      if(countdownReady){playAfterCountdown(now);return;}
+      countdownUntil=now+3000;show(null);stateText('GET READY · 3');
+    }
     const remaining=Math.max(0,Math.ceil((countdownUntil-now)/1000));$('countdownNumber').textContent=String(remaining||1);stateText('GET READY · '+remaining);
-    if(now>=countdownUntil){mode='loading';countdownReady=true;playback.reset(now,clock);playbackArmed=false;show(null);stateText('動画読み込み中');player.playVideo();}
+    if(now>=countdownUntil)playAfterCountdown(now);
     return;
   }
   if(!ready||!playbackArmed||!['running','buffering','loading'].includes(mode))return;
-  const next=playback.observe(player.getCurrentTime(),player.getPlayerState(),now);
+  const raw=player.getCurrentTime(),state=player.getPlayerState();
+  if(countdownReady){
+    // The content was verified before the countdown. Start on PLAYING instead of
+    // silently consuming the first .35 seconds and treating late pause events as a new stop.
+    if(state!==1||!Number.isFinite(raw)||raw<clock-.15)return;
+    if(raw>clock+.5){beginCountdown(now,true);return;}
+    playback.resume(now,clock);
+  }
+  const next=playback.observe(raw,state,now);
   if(next.seek)eligible=false;
   if(!next.waiting&&mode!=='running'&&!countdownReady){beginCountdown(now);return;}
   clock=next.time;
@@ -187,11 +205,10 @@ function loadPlayer(){
       onReady:()=>{ready=true;applyVolume();$('startHint').textContent='ENTERでスタート · 黒鍵は自動サポート';$('videoStatus').innerHTML='音楽はYouTubeの公式動画から再生します。<br>再生前・再生中に広告が入る場合があります。';},
       onStateChange:event=>{
         if(event.data===1){
-          if(['loading','buffering'].includes(mode)){playbackArmed=true;playback.hold(performance.now());}
+          if(['loading','buffering'].includes(mode)&&!playbackArmed){playbackArmed=true;playback.hold(performance.now());}
           else if(['paused','idle','results','countdown'].includes(mode))player.pauseVideo();
         }
-        if(event.data===3&&mode==='running')waitForVideo();
-        if(event.data===2&&mode==='running')waitForVideo();
+        // PAUSED/BUFFERING are sampled by PlaybackGate, which filters seek transitions.
         if(event.data===0&&['running','buffering','loading'].includes(mode)){
           if(clock>=song().duration-2)finish();else waitForVideo();
         }
