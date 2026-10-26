@@ -1,20 +1,20 @@
-import {drawAirRibbons,drawAirHead} from './air.mjs';
-import {RhythmSession,isFullCombo} from './engine.mjs';
+import {drawAirRibbons,drawAirHead} from './air.mjs?v=hold-air-2';
+import {RhythmSession,isFullCombo} from './engine.mjs?v=hold-air-2';
 import {projectPoint} from './geometry.mjs';
 
 export const LESSONS=[
   {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、表示されたキーを1回押そう。'},
-  {title:'長押し',lanes:[2],hold:1.2,text:'帯の先頭で押し、帯がなくなるまで押し続けよう。途中で離すと失敗。'},
+  {title:'長押し',lanes:[2],hold:1.2,text:'帯の先頭で押し、帯がなくなるまで押し続けよう。途中で離すと失敗。押し続ける間は0.25秒ごとにコンボが増えます。'},
   {title:'同時押し',lanes:[3,4],text:'白い横線でつながった2つのノーツを、左右の手で同時に押そう。'},
   {title:'AIR：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
-  {title:'AIR：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'黄緑の帯に沿ってSpaceを押し続け、上向き矢印に合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。'},
+  {title:'AIR：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'黄緑の帯に沿ってSpaceを押し続け、上向き矢印に合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。帯が終わったらSpaceを離そう。区間外で押すとコンボが切れます。'},
 ];
 export function lessonsFor(difficulty,includeFlick=true){return LESSONS.slice(0,difficulty===0?2:difficulty===1||!includeFlick?3:5);}
 export class TutorialAttempt{
   constructor(lesson){this.session=new RhythmSession(lesson.lanes.map((lane,index)=>({t:2.4+(lesson.sweep?index*.7:0),lane,...(lesson.hold?{end:2.4+lesson.hold}:{}),...(lesson.flick?{flick:true}:{})})),6);this.status='running';}
   update(t,action,lane){
     const events=action?this.session[action](t,lane):this.session.advance(t);
-    if(this.session.stats.miss||this.session.stats.bad)this.status='retry';
+    if(this.session.stats.miss||this.session.stats.bad||this.session.stats.airBreaks)this.status='retry';
     else if(this.session.notes.every(n=>n.done))this.status=isFullCombo(this.session.stats,this.session.notes.length)?'success':'retry';
     return events;
   }
@@ -78,7 +78,7 @@ export function createTutorial({dialog,getKeys,getDifficulty}){
     else{held.delete(event.code);}
     if(attempt?.status==='running'){
       const t=(performance.now()-started)/1000;
-      if(space){for(let i=0;i<8;i++)if(held.has(keys[i])||!down)update(t,down?'pressFlick':'releaseFlick',i);}
+      if(space){update(t,down?'pressSpace':'releaseSpace');for(let i=0;i<8;i++)if(held.has(keys[i])||!down)update(t,down?'pressFlick':'releaseFlick',i);}
       else{update(t,down?'press':'release',lane);if(down&&held.has('Space'))update(t,'pressFlick',lane);if(!down)update(t,'releaseFlick',lane);}
     }
   }

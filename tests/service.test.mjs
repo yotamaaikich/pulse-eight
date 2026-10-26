@@ -25,7 +25,7 @@ function fixture(){
   const start=(extra={})=>call('start',{playerToken:token,song:SONGS[0].id,difficulty:2,version:CHART_VERSION,...extra});
   return {tables,calls,call,start,advance(seconds){now+=seconds*1000;}};
 }
-const raw=[[2000,0,0],[2500,4,500],[3500,7,0,1]],events=[[2000,0,1],[2025,0,0],[2500,4,1],[3000,4,0],[3500,7,1],[3525,7,0],[3580,7,2],[3600,7,3]];
+const raw=[[2000,0,0],[2500,4,500],[3500,7,0,1]],events=[[2000,0,1],[2025,0,0],[2500,4,1],[3000,4,0],[3500,7,1],[3500,0,4],[3525,7,0],[3580,7,2],[3600,7,3],[3600,0,5]];
 test('publication requires a full track and a server-rescored full combo of the immutable draft',async()=>{
   const f=fixture(),draft={title:'MY CHART',notes:structuredClone(raw)},run=await f.start({draft});draft.notes.length=0;
   await assert.rejects(f.call('publish',{playerToken:token,runId:run.runId,name:'PLAYER',events}),/1曲完走/);
@@ -70,6 +70,6 @@ test('stock rankings retain the full-song replay path and draft submission canno
 });
 test('expanded songs accept their complete HARD replay including flicks and more than 2000 notes',async()=>{
   const f=fixture(),song=SONGS.find(s=>s.id==='ghost'),run=await f.start({song:song.id,difficulty:2});f.advance(song.duration);
-  const chart=makeChart(song,2).filter(n=>!n.assist),events=chart.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);
-  assert.ok(chart.length>2000);const result=await f.call('submit',{playerToken:token,runId:run.runId,name:'P',events});assert.equal(result.score,1000000);assert.equal(result.maxCombo,chart.length);
+  const chart=makeChart(song,2).filter(n=>!n.assist),events=chart.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round(n.t*1000),0,4],[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3],[Math.round((n.t+.12)*1000),0,5]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);
+  assert.ok(chart.length>2000);const result=await f.call('submit',{playerToken:token,runId:run.runId,name:'P',events});assert.equal(result.score,1000000);assert.equal(result.maxCombo,chart.length+chart.filter(n=>n.end).reduce((sum,n)=>sum+Math.max(0,Math.ceil((n.end-n.t)/.25-1e-8)-1),0));
 });

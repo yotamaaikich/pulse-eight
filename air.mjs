@@ -1,7 +1,8 @@
+import {AIR_LINK_GAP} from './engine.mjs?v=hold-air-2';
 import {projectPoint} from './geometry.mjs';
 
 const cache=new WeakMap();
-export function airLinks(notes,maxGap=6){
+export function airLinks(notes,maxGap=AIR_LINK_GAP){
   if(cache.get(notes)?.gap===maxGap)return cache.get(notes).links;
   const groups=[];
   for(const note of notes.filter(n=>n.flick&&!n.assist).sort((a,b)=>a.t-b.t||a.lane-b.lane)){

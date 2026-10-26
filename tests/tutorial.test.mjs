@@ -5,7 +5,7 @@ import {LESSONS,TutorialAttempt,lessonsFor} from '../tutorial.mjs';
 test('tutorial teaches tap, sustained hold, chord and Space flick and held-Space sweep with real judgment',()=>{
   for(const lesson of LESSONS){
     const attempt=new TutorialAttempt(lesson);
-    for(const [index,lane] of lesson.lanes.entries()){const t=2.4+(lesson.sweep?index*.7:0);attempt.update(t,'press',lane);if(lesson.flick)attempt.update(t+.08,'pressFlick',lane);}
+    for(const [index,lane] of lesson.lanes.entries()){const t=2.4+(lesson.sweep?index*.7:0);attempt.update(t,'press',lane);if(lesson.flick){attempt.update(t,'pressSpace');attempt.update(t+.08,'pressFlick',lane);}}
     if(lesson.hold){assert.equal(attempt.status,'running');attempt.update(3.6);}
     assert.equal(attempt.status,'success',lesson.title);
   }
@@ -14,8 +14,8 @@ test('tutorial rejects early hold release, incomplete chords, reversed and late 
   let attempt=new TutorialAttempt(LESSONS[1]);attempt.update(2.4,'press',2);attempt.update(2.6,'release',2);assert.equal(attempt.status,'retry');
   attempt=new TutorialAttempt(LESSONS[2]);attempt.update(2.4,'press',3);attempt.update(2.58);assert.equal(attempt.status,'retry');
   for(const lesson of LESSONS.slice(3)){
-    attempt=new TutorialAttempt(lesson);attempt.update(2.35,'pressFlick',lesson.lanes[0]);attempt.update(2.4,'press',lesson.lanes[0]);attempt.update(2.7);assert.equal(attempt.status,'retry');
-    attempt=new TutorialAttempt(lesson);attempt.update(2.4,'press',lesson.lanes[0]);attempt.update(2.63,'pressFlick',lesson.lanes[0]);assert.equal(attempt.status,'retry');
+    attempt=new TutorialAttempt(lesson);attempt.update(2.35,'pressSpace');attempt.update(2.35,'pressFlick',lesson.lanes[0]);attempt.update(2.4,'press',lesson.lanes[0]);attempt.update(2.7);assert.equal(attempt.status,'retry');
+    attempt=new TutorialAttempt(lesson);attempt.update(2.4,'press',lesson.lanes[0]);attempt.update(2.63,'pressSpace');attempt.update(2.63,'pressFlick',lesson.lanes[0]);assert.equal(attempt.status,'retry');
   }
 });
 

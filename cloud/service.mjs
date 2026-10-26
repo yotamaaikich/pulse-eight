@@ -56,14 +56,15 @@ export function createService({db,hash,now=Date.now}){
     else if(run.chart_id){const saved=await published(run.chart_id,true);if(saved.song!==song.id||saved.difficulty!==run.difficulty)throw new ApiError('曲・難易度と譜面が一致しません。');chart=customChart(song,saved.notes,run.difficulty);}
     else chart=makeChart(song,run.difficulty);
     const count=chart.filter(n=>!n.assist).length;
-    if(!Array.isArray(data.events)||data.events.length>count*10)throw new ApiError('プレイデータが正しくありません。');
+    if(!Array.isArray(data.events)||data.events.length>count*14)throw new ApiError('プレイデータが正しくありません。');
     let previous=-1;
-    for(const event of data.events){if(!Array.isArray(event)||event.length!==3||!event.every(Number.isInteger)||event[0]<previous||event[0]<0||event[0]>song.duration*1000+200||event[1]<0||event[1]>7||![0,1,2,3].includes(event[2])||(run.difficulty!==2&&event[2]>1))throw new ApiError('プレイデータが正しくありません。');previous=event[0];}
+    for(const event of data.events){if(!Array.isArray(event)||event.length!==3||!event.every(Number.isInteger)||event[0]<previous||event[0]<0||event[0]>song.duration*1000+200||event[1]<0||event[1]>7||(event[2]>=4&&event[1]!==0)||![0,1,2,3,4,5].includes(event[2])||(run.difficulty!==2&&event[2]>1))throw new ApiError('プレイデータが正しくありません。');previous=event[0];}
     const result=scoreChartReplay(chart,song.duration,data.events);
     if(path==='publish'){
       if(!run.draft_notes||run.chart_id)throw new ApiError('下書きのテストプレイから公開してください。');
       if(!isFullCombo(result.stats,count))throw new ApiError('公開には全ノーツ成功（フルコンボ）が必要です。',422);
-      const chartId=await db('rpc/pulse_keys_publish_chart','POST',{p_run:run.id,p_player:playerHash,p_name:name,p_score:result.score,p_accuracy:result.accuracy,p_combo:result.maxCombo});
+      // The archived publication RPC expects the physical note count, not hold tick combo.
+      const chartId=await db('rpc/pulse_keys_publish_chart','POST',{p_run:run.id,p_player:playerHash,p_name:name,p_score:result.score,p_accuracy:result.accuracy,p_combo:count});
       return {chartId,published:true};
     }
     if(run.draft_notes)throw new ApiError('下書きはフルコンボしてから公開してください。');

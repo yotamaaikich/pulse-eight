@@ -1,10 +1,21 @@
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
-export const CHART_VERSION = 'piano8-full-v4';
+export const CHART_VERSION = 'piano8-full-v5';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const FLICK_WINDOW = 0.22;
+export const HOLD_TICK = 0.25;
+export const AIR_LINK_GAP = 1.2;
+export function airWindows(chart){
+  const windows=[];
+  for(const n of chart.filter(n=>n.flick&&!n.assist).sort((a,b)=>a.t-b.t)){
+    const last=windows.at(-1);
+    if(last&&n.t-last.last<=AIR_LINK_GAP+1e-9){last.end=n.t+WINDOW+FLICK_WINDOW;last.last=n.t;}
+    else windows.push({start:n.t-FLICK_WINDOW,end:n.t+WINDOW+FLICK_WINDOW,last:n.t});
+  }
+  return windows;
+}
 export const FLICK_KEYS = ['KeyQ','KeyW','KeyE','KeyR','KeyU','KeyI','KeyO','KeyP'];
 export const DIFFICULTIES = ['EASY', 'NORMAL', 'HARD'];
 export const SONGS = [
@@ -105,7 +116,7 @@ export function judgment(delta) {
   return d <= 0.045 ? 'perfect' : d <= 0.09 ? 'great' : d <= 0.14 ? 'good' : d <= WINDOW ? 'bad' : null;
 }
 export const WEIGHTS = {perfect:1,great:0.8,good:0.5,bad:0.2,miss:0};
-export function newStats() {return {perfect:0,great:0,good:0,bad:0,miss:0,combo:0,maxCombo:0,weight:0};}
+export function newStats() {return {perfect:0,great:0,good:0,bad:0,miss:0,combo:0,maxCombo:0,weight:0,holdTicks:0,airBreaks:0};}
 export function addResult(stats, result) {
   stats[result]++; stats.weight += WEIGHTS[result];
   stats.combo = result === 'miss' || result === 'bad' ? 0 : stats.combo + 1;
@@ -117,10 +128,26 @@ export function summary(stats, count) {
     rank:accuracy>=99?'SS':accuracy>=95?'S':accuracy>=90?'A':accuracy>=80?'B':accuracy>=65?'C':'D'};
 }
 export class RhythmSession {
-  constructor(chart,duration=null){this.duration=duration??Math.max(0,...chart.map(n=>n.end??n.t))+.5;this.notes=chart.map(n=>({...n,done:false,started:false}));this.stats=newStats();this.down=new Set();this.upperDown=new Set();this.holds=new Map();this.flicks=new Map();}
-  complete(note,result,delta=0){if(note.done)return null;note.done=true;this.holds.delete(note.lane);this.flicks.delete(note.lane);addResult(this.stats,result);return {kind:'judge',note,result,delta};}
+  constructor(chart,duration=null){this.duration=duration??Math.max(0,...chart.map(n=>n.end??n.t))+.5;this.notes=chart.map(n=>({...n,done:false,started:false}));this.stats=newStats();this.airWindows=airWindows(chart);this.spaceHeld=false;this.spaceInvalid=false;this.spaceAt=0;this.down=new Set();this.upperDown=new Set();this.holds=new Map();this.flicks=new Map();}
+  complete(note,result,delta=0){if(note.done)return null;note.done=true;this.holds.delete(note.lane);this.flicks.delete(note.lane);const max=this.stats.maxCombo;addResult(this.stats,result);if(this.spaceHeld&&this.spaceInvalid){this.stats.combo=0;this.stats.maxCombo=max;}return {kind:'judge',note,result,delta};}
+  spaceAllowed(t){return this.airWindows.some(w=>t>=w.start-1e-9&&t<=w.end+1e-9);}
+  checkSpace(t){
+    if(!this.spaceHeld)return [];
+    const window=this.airWindows.find(w=>this.spaceAt>=w.start-1e-9&&this.spaceAt<=w.end+1e-9);
+    if(!window||t>window.end+1e-9){
+      if(!this.spaceInvalid){this.spaceInvalid=true;this.stats.airBreaks++;this.stats.combo=0;return [{kind:'airbreak'}];}
+      this.stats.combo=0;
+    }
+    return [];
+  }
+  pressSpace(t){const events=this.advance(t);if(!this.spaceHeld){this.spaceHeld=true;this.spaceInvalid=false;this.spaceAt=t;events.push(...this.checkSpace(t));}return events;}
+  releaseSpace(t){const events=this.advance(t);this.spaceHeld=false;this.spaceInvalid=false;return events;}
   advance(t){
     const due=[];
+    if(this.spaceHeld&&!this.spaceInvalid){const w=this.airWindows.find(w=>this.spaceAt>=w.start-1e-9&&this.spaceAt<=w.end+1e-9);if(!w||t>w.end+1e-9)due.push({at:w?w.end+1e-9:this.spaceAt,n:{lane:-1},type:'airbreak'});}
+    for(const n of this.holds.values()){
+      while(n.nextTick<n.end-1e-9&&n.nextTick<=t+1e-9){due.push({at:n.nextTick,n,type:'tick'});n.nextTick+=HOLD_TICK;}
+    }
     for(const n of this.notes){
       if(n.done)continue;
       if(n.assist&&n.t<=t)due.push({at:n.t,n,type:'assist'});
@@ -130,7 +157,8 @@ export class RhythmSession {
     }
     due.sort((a,b)=>a.at-b.at||((a.n.lane??-1)-(b.n.lane??-1)));
     const notifications=[];
-    for(const {n,type}of due){if(n.done)continue;if(type==='assist'){n.done=true;notifications.push({kind:'assist',note:n});}else notifications.push(this.complete(n,type==='tail'&&this.down.has(n.lane)?n.headJudge:'miss',n.headDelta||0));}
+    for(const {n,type}of due){if(type==='airbreak'){notifications.push(...this.checkSpace(t));continue;}if(n.done)continue;if(type==='tick'){if(this.down.has(n.lane)&&n.headJudge!=='bad'&&!(this.spaceHeld&&this.spaceInvalid)){this.stats.holdTicks++;this.stats.combo++;this.stats.maxCombo=Math.max(this.stats.maxCombo,this.stats.combo);notifications.push({kind:'holdtick',note:n});}}else if(type==='assist'){n.done=true;notifications.push({kind:'assist',note:n});}else notifications.push(this.complete(n,type==='tail'&&this.down.has(n.lane)?n.headJudge:'miss',n.headDelta||0));}
+    notifications.push(...this.checkSpace(t));
     return notifications.filter(Boolean);
   }
   press(t,lane){
@@ -139,7 +167,7 @@ export class RhythmSession {
     if(!n)return notifications;
     const result=judgment(t-n.t),delta=t-n.t;
     if(n.flick){n.started=true;n.headJudge=result;n.headDelta=delta;n.headAt=t;n.deadline=t+FLICK_WINDOW;this.flicks.set(lane,n);notifications.push({kind:'flickstart',note:n,result,delta});}
-    else if(n.end){n.started=true;n.headJudge=result;n.headDelta=delta;this.holds.set(lane,n);notifications.push({kind:'holdstart',note:n,result,delta});}
+    else if(n.end){n.started=true;n.headJudge=result;n.headDelta=delta;n.nextTick=Math.max(n.t,t)+HOLD_TICK;this.holds.set(lane,n);notifications.push({kind:'holdstart',note:n,result,delta});}
     else notifications.push(this.complete(n,result,delta));
     return notifications.filter(Boolean);
   }
@@ -149,7 +177,7 @@ export class RhythmSession {
     return notifications.filter(Boolean);
   }
   pressFlick(t,lane){
-    const notifications=this.advance(t);if(this.upperDown.has(lane))return notifications;this.upperDown.add(lane);
+    const notifications=this.advance(t);if(!this.spaceHeld||this.spaceInvalid||this.upperDown.has(lane))return notifications;this.upperDown.add(lane);
     const n=this.flicks.get(lane);
     if(n&&t>=n.headAt&&t<=n.deadline)notifications.push(this.complete(n,n.headJudge,n.headDelta));
     return notifications.filter(Boolean);
@@ -159,11 +187,11 @@ export class RhythmSession {
 }
 export function scoreChartReplay(chart,duration,events){
   const session=new RhythmSession(chart,duration);
-  for(const [ms,lane,action=1]of events){if(action===1)session.press(ms/1000,lane);else if(action===2)session.pressFlick(ms/1000,lane);else if(action===3)session.releaseFlick(ms/1000,lane);else session.release(ms/1000,lane);}
+  for(const [ms,lane,action=1]of events){if(action===1)session.press(ms/1000,lane);else if(action===2)session.pressFlick(ms/1000,lane);else if(action===3)session.releaseFlick(ms/1000,lane);else if(action===4)session.pressSpace(ms/1000);else if(action===5)session.releaseSpace(ms/1000);else session.release(ms/1000,lane);}
   session.finish();return {...summary(session.stats,session.notes.filter(n=>!n.assist).length),stats:session.stats};
 }
 export function scoreReplay(song,difficulty,events){return scoreChartReplay(makeChart(song,difficulty),song.duration,events);}
-export function isFullCombo(stats,count){return count>0&&stats.miss===0&&stats.bad===0&&stats.maxCombo===count&&stats.perfect+stats.great+stats.good===count;}
+export function isFullCombo(stats,count){return count>0&&stats.miss===0&&stats.bad===0&&stats.airBreaks===0&&stats.maxCombo===count+stats.holdTicks&&stats.perfect+stats.great+stats.good===count;}
 
 // [time in ms, lane 0–7, hold length in ms, optional 1 = HARD flick].
 export function validateCustomNotes(song,raw,difficulty=2){
