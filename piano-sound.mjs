@@ -44,7 +44,7 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
         gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(amplitude,now+.002);gain.gain.exponentialRampToValueAtTime(.00001,now+decay);ended(source,gain);source.start(now);source.stop(now+decay+.015);
       }
     }else{
-      const pitch=Math.max(48,Math.min(84,midi)),root=SAMPLES.reduce((a,b)=>Math.abs(b[1]-pitch)<Math.abs(a[1]-pitch)?b:a)[1];
+      const pitch=Math.max(21,Math.min(108,midi)),root=SAMPLES.reduce((a,b)=>Math.abs(b[1]-pitch)<Math.abs(a[1]-pitch)?b:a)[1];
       const {buffer,offset}=samples.get(root),source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
       source.buffer=buffer;source.playbackRate.setValueAtTime(2**((pitch-root)/12),now);
       filter.type='highpass';filter.frequency.value=75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);

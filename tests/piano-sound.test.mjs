@@ -38,3 +38,5 @@ test('score matching respects rests instead of looping harmony or borrowing dist
  const voice=[[100,200,60,12],[400,700,65,12]];assert.equal(scoreNoteAt(voice,150),voice[0]);assert.equal(scoreNoteAt(voice,240),voice[0]);assert.equal(scoreNoteAt(voice,300),null);assert.equal(scoreNoteAt(voice,350),voice[1]);assert.equal(scoreNoteAt(voice,800),null);
  assert.equal(pianoTrialChart(SONGS[0],[{t:180,lane:0}],TEST_SCORE)[0].soundMidi,undefined);
 });
+
+test('sample playback preserves a source pitch above C6 instead of clipping it to C6',async()=>{const f=fixture();await f.piano.prepare();f.piano.play({midi:89});assert.equal(f.sources[0].playbackRate.events[0][1],2**((89-78)/12));});

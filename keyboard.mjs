@@ -1,6 +1,6 @@
 // Eight playable white keys, C–C, with the physical 2 + 3 black-key grouping.
 const BLACK_BOUNDARIES=[1,2,4,5,6];
-export const keyboardStrikeY=(width,height)=>height-Math.min(height*.32,Math.max(110,width*.25));
+export const keyboardStrikeY=(width,height)=>height-Math.min(height*.15,Math.max(64,width*.09));
 
 export function drawKeyboard(ctx,{width,height,time,pressed,flashes,blackFlashes}){
   const top=keyboardStrikeY(width,height)+3,lane=width/8;
