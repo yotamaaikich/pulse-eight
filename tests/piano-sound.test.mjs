@@ -3,23 +3,29 @@ import assert from 'node:assert/strict';
 import {createPianoSound} from '../piano-sound.mjs';
 import {pianoTrialChart} from '../piano-trial.mjs';
 import {SONGS,makeChart,scoreChartReplay} from '../engine.mjs';
-function fixture(){
- const oscillators=[],gains=[];let resumes=0;
+function fixture({fail=false}={}){
+ const oscillators=[],sources=[],gains=[],requests=[];let resumes=0;
  const parameter=()=>({value:0,events:[],setValueAtTime(v,t){this.events.push(['set',v,t]);},setTargetAtTime(v,t,c){this.events.push(['target',v,t,c]);},linearRampToValueAtTime(v,t){this.events.push(['linear',v,t]);},exponentialRampToValueAtTime(v,t){this.events.push(['exp',v,t]);},cancelScheduledValues(){}});
  const node=()=>({connect(){},disconnect(){}});
- const context={state:'suspended',currentTime:12,destination:{},resume(){resumes++;this.state='running';return Promise.resolve();},createGain(){const n={...node(),gain:parameter()};gains.push(n);return n;},createDynamicsCompressor(){return {...node(),...Object.fromEntries(['threshold','knee','ratio','attack','release'].map(k=>[k,parameter()]))};},createOscillator(){const n={...node(),frequency:parameter(),starts:[],stops:[],start(t){this.starts.push(t);},stop(t){this.stops.push(t);}};oscillators.push(n);return n;}};
- const piano=createPianoSound({contextFactory:()=>context});return {piano,context,oscillators,gains,get resumes(){return resumes;}};
+ const playable=()=>({...node(),starts:[],stops:[],start(...args){this.starts.push(args);},stop(t){this.stops.push(t);}});
+ const context={state:'suspended',currentTime:12,destination:{},resume(){resumes++;this.state='running';return Promise.resolve();},createGain(){const n={...node(),gain:parameter()};gains.push(n);return n;},createDynamicsCompressor(){return {...node(),...Object.fromEntries(['threshold','knee','ratio','attack','release'].map(k=>[k,parameter()]))};},createBiquadFilter(){return {...node(),frequency:parameter(),Q:parameter()};},createBufferSource(){const n={...playable(),playbackRate:parameter()};sources.push(n);return n;},createOscillator(){const n={...playable(),frequency:parameter()};oscillators.push(n);return n;}};
+ const sampleLoader=async(url)=>{requests.push(String(url));if(fail)throw Error('offline');const data=new Float32Array(800);data.fill(.25,64);return {name:String(url).split('/').at(-1),sampleRate:48000,getChannelData:()=>data};};
+ const piano=createPianoSound({contextFactory:()=>context,sampleLoader});return {piano,context,oscillators,sources,gains,requests,get resumes(){return resumes;}};
 }
-test('piano starts at key-down time, decays naturally, and FLOAT uses a separate short spectrum',()=>{
- const f=fixture();f.piano.configure({enabled:true,volume:18});assert.ok(f.piano.warm());assert.equal(f.resumes,1);
- f.piano.play({midi:69,hold:2});assert.equal(f.oscillators.length,4);assert.ok(f.oscillators.every(o=>o.starts[0]===12));assert.equal(f.oscillators[0].frequency.events[0][1],440);assert.equal(f.oscillators[0].stops[0],14.015);
- f.piano.play({midi:69,float:true});assert.equal(f.oscillators.length,7);assert.equal(f.oscillators[4].frequency.events[0][1],880);assert.ok(f.oscillators.slice(4).every(o=>o.stops[0]<12.4));
- assert.ok(f.gains.slice(1).every(n=>n.gain.events.some(e=>e[0]==='exp'&&e[1]===.00001)));
+test('recorded piano begins at the exact key-down with leading silence trimmed and a short release',async()=>{
+ const f=fixture();f.piano.configure({enabled:true,volume:18});assert.ok(await f.piano.prepare());assert.equal(f.resumes,1);assert.equal(f.requests.length,6);
+ f.piano.play({midi:60,hold:2});assert.equal(f.sources.length,1);assert.equal(f.oscillators.length,0);assert.equal(f.sources[0].starts[0][0],12);assert.ok(f.sources[0].starts[0][1]>0);assert.equal(f.sources[0].buffer.name,'C4.mp3');assert.equal(f.sources[0].playbackRate.events[0][1],1);assert.equal(f.sources[0].stops[0],14.01);
+ f.piano.play({midi:61});assert.equal(f.sources[1].stops[0],12.51);assert.ok(f.sources[1].playbackRate.events[0][1]>1);
+ f.piano.play({midi:69,float:true});assert.equal(f.oscillators.length,3);assert.equal(f.oscillators[0].frequency.events[0][1],880);assert.ok(f.oscillators.every(o=>o.stops[0]<12.4));
 });
-test('chords attenuate the combined bus and OFF/zero volume prevent new voices',()=>{
- const f=fixture();for(const midi of [62,65,69])f.piano.play({midi});const master=f.gains[0].gain.events;
- assert.ok(master.at(-1)[1]<master.find(e=>e[0]==='target'&&e[1]>0)[1]);f.piano.configure({enabled:false,volume:18});const count=f.oscillators.length;assert.equal(f.piano.play({midi:62}),false);assert.equal(f.oscillators.length,count);
+test('chords attenuate the combined bus and OFF/zero volume prevent new sampled voices',async()=>{
+ const f=fixture();await f.piano.prepare();for(const midi of [62,65,69])f.piano.play({midi});const master=f.gains[0].gain.events;
+ assert.ok(master.at(-1)[1]<master.find(e=>e[0]==='target'&&e[1]>0)[1]);f.piano.configure({enabled:false,volume:18});const count=f.sources.length;assert.equal(f.piano.play({midi:62}),false);assert.equal(f.sources.length,count);
  f.piano.configure({enabled:true,volume:0});assert.equal(f.piano.play({midi:62}),false);assert.equal(f.gains[0].gain.events.at(-1)[1],0);
+});
+test('loading or failed samples never queue a late key-down or fall back to the rubber-like oscillator',async()=>{
+ const f=fixture();assert.equal(f.piano.play({midi:62}),false);assert.equal(f.sources.length,0);await f.piano.prepare();assert.equal(f.sources.length,0);assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources[0].starts[0][0],12);
+ const broken=fixture({fail:true});assert.equal(await broken.piano.prepare(),false);assert.equal(broken.piano.play({midi:62}),false);assert.equal(broken.sources.length,0);assert.equal(broken.oscillators.length,0);
 });
 test('trial pitches vary with harmony and do not alter chart timing, lanes or score',()=>{
  const song=SONGS[0],raw=makeChart(song,1),chart=pianoTrialChart(song,raw);assert.ok(raw.every(n=>n.soundMidi===undefined));

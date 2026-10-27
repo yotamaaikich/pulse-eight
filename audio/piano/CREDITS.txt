@@ -1,0 +1,15 @@
+Salamander Grand Piano V2 / Yamaha C5
+Author: Alexander Holm
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+https://creativecommons.org/licenses/by/3.0/
+
+Sample distribution: Tonejs/audio, salamander directory
+https://github.com/Tonejs/audio/tree/master/salamander
+Original README and attribution:
+https://github.com/Tonejs/audio/blob/master/salamander/README
+
+Included files: C3.mp3, Fs3.mp3, C4.mp3, Fs4.mp3, C5.mp3, Fs5.mp3.
+The MP3 files are distributed unchanged from Tonejs/audio.
+PIANO PULSE applies runtime transposition, leading-silence trimming,
+high-pass filtering, gain normalization and a short release envelope.
+The original author does not endorse this game.

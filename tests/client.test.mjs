@@ -8,7 +8,7 @@ import * as engine from '../engine.mjs';
 import {projectPoint} from '../geometry.mjs';
 import {PlaybackGate} from '../playback.mjs';
 import {drawAirRibbons,drawAirHead} from '../air.mjs';
-const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},stop(){},configure(o){Object.assign(this,o);},play(o){if(this.enabled&&this.volume)soundCalls.push(o);}};
+const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async prepare(){return true;},stop(){},configure(o){Object.assign(this,o);},play(o){if(this.enabled&&this.volume)soundCalls.push(o);}};
 const createPianoSound=()=>soundStub;
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map();
 const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:()=>{}});

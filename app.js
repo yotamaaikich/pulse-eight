@@ -1,4 +1,4 @@
-import {createPianoSound} from './piano-sound.mjs?v=piano-trial-1';
+import {createPianoSound} from './piano-sound.mjs?v=piano-hammer-1';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=piano-trial-1';
 import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=hold-air-3';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=hold-air-3';
@@ -139,7 +139,7 @@ function syncPlayback(now){
 function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
-  pianoSound.warm();pianoSound.stop();
+  if(song().id===PIANO_TRIAL_SONG){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
   let chart;try{chart=pianoTrialChart(song(),makeChart(song(),difficulty));}catch(error){toast(error.message);return;}
   upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
@@ -332,7 +332,7 @@ document.querySelectorAll('dialog').forEach(dialog=>{dialog.addEventListener('cl
 document.querySelectorAll('[data-difficulty]').forEach(button=>button.onclick=()=>selectDifficulty(Number(button.dataset.difficulty)));
 for(const key of ['speed','volume','pianoLevel','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='pianoLevel')pianoSound.warm();if(key==='volume')applyVolume();};
 $('pianoOn').onchange=()=>{prefs.pianoOn=$('pianoOn').checked;savePrefs();pianoSound.warm();};
-$('testPiano').onclick=()=>{configurePiano();if(!pianoSound.warm()){toast('音声を開始できませんでした。ピアノ音をONにして再度試してください。');return;}for(const midi of [62,65,69])pianoSound.play({midi});};
+$('testPiano').onclick=async()=>{configurePiano();pianoSound.warm();$('testPiano').textContent='音源読み込み中…';$('testPiano').disabled=true;const ok=await pianoSound.prepare();$('testPiano').textContent='試し弾き';syncSettings();if(!$('settingsDialog').open)return;if(!ok){toast('ピアノ音源を読み込めませんでした。ページを再読み込みしてください。');return;}for(const midi of [62,65,69])pianoSound.play({midi});};
 $('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();applyVolume();toast('設定を初期値に戻しました');};
 $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('remapHint').textContent='左から順に8つのキーを押してください。Escでキャンセル。';};
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
