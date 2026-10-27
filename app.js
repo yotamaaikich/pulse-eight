@@ -5,7 +5,7 @@ import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=audible-piano-1';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=all-scores-1';
-import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=lyric-onsets-1';
+import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=lyric-onsets-2';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=lyric-onsets-1';
 import {API_URL,PUBLIC_KEY} from './config.js';

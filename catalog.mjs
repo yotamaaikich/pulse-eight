@@ -1,4 +1,4 @@
-import {makeChart} from './engine.mjs?v=hold-air-3';
+import {makeChart} from './engine.mjs?v=lyric-onsets-1';
 
 export function chartMetrics(chart){
   const count=chart.filter(n=>!n.assist).length;
