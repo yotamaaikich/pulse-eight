@@ -6,6 +6,18 @@ import {AUDIO_ATTACKS,AUDIO_SOURCES} from '../audio-attacks.mjs';
 import {MONITORING_ATTACKS,MONITORING_PIANO_PROFILE,MONITORING_VOCAL_ANALYSIS} from '../monitoring-vocal.mjs';
 import {pianoTrialChart} from '../piano-trial.mjs';
 
+test('Monitoring sustains remain throughout the full track, including while the other hand taps',()=>{
+ for(let d=0;d<3;d++){
+  const chart=makeChart(SONGS.find(s=>s.id==='monitoring'),d),holds=chart.filter(n=>n.end);
+  assert.ok(holds.length>=20,'sustained accompaniment must not disappear during vocals');
+  for(let part=0;part<3;part++)assert.ok(holds.filter(n=>n.t>=part*60&&n.t<(part+1)*60).length>=5);
+  assert.ok(new Set(holds.map(n=>n.lane)).size>=4);
+  assert.ok(holds.some(n=>n.end-n.t>=1));
+  assert.ok(holds.some(h=>chart.some(n=>n.lane!==h.lane&&n.t>h.t+.1&&n.t<h.end-.1)));
+  for(const h of holds)assert.ok(!chart.some(n=>n!==h&&n.lane===h.lane&&n.t>=h.t&&n.t<h.end),'hold lane must remain playable');
+ }
+});
+
 test('bundled Monitoring pitches only decorate their own analyzed attack and preserve source octave',()=>{
  const source=new Map(MONITORING_ATTACKS.map(n=>[n[0],n]));
  for(const [start,end,midi] of MONITORING_PIANO_PROFILE.voices[0]){

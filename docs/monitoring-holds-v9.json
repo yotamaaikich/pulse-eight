@@ -1,0 +1,189 @@
+{
+  "video": "kbNdx0yqbZE",
+  "instrumentalVideo": "_oKBQgty04E",
+  "method": "official instrumental aligned and subtracted; residual vocal flux and confidence-filtered YIN pitch",
+  "alignmentMs": 36.372,
+  "phrases": 48,
+  "vocalAttacks": 1106,
+  "attacks": 1192,
+  "pitchedAttacks": 524,
+  "minimumPitchShare": 0.58,
+  "backingHolds": [
+    {
+      "startMs": 6202,
+      "endMs": 6742,
+      "pitchClass": 9,
+      "stability": 0.773
+    },
+    {
+      "startMs": 20640,
+      "endMs": 21440,
+      "pitchClass": 1,
+      "stability": 0.644
+    },
+    {
+      "startMs": 24491,
+      "endMs": 24991,
+      "pitchClass": 1,
+      "stability": 0.837
+    },
+    {
+      "startMs": 31435,
+      "endMs": 32065,
+      "pitchClass": 9,
+      "stability": 0.744
+    },
+    {
+      "startMs": 35177,
+      "endMs": 35797,
+      "pitchClass": 9,
+      "stability": 0.651
+    },
+    {
+      "startMs": 43597,
+      "endMs": 44207,
+      "pitchClass": 0,
+      "stability": 0.636
+    },
+    {
+      "startMs": 50182,
+      "endMs": 50742,
+      "pitchClass": 2,
+      "stability": 0.795
+    },
+    {
+      "startMs": 60180,
+      "endMs": 60790,
+      "pitchClass": 5,
+      "stability": 0.605
+    },
+    {
+      "startMs": 64729,
+      "endMs": 65279,
+      "pitchClass": 2,
+      "stability": 0.75
+    },
+    {
+      "startMs": 69030,
+      "endMs": 69530,
+      "pitchClass": 2,
+      "stability": 0.698
+    },
+    {
+      "startMs": 79276,
+      "endMs": 79776,
+      "pitchClass": 9,
+      "stability": 0.636
+    },
+    {
+      "startMs": 84395,
+      "endMs": 84895,
+      "pitchClass": 0,
+      "stability": 0.605
+    },
+    {
+      "startMs": 88825,
+      "endMs": 89325,
+      "pitchClass": 5,
+      "stability": 0.605
+    },
+    {
+      "startMs": 99271,
+      "endMs": 99771,
+      "pitchClass": 5,
+      "stability": 0.605
+    },
+    {
+      "startMs": 108370,
+      "endMs": 108930,
+      "pitchClass": 2,
+      "stability": 0.795
+    },
+    {
+      "startMs": 112670,
+      "endMs": 113220,
+      "pitchClass": 2,
+      "stability": 0.705
+    },
+    {
+      "startMs": 117001,
+      "endMs": 118181,
+      "pitchClass": 2,
+      "stability": 0.748
+    },
+    {
+      "startMs": 120642,
+      "endMs": 121152,
+      "pitchClass": 0,
+      "stability": 0.886
+    },
+    {
+      "startMs": 125072,
+      "endMs": 126392,
+      "pitchClass": 2,
+      "stability": 0.673
+    },
+    {
+      "startMs": 128963,
+      "endMs": 130063,
+      "pitchClass": 9,
+      "stability": 0.702
+    },
+    {
+      "startMs": 134511,
+      "endMs": 135011,
+      "pitchClass": 0,
+      "stability": 0.674
+    },
+    {
+      "startMs": 138133,
+      "endMs": 138633,
+      "pitchClass": 4,
+      "stability": 0.651
+    },
+    {
+      "startMs": 141774,
+      "endMs": 142874,
+      "pitchClass": 0,
+      "stability": 0.76
+    },
+    {
+      "startMs": 145845,
+      "endMs": 146645,
+      "pitchClass": 1,
+      "stability": 0.616
+    },
+    {
+      "startMs": 149956,
+      "endMs": 150456,
+      "pitchClass": 2,
+      "stability": 0.605
+    },
+    {
+      "startMs": 155413,
+      "endMs": 155923,
+      "pitchClass": 1,
+      "stability": 0.682
+    },
+    {
+      "startMs": 160412,
+      "endMs": 160982,
+      "pitchClass": 9,
+      "stability": 0.605
+    },
+    {
+      "startMs": 165979,
+      "endMs": 166779,
+      "pitchClass": 1,
+      "stability": 0.635
+    },
+    {
+      "startMs": 170180,
+      "endMs": 170700,
+      "pitchClass": 2,
+      "stability": 0.674
+    }
+  ],
+  "rawAudioPublished": false,
+  "lyricTextPublished": false
+}
