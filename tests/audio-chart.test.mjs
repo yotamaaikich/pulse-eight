@@ -6,6 +6,18 @@ import {AUDIO_ATTACKS,AUDIO_SOURCES} from '../audio-attacks.mjs';
 import {MONITORING_ATTACKS,MONITORING_PIANO_PROFILE,MONITORING_VOCAL_ANALYSIS} from '../monitoring-vocal.mjs';
 import {pianoTrialChart} from '../piano-trial.mjs';
 
+test('Monitoring uses all keys and varied two-hand accents without returning to sparse chords',()=>{
+ const song=SONGS.find(s=>s.id==='monitoring');
+ for(const [difficulty,minimum] of [[1,40],[2,60]]){
+  const chart=makeChart(song,difficulty),groups=new Map();
+  for(const n of chart){if(!groups.has(n.t))groups.set(n.t,[]);groups.get(n.t).push(n.lane);}
+  const chords=[...groups.values()].filter(g=>g.length>1);
+  assert.ok(chords.length>=minimum);
+  assert.ok(new Set(chords.map(g=>g.join(','))).size>=6);
+  for(let lane=0;lane<8;lane++)assert.ok(chart.filter(n=>n.lane===lane).length>=10);
+ }
+});
+
 test('Monitoring sustains remain throughout the full track, including while the other hand taps',()=>{
  for(let d=0;d<3;d++){
   const chart=makeChart(SONGS.find(s=>s.id==='monitoring'),d),holds=chart.filter(n=>n.end);

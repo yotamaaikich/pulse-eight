@@ -1,4 +1,4 @@
-import {MONITORING_ATTACKS,MONITORING_VOCAL_ANALYSIS} from './monitoring-vocal.mjs?v=vocal-holds-1';
+import {MONITORING_ATTACKS,MONITORING_VOCAL_ANALYSIS} from './monitoring-vocal.mjs?v=vocal-layout-10';
 import {AUDIO_ATTACKS,AUDIO_SOURCES} from './audio-attacks.mjs';
 export {AUDIO_SOURCES};
 export const chartAttacks=id=>id==='monitoring'?MONITORING_ATTACKS:AUDIO_ATTACKS[id];
@@ -15,21 +15,36 @@ export function makeAudioChart(song,difficulty){
   if(chosen.every(n=>Math.abs(n[0]-row[0])>=gap))chosen.push(row);
  }
  chosen.sort((a,b)=>a[0]-b[0]);
- const notes=[],busy=Array(8).fill(-1);let lastHold=-Infinity,lastChord=-Infinity;
- for(const row of chosen){
+ const notes=[],busy=Array(8).fill(-1),recent=[];let lastHold=-Infinity,lastChord=-Infinity;
+ for(const [index,row] of chosen.entries()){
   const [ms,contour,sustain,flags,salience]=row,t=ms/1000;
   if(t<.3||t>song.duration-.4)continue;
   let lane=contour;
+  if(song.id==='monitoring'){
+   // Distribute the local melodic contour over the keyboard. Pitch-to-sound
+   // remains separate; mapping every pitch class to a key left the edges idle.
+   const context=chosen.slice(Math.max(0,index-5),index+6).map(r=>r[1]);
+   const ranks=[...new Set(context)].sort((a,b)=>a-b),rank=ranks.indexOf(contour);
+   lane=ranks.length>1?Math.round(rank*7/(ranks.length-1)):contour;
+   // Keep occasional same-key repeats, then answer with the other hand.
+   if(recent.length>=2&&recent.at(-1)===lane&&recent.at(-2)===lane)lane=7-lane;
+  }
   if(t<busy[lane]+.06){
    const options=Array.from({length:8},(_,i)=>i).sort((a,b)=>Math.abs(a-contour)-Math.abs(b-contour));
    lane=options.find(i=>t>=busy[i]+.06);if(lane===undefined)continue;
   }
   const n={t,lane,degree:lane,assist:false,sourceMs:ms,phraseStart:!!(flags&4),phraseEnd:!!(flags&8),vocalPhrase:!!(flags&16)};
   if(sustain>=400&&t-lastHold>2.5){n.end=Math.min(song.duration-.2,(ms+sustain)/1000);lastHold=t;}
-  busy[lane]=n.end??t;notes.push(n);
+  busy[lane]=n.end??t;notes.push(n);recent.push(lane);
   // Two hands emphasize a real multi-band accent, rather than every nth note.
   if(difficulty>0&&(flags&1)&&t-lastChord>(difficulty===1?1.7:.9)){
-   const other=(lane+4)%8;if(t>=busy[other]+.08){notes.push({t,lane:other,degree:other,assist:false,sourceMs:ms,chord:true});n.chord=true;busy[other]=t;lastChord=t;}
+   const direction=(chosen[index+1]?.[1]??contour)-contour;
+   const options=song.id==='monitoring'?Array.from({length:4},(_,i)=>lane<4?4+i:i).sort((a,b)=>{
+    const target=direction>0?(lane<4?4:3):direction<0?(lane<4?7:0):7-lane;
+    return Math.abs(a-target)-Math.abs(b-target);
+   }):[(lane+4)%8];
+   const other=options.find(i=>t>=busy[i]+.08);
+   if(other!==undefined){notes.push({t,lane:other,degree:other,assist:false,sourceMs:ms,chord:true});n.chord=true;busy[other]=t;lastChord=t;}
   }
   if(difficulty===2&&!n.end&&t>=8&&t<song.duration-6&&((flags&2)||(flags&1)))n.flick=true;
  }
