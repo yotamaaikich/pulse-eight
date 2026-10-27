@@ -1,7 +1,8 @@
+import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs';
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
-export const CHART_VERSION = 'piano8-full-v6';
+export const CHART_VERSION = 'piano8-vocal-v7';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const FLICK_WINDOW = 0.22;
@@ -45,72 +46,10 @@ const REFERENCES = {
 };
 for(const song of SONGS){song.pack='vocaloid';song.source=REFERENCES[song.id];song.chartLabel='主旋律の輪郭を使った簡略アレンジ';}
 SONGS.push(...EXTRA_SONGS,...TAIKO_SONGS,...PROSEKA_SONGS);
+for(const s of SONGS)s.chartLabel=AUDIO_SOURCES[s.id]?.phrases?'歌のフレーズと楽器のアタックに沿う8鍵アレンジ':'楽器のアタックと音の強弱に沿う8鍵アレンジ';
 
-// Short, reduced phrase contours; rhythm and transitions are an original arrangement.
-// Pitches are folded into C4–C5. Black notes are accompaniment, never scored.
-const MOTIFS = {
-  monitoring:[9,7,5,0,2,9,7,2,2,2,2,2,0,2,9,7,8,7,5,5],
-  tetoris:[4,11,0,2,0,11,9,9,0,4,2,0,11,0,2,4,0,9,9],
-  mesmerizer:[10,5,5,5,5,5,5,5,5,6,5,6,5,3,1,3,1,3,3,5],
-  override:[1,11,1,1,1,11,1,3,4,4,3,11,1,11,1,1,1,11,1,4],
-  telepathy:[9,8,7,6,4,3,2,1,4,3,2,11,4,3,2,1,4,3,2,11],
-  mimukauwa:[7,7,9,7,4,2,4,7,7,9,7,4,2,0,2,4,7,4,2,0],
-  daikirai:[7,7,7,9,7,5,4,5,7,7,7,9,7,5,4,2,4,5,7,4],
-  rinne:[5,4,4,4,4,5,9,7,5,1,1,1,1,4,2,0,10,9,9,9],
-  mothergoose:[4,4,7,9,7,4,2,4,7,9,11,9,7,4,2,0,2,4,7,4],
-  heat:[5,8,5,3,1,0,0,1,3,5,3,1,0,3,5,8,10,8,5,3],
-};
-const WHITE=[0,2,4,5,7,9,11,12];
-const BLACK=[1,3,6,8,10];
-const BOUNDARIES=[1,2,4,5,6];
-const TRANSPOSE={mesmerizer:2,override:3,heat:2};
-
-// Identical, deterministic charts are used by the browser and score server.
-// These are original beat-grid charts, not transcriptions of commercial game charts.
-function makeRawChart(song, difficulty) {
-  const proseka=makeProsekaChart(song,difficulty);if(proseka)return proseka;
-  const taiko=makeTaikoChart(song,difficulty);if(taiko)return taiko;
-  const expansion=makeExpansionChart(song,difficulty);if(expansion)return expansion;
-  const beat = 60 / song.bpm;
-  const notes = [];
-  const busy=Array(8).fill(-1);
-  const motif=MOTIFS[song.id];
-  let idx=0;
-  function add(pitch,b,index){
-    let p=(pitch+(TRANSPOSE[song.id]||0))%12;
-    if(p===0&&pitch>=9)p=12;
-    const t=Math.round((b*beat+song.offset)*1000)/1000;
-    const blackIndex=BLACK.indexOf(p);
-    if(blackIndex!==-1)notes.push({t,assist:true,blackIndex,boundary:BOUNDARIES[blackIndex]});
-    else {
-      const lane=WHITE.indexOf(p);
-      if(t<busy[lane]+.08)return null;
-      const hold=index% (difficulty===0?24:difficulty===1?16:12)===0;
-      const end=hold?Math.round(Math.min(song.duration-1.2,t+beat*(difficulty===0?2:4))*1000)/1000:undefined;
-      const flick=difficulty===2&&!hold&&index%12===8;
-      const note={t,lane,degree:lane,assist:false,...(end&&end>t+.25?{end}:{}),...(flick?{flick:true}:{})};
-      if(note.end)busy[lane]=note.end;else if(flick)busy[lane]=t+WINDOW+FLICK_WINDOW;
-      notes.push(note);return note;
-    }
-    return null;
-  }
-  for(let b=8;b*beat+song.offset<song.duration-1;b+=.5,idx++){
-    const pitch=motif[idx%motif.length];
-    if(difficulty===0&&idx%2===1)continue;
-    // Phrase endings leave breathing room; harder charts retain repeated melody notes.
-    if(idx%32===31)continue;
-    const lead=add(pitch,b,idx);
-    if(difficulty>0&&idx%(difficulty===1?16:8)===0){
-      const t=Math.round((b*beat+song.offset)*1000)/1000;
-      const bass=(Math.floor(idx/16)+song.rank)%4;
-      if(lead?.lane!==bass&&t>=busy[bass]+.08)notes.push({t,lane:bass,degree:bass,assist:false});
-      if(difficulty===2&&idx%32===0){const third=bass+4;if(lead?.lane!==third&&t>=busy[third]+.08)notes.push({t,lane:third,degree:third,assist:false});}
-    }
-  }
-  const counts=new Map();for(const n of notes)if(!n.assist)counts.set(n.t,(counts.get(n.t)||0)+1);
-  for(const n of notes)if(!n.assist)n.chord=counts.get(n.t)>1;
-  return notes.sort((a,b)=>a.t-b.t||(a.lane??-1)-(b.lane??-1));
-}
+// The shipped charts use the source audio's attacks and, where available, caption phrase boundaries.
+function makeRawChart(song,difficulty){return makeAudioChart(song,difficulty);}
 // Reuse the authored rhythm, but place AIR in short phrases with real release gaps.
 export function makeChart(song,difficulty){
   const chart=makeRawChart(song,difficulty);

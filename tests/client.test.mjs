@@ -17,7 +17,7 @@ const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async
 const createPianoSound=()=>soundStub;
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map();
 const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:()=>{}});
-function element(id){if(!elements.has(id)){const classes=new Set();elements.set(id,{classList:{add:n=>classes.add(n),remove:n=>classes.delete(n),contains:n=>classes.has(n),toggle(n,on){if(on)classes.add(n);else classes.delete(n);}},textContent:'',value:'',innerHTML:'',style:{},open:false,setAttribute(){},addEventListener(){},replaceChildren(){},append(){},focus(){},close(){this.open=false;},showModal(){this.open=true;},getContext:()=>context2d,querySelector:()=>({textContent:''})});}return elements.get(id);}
+function element(id){if(!elements.has(id)){const classes=new Set();elements.set(id,{classList:{add:n=>classes.add(n),remove:n=>classes.delete(n),contains:n=>classes.has(n),toggle(n,on){if(on)classes.add(n);else classes.delete(n);}},textContent:'',value:'',innerHTML:'',style:{},open:false,setAttribute(){},addEventListener(){},replaceChildren(){},append(){},click(){this.clicked=true;},focus(){},close(){this.open=false;},showModal(){this.open=true;},getContext:()=>context2d,querySelector:()=>({textContent:''})});}return elements.get(id);}
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(){}},hidden:false};
 const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.state=1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;return fakePlayer;}}};
@@ -118,6 +118,11 @@ assert.ok(storage.has('pulse-piano-score:tetoris'));assert.equal(storage.has('pu
 assert.match(elements.get('pianoScoreStatus').textContent,/test.mml/);
 scope.qa.selectSong(0);assert.match(elements.get('pianoScoreStatus').textContent,/未読込/);
 
-// A locally derived rhythm cannot submit to stock rankings or overwrite stock bests.
+// Imported piano pitches no longer replace the shipped rhythm or disable ranking.
 elements.get('pianoScoreFile').files=[{size:100,name:'reference.mml',text:async()=> 'MML@t120o4l4crd;'}];await elements.get('pianoScoreFile').onchange();
-const previousBests=storage.get('pulse-bests');scope.qa.start();assert.equal(scope.qa.referenceRun,true);assert.equal(scope.qa.eligible,false);scope.qa.finish();assert.equal(elements.get('saveScore').disabled,true);assert.equal(storage.get('pulse-bests'),previousBests);assert.match(elements.get('saveStatus').textContent,/参照譜面/);scope.qa.quit();
+scope.qa.start();assert.equal(scope.qa.referenceRun,false);assert.equal(scope.qa.eligible,true);scope.qa.quit();
+
+// A fresh browser sees why keys are silent and can go straight to the local file chooser.
+scope.qa.selectSong(2);assert.match(elements.get('pianoTrialStatus').textContent,/このブラウザ/);assert.equal(elements.get('pianoImportShortcut').hidden,false);
+elements.get('pianoImportShortcut').onclick();assert.equal(elements.get('settingsDialog').open,true);assert.equal(elements.get('pianoScoreDetails').open,true);assert.equal(elements.get('pianoScoreFile').clicked,true);
+elements.get('settingsDialog').close();scope.qa.selectSong(0);assert.equal(elements.get('pianoImportShortcut').hidden,true);assert.match(elements.get('pianoTrialStatus').textContent,/鍵盤音 ON/);

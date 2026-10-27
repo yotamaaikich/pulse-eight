@@ -1,0 +1,1056 @@
+{
+  "version": "piano8-vocal-v7",
+  "method": "Active bars quantized to 1/48 beat; chord duplicates removed; first four and last sixteen seconds excluded. Repetition alone is not evidence of poor musical fit. No vocal timing is available in the stock generators.",
+  "charts": [
+    {
+      "id": "monitoring",
+      "title": "モニタリング",
+      "difficulty": 0,
+      "notes": 342,
+      "bars": 87,
+      "uniqueRhythms": 82,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "monitoring",
+      "title": "モニタリング",
+      "difficulty": 1,
+      "notes": 692,
+      "bars": 87,
+      "uniqueRhythms": 84,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "monitoring",
+      "title": "モニタリング",
+      "difficulty": 2,
+      "notes": 1117,
+      "bars": 87,
+      "uniqueRhythms": 87,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "tetoris",
+      "title": "テトリス",
+      "difficulty": 0,
+      "notes": 328,
+      "bars": 86,
+      "uniqueRhythms": 58,
+      "dominantRhythmPercent": 8,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "tetoris",
+      "title": "テトリス",
+      "difficulty": 1,
+      "notes": 744,
+      "bars": 86,
+      "uniqueRhythms": 82,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "tetoris",
+      "title": "テトリス",
+      "difficulty": 2,
+      "notes": 807,
+      "bars": 86,
+      "uniqueRhythms": 84,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "mesmerizer",
+      "title": "メズマライザー",
+      "difficulty": 0,
+      "notes": 382,
+      "bars": 105,
+      "uniqueRhythms": 93,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "mesmerizer",
+      "title": "メズマライザー",
+      "difficulty": 1,
+      "notes": 780,
+      "bars": 105,
+      "uniqueRhythms": 104,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "mesmerizer",
+      "title": "メズマライザー",
+      "difficulty": 2,
+      "notes": 979,
+      "bars": 105,
+      "uniqueRhythms": 104,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "override",
+      "title": "オーバーライド",
+      "difficulty": 0,
+      "notes": 325,
+      "bars": 71,
+      "uniqueRhythms": 71,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "override",
+      "title": "オーバーライド",
+      "difficulty": 1,
+      "notes": 459,
+      "bars": 71,
+      "uniqueRhythms": 71,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "override",
+      "title": "オーバーライド",
+      "difficulty": 2,
+      "notes": 951,
+      "bars": 71,
+      "uniqueRhythms": 71,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "telepathy",
+      "title": "テレパシ",
+      "difficulty": 0,
+      "notes": 362,
+      "bars": 106,
+      "uniqueRhythms": 91,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "telepathy",
+      "title": "テレパシ",
+      "difficulty": 1,
+      "notes": 496,
+      "bars": 107,
+      "uniqueRhythms": 94,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "telepathy",
+      "title": "テレパシ",
+      "difficulty": 2,
+      "notes": 890,
+      "bars": 107,
+      "uniqueRhythms": 107,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "mimukauwa",
+      "title": "みむかｩわナイストライ",
+      "difficulty": 0,
+      "notes": 354,
+      "bars": 97,
+      "uniqueRhythms": 88,
+      "dominantRhythmPercent": 5,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "mimukauwa",
+      "title": "みむかｩわナイストライ",
+      "difficulty": 1,
+      "notes": 685,
+      "bars": 99,
+      "uniqueRhythms": 96,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "mimukauwa",
+      "title": "みむかｩわナイストライ",
+      "difficulty": 2,
+      "notes": 954,
+      "bars": 99,
+      "uniqueRhythms": 97,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "daikirai",
+      "title": "ダイダイダイダイダイキライ",
+      "difficulty": 0,
+      "notes": 323,
+      "bars": 72,
+      "uniqueRhythms": 69,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 3
+    },
+    {
+      "id": "daikirai",
+      "title": "ダイダイダイダイダイキライ",
+      "difficulty": 1,
+      "notes": 588,
+      "bars": 72,
+      "uniqueRhythms": 72,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "daikirai",
+      "title": "ダイダイダイダイダイキライ",
+      "difficulty": 2,
+      "notes": 978,
+      "bars": 72,
+      "uniqueRhythms": 72,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "rinne",
+      "title": "いますぐ輪廻",
+      "difficulty": 0,
+      "notes": 252,
+      "bars": 61,
+      "uniqueRhythms": 58,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "rinne",
+      "title": "いますぐ輪廻",
+      "difficulty": 1,
+      "notes": 545,
+      "bars": 61,
+      "uniqueRhythms": 59,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "rinne",
+      "title": "いますぐ輪廻",
+      "difficulty": 2,
+      "notes": 709,
+      "bars": 61,
+      "uniqueRhythms": 61,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "mothergoose",
+      "title": "アンノウン・マザーグース",
+      "difficulty": 0,
+      "notes": 495,
+      "bars": 246,
+      "uniqueRhythms": 144,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "mothergoose",
+      "title": "アンノウン・マザーグース",
+      "difficulty": 1,
+      "notes": 954,
+      "bars": 246,
+      "uniqueRhythms": 229,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "mothergoose",
+      "title": "アンノウン・マザーグース",
+      "difficulty": 2,
+      "notes": 1566,
+      "bars": 246,
+      "uniqueRhythms": 245,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "heat",
+      "title": "熱異常",
+      "difficulty": 0,
+      "notes": 631,
+      "bars": 168,
+      "uniqueRhythms": 95,
+      "dominantRhythmPercent": 7,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "heat",
+      "title": "熱異常",
+      "difficulty": 1,
+      "notes": 1044,
+      "bars": 168,
+      "uniqueRhythms": 159,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "heat",
+      "title": "熱異常",
+      "difficulty": 2,
+      "notes": 1329,
+      "bars": 168,
+      "uniqueRhythms": 165,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "connect",
+      "title": "コネクト -season 03-",
+      "difficulty": 0,
+      "notes": 605,
+      "bars": 183,
+      "uniqueRhythms": 137,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "connect",
+      "title": "コネクト -season 03-",
+      "difficulty": 1,
+      "notes": 1266,
+      "bars": 184,
+      "uniqueRhythms": 179,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "connect",
+      "title": "コネクト -season 03-",
+      "difficulty": 2,
+      "notes": 1481,
+      "bars": 184,
+      "uniqueRhythms": 183,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "magia",
+      "title": "Magia",
+      "difficulty": 0,
+      "notes": 594,
+      "bars": 152,
+      "uniqueRhythms": 149,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "magia",
+      "title": "Magia",
+      "difficulty": 1,
+      "notes": 1282,
+      "bars": 153,
+      "uniqueRhythms": 153,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "magia",
+      "title": "Magia",
+      "difficulty": 2,
+      "notes": 1985,
+      "bars": 154,
+      "uniqueRhythms": 154,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "luminous",
+      "title": "ルミナス -season 03-",
+      "difficulty": 0,
+      "notes": 523,
+      "bars": 164,
+      "uniqueRhythms": 131,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 3
+    },
+    {
+      "id": "luminous",
+      "title": "ルミナス -season 03-",
+      "difficulty": 1,
+      "notes": 1095,
+      "bars": 164,
+      "uniqueRhythms": 163,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "luminous",
+      "title": "ルミナス -season 03-",
+      "difficulty": 2,
+      "notes": 1346,
+      "bars": 165,
+      "uniqueRhythms": 165,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "colorful",
+      "title": "カラフル -season 03-",
+      "difficulty": 0,
+      "notes": 607,
+      "bars": 187,
+      "uniqueRhythms": 147,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "colorful",
+      "title": "カラフル -season 03-",
+      "difficulty": 1,
+      "notes": 1201,
+      "bars": 188,
+      "uniqueRhythms": 186,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "colorful",
+      "title": "カラフル -season 03-",
+      "difficulty": 2,
+      "notes": 1500,
+      "bars": 188,
+      "uniqueRhythms": 187,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "silvergarden",
+      "title": "君の銀の庭",
+      "difficulty": 0,
+      "notes": 631,
+      "bars": 231,
+      "uniqueRhythms": 112,
+      "dominantRhythmPercent": 5,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "silvergarden",
+      "title": "君の銀の庭",
+      "difficulty": 1,
+      "notes": 1262,
+      "bars": 232,
+      "uniqueRhythms": 228,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "silvergarden",
+      "title": "君の銀の庭",
+      "difficulty": 2,
+      "notes": 1548,
+      "bars": 234,
+      "uniqueRhythms": 233,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "freedomdive",
+      "title": "FREEDOM DiVE",
+      "difficulty": 0,
+      "notes": 446,
+      "bars": 228,
+      "uniqueRhythms": 113,
+      "dominantRhythmPercent": 12,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "freedomdive",
+      "title": "FREEDOM DiVE",
+      "difficulty": 1,
+      "notes": 967,
+      "bars": 232,
+      "uniqueRhythms": 134,
+      "dominantRhythmPercent": 17,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "freedomdive",
+      "title": "FREEDOM DiVE",
+      "difficulty": 2,
+      "notes": 1893,
+      "bars": 232,
+      "uniqueRhythms": 218,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "bluezenith",
+      "title": "Blue Zenith",
+      "difficulty": 0,
+      "notes": 657,
+      "bars": 190,
+      "uniqueRhythms": 117,
+      "dominantRhythmPercent": 9,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "bluezenith",
+      "title": "Blue Zenith",
+      "difficulty": 1,
+      "notes": 870,
+      "bars": 198,
+      "uniqueRhythms": 153,
+      "dominantRhythmPercent": 8,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "bluezenith",
+      "title": "Blue Zenith",
+      "difficulty": 2,
+      "notes": 1607,
+      "bars": 199,
+      "uniqueRhythms": 182,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "ghost",
+      "title": "GHOST",
+      "difficulty": 0,
+      "notes": 564,
+      "bars": 274,
+      "uniqueRhythms": 153,
+      "dominantRhythmPercent": 6,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "ghost",
+      "title": "GHOST",
+      "difficulty": 1,
+      "notes": 1122,
+      "bars": 282,
+      "uniqueRhythms": 242,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "ghost",
+      "title": "GHOST",
+      "difficulty": 2,
+      "notes": 2105,
+      "bars": 301,
+      "uniqueRhythms": 301,
+      "dominantRhythmPercent": 0,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "crystallized",
+      "title": "crystallized",
+      "difficulty": 0,
+      "notes": 480,
+      "bars": 169,
+      "uniqueRhythms": 123,
+      "dominantRhythmPercent": 5,
+      "longestIdenticalRhythmBars": 3
+    },
+    {
+      "id": "crystallized",
+      "title": "crystallized",
+      "difficulty": 1,
+      "notes": 1090,
+      "bars": 175,
+      "uniqueRhythms": 161,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "crystallized",
+      "title": "crystallized",
+      "difficulty": 2,
+      "notes": 1334,
+      "bars": 182,
+      "uniqueRhythms": 176,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "exit",
+      "title": "Exit This Earth's Atomosphere",
+      "difficulty": 0,
+      "notes": 738,
+      "bars": 245,
+      "uniqueRhythms": 225,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "exit",
+      "title": "Exit This Earth's Atomosphere",
+      "difficulty": 1,
+      "notes": 1604,
+      "bars": 256,
+      "uniqueRhythms": 256,
+      "dominantRhythmPercent": 0,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "exit",
+      "title": "Exit This Earth's Atomosphere",
+      "difficulty": 2,
+      "notes": 1914,
+      "bars": 260,
+      "uniqueRhythms": 260,
+      "dominantRhythmPercent": 0,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "kitasaitama",
+      "title": "きたさいたま2000",
+      "difficulty": 0,
+      "notes": 225,
+      "bars": 92,
+      "uniqueRhythms": 78,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "kitasaitama",
+      "title": "きたさいたま2000",
+      "difficulty": 1,
+      "notes": 440,
+      "bars": 94,
+      "uniqueRhythms": 91,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "kitasaitama",
+      "title": "きたさいたま2000",
+      "difficulty": 2,
+      "notes": 831,
+      "bars": 94,
+      "uniqueRhythms": 94,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "madasaitama",
+      "title": "まださいたま2000",
+      "difficulty": 0,
+      "notes": 275,
+      "bars": 128,
+      "uniqueRhythms": 103,
+      "dominantRhythmPercent": 5,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "madasaitama",
+      "title": "まださいたま2000",
+      "difficulty": 1,
+      "notes": 493,
+      "bars": 128,
+      "uniqueRhythms": 119,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "madasaitama",
+      "title": "まださいたま2000",
+      "difficulty": 2,
+      "notes": 856,
+      "bars": 128,
+      "uniqueRhythms": 128,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "yuugen",
+      "title": "幽玄ノ乱",
+      "difficulty": 0,
+      "notes": 245,
+      "bars": 124,
+      "uniqueRhythms": 86,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "yuugen",
+      "title": "幽玄ノ乱",
+      "difficulty": 1,
+      "notes": 520,
+      "bars": 128,
+      "uniqueRhythms": 117,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "yuugen",
+      "title": "幽玄ノ乱",
+      "difficulty": 2,
+      "notes": 727,
+      "bars": 134,
+      "uniqueRhythms": 130,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "donkama",
+      "title": "ドンカマ2000",
+      "difficulty": 0,
+      "notes": 275,
+      "bars": 55,
+      "uniqueRhythms": 55,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "donkama",
+      "title": "ドンカマ2000",
+      "difficulty": 1,
+      "notes": 498,
+      "bars": 55,
+      "uniqueRhythms": 55,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "donkama",
+      "title": "ドンカマ2000",
+      "difficulty": 2,
+      "notes": 844,
+      "bars": 55,
+      "uniqueRhythms": 55,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "angeldream",
+      "title": "エンジェル ドリーム",
+      "difficulty": 0,
+      "notes": 354,
+      "bars": 92,
+      "uniqueRhythms": 60,
+      "dominantRhythmPercent": 9,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "angeldream",
+      "title": "エンジェル ドリーム",
+      "difficulty": 1,
+      "notes": 745,
+      "bars": 94,
+      "uniqueRhythms": 89,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "angeldream",
+      "title": "エンジェル ドリーム",
+      "difficulty": 2,
+      "notes": 869,
+      "bars": 94,
+      "uniqueRhythms": 86,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "disappearance",
+      "title": "初音ミクの消失",
+      "difficulty": 0,
+      "notes": 548,
+      "bars": 271,
+      "uniqueRhythms": 140,
+      "dominantRhythmPercent": 10,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "disappearance",
+      "title": "初音ミクの消失",
+      "difficulty": 1,
+      "notes": 1128,
+      "bars": 271,
+      "uniqueRhythms": 192,
+      "dominantRhythmPercent": 5,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "disappearance",
+      "title": "初音ミクの消失",
+      "difficulty": 2,
+      "notes": 2045,
+      "bars": 271,
+      "uniqueRhythms": 265,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "intensevoice",
+      "title": "初音ミクの激唱",
+      "difficulty": 0,
+      "notes": 762,
+      "bars": 234,
+      "uniqueRhythms": 186,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "intensevoice",
+      "title": "初音ミクの激唱",
+      "difficulty": 1,
+      "notes": 1048,
+      "bars": 234,
+      "uniqueRhythms": 198,
+      "dominantRhythmPercent": 4,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "intensevoice",
+      "title": "初音ミクの激唱",
+      "difficulty": 2,
+      "notes": 1739,
+      "bars": 234,
+      "uniqueRhythms": 231,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "machinegun",
+      "title": "マシンガンポエムドール",
+      "difficulty": 0,
+      "notes": 239,
+      "bars": 112,
+      "uniqueRhythms": 69,
+      "dominantRhythmPercent": 6,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "machinegun",
+      "title": "マシンガンポエムドール",
+      "difficulty": 1,
+      "notes": 522,
+      "bars": 113,
+      "uniqueRhythms": 80,
+      "dominantRhythmPercent": 7,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "machinegun",
+      "title": "マシンガンポエムドール",
+      "difficulty": 2,
+      "notes": 919,
+      "bars": 114,
+      "uniqueRhythms": 112,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "jinsei",
+      "title": "人生",
+      "difficulty": 0,
+      "notes": 332,
+      "bars": 99,
+      "uniqueRhythms": 91,
+      "dominantRhythmPercent": 5,
+      "longestIdenticalRhythmBars": 4
+    },
+    {
+      "id": "jinsei",
+      "title": "人生",
+      "difficulty": 1,
+      "notes": 695,
+      "bars": 99,
+      "uniqueRhythms": 98,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "jinsei",
+      "title": "人生",
+      "difficulty": 2,
+      "notes": 916,
+      "bars": 99,
+      "uniqueRhythms": 98,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "yaminabe",
+      "title": "ヤミナベ!!!!",
+      "difficulty": 0,
+      "notes": 279,
+      "bars": 126,
+      "uniqueRhythms": 123,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 3
+    },
+    {
+      "id": "yaminabe",
+      "title": "ヤミナベ!!!!",
+      "difficulty": 1,
+      "notes": 528,
+      "bars": 127,
+      "uniqueRhythms": 126,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "yaminabe",
+      "title": "ヤミナベ!!!!",
+      "difficulty": 2,
+      "notes": 778,
+      "bars": 127,
+      "uniqueRhythms": 127,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "whatsuppop",
+      "title": "What's up? Pop!",
+      "difficulty": 0,
+      "notes": 388,
+      "bars": 138,
+      "uniqueRhythms": 137,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "whatsuppop",
+      "title": "What's up? Pop!",
+      "difficulty": 1,
+      "notes": 634,
+      "bars": 139,
+      "uniqueRhythms": 139,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "whatsuppop",
+      "title": "What's up? Pop!",
+      "difficulty": 2,
+      "notes": 994,
+      "bars": 139,
+      "uniqueRhythms": 139,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "ogyarinizer",
+      "title": "おぎゃりないざー",
+      "difficulty": 0,
+      "notes": 252,
+      "bars": 112,
+      "uniqueRhythms": 110,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "ogyarinizer",
+      "title": "おぎゃりないざー",
+      "difficulty": 1,
+      "notes": 504,
+      "bars": 113,
+      "uniqueRhythms": 113,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "ogyarinizer",
+      "title": "おぎゃりないざー",
+      "difficulty": 2,
+      "notes": 847,
+      "bars": 113,
+      "uniqueRhythms": 113,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "daijobu",
+      "title": "ダイジョブですか？",
+      "difficulty": 0,
+      "notes": 278,
+      "bars": 125,
+      "uniqueRhythms": 123,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "daijobu",
+      "title": "ダイジョブですか？",
+      "difficulty": 1,
+      "notes": 567,
+      "bars": 126,
+      "uniqueRhythms": 122,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "daijobu",
+      "title": "ダイジョブですか？",
+      "difficulty": 2,
+      "notes": 1012,
+      "bars": 127,
+      "uniqueRhythms": 127,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "kusaregedou",
+      "title": "腐れ外道とチョコレゐト",
+      "difficulty": 0,
+      "notes": 387,
+      "bars": 196,
+      "uniqueRhythms": 129,
+      "dominantRhythmPercent": 7,
+      "longestIdenticalRhythmBars": 2
+    },
+    {
+      "id": "kusaregedou",
+      "title": "腐れ外道とチョコレゐト",
+      "difficulty": 1,
+      "notes": 780,
+      "bars": 197,
+      "uniqueRhythms": 183,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "kusaregedou",
+      "title": "腐れ外道とチョコレゐト",
+      "difficulty": 2,
+      "notes": 1247,
+      "bars": 197,
+      "uniqueRhythms": 196,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "amara",
+      "title": "ÅMARA(大未来電脳)",
+      "difficulty": 0,
+      "notes": 365,
+      "bars": 164,
+      "uniqueRhythms": 135,
+      "dominantRhythmPercent": 3,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "amara",
+      "title": "ÅMARA(大未来電脳)",
+      "difficulty": 1,
+      "notes": 705,
+      "bars": 167,
+      "uniqueRhythms": 158,
+      "dominantRhythmPercent": 2,
+      "longestIdenticalRhythmBars": 1
+    },
+    {
+      "id": "amara",
+      "title": "ÅMARA(大未来電脳)",
+      "difficulty": 2,
+      "notes": 1310,
+      "bars": 170,
+      "uniqueRhythms": 170,
+      "dominantRhythmPercent": 1,
+      "longestIdenticalRhythmBars": 1
+    }
+  ]
+}

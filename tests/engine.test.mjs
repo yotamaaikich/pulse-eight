@@ -1,3 +1,4 @@
+import {AUDIO_ATTACKS} from '../audio-attacks.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -12,7 +13,7 @@ test('all tracks and difficulties support perfect and empty replays',()=>{
     assert.ok(manual.length+holdTicks(manual)<=4096,`${song.id}/${diff}: standard leaderboard limit`);
     assert.ok(manual.length>=30,`${song.id}/${diff}: chart too sparse`);
     for(let i=0;i<chart.length;i++){assert.ok(chart[i].t>0&&chart[i].t<song.duration);if(i)assert.ok(chart[i].t>=chart[i-1].t);}
-    for(const n of manual)assert.ok(n.lane>=0&&n.lane<8);assert.ok(manual.some(n=>n.t>song.duration-4),song.id+' full length');
+    for(const n of manual)assert.ok(n.lane>=0&&n.lane<8);assert.ok(manual.some(n=>n.t>song.duration*.85),song.id+' reaches final audible attacks without filling silent outro');
     const result=scoreReplay(song,diff,perfectEvents(manual));
     assert.equal(result.score,1000000,`${song.id}/${diff}`);assert.equal(result.stats.miss,0);assert.equal(result.maxCombo,manual.length+holdTicks(manual));
     assert.equal(scoreReplay(song,diff,[]).score,0);
