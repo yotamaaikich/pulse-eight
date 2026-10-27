@@ -12,7 +12,7 @@ export function scoreNoteAt(voice,timeMs,tolerance=75){
 }
 function playablePitch(midi){while(midi<48)midi+=12;while(midi>84)midi-=12;return midi;}
 export function pianoTrialChart(song,chart,profile=null){
-  if(song.id!==PIANO_TRIAL_SONG||!profile)return chart;
+  if(!profile)return chart;
   const result=chart.map(n=>{const copy={...n};for(const key of ['soundMidi','soundOriginalMidi','soundSourceStart','soundSourceEnd','soundVoice'])delete copy[key];return copy;}),groups=new Map();
   for(const n of result)if(!n.assist){if(!groups.has(n.t))groups.set(n.t,[]);groups.get(n.t).push(n);}
   for(const [time,group]of groups){

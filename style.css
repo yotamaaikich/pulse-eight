@@ -21,3 +21,5 @@
 .piano-toggle{display:flex;align-items:center;gap:9px;margin-top:24px;font-size:12px;font-weight:600}.piano-toggle input{accent-color:var(--accent)}
 
 .piano-score-import{margin:12px 0;padding:12px;border:1px solid #cbd5c2;border-radius:6px}.piano-score-import summary{cursor:pointer;font-size:11px;font-weight:700}.piano-score-import input{font-size:10px;max-width:100%}#pianoScoreStatus{color:#3d684c}
+
+#stageCombo{background:linear-gradient(#ff82d5 5%,#fff 48%,#67ddff 95%);background-clip:text;-webkit-background-clip:text;color:transparent;font-weight:800;text-shadow:none;filter:drop-shadow(0 1px 3px #24174f)}

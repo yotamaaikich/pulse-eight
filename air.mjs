@@ -35,11 +35,10 @@ export function drawAirRibbons(ctx,notes,{width,time,lookahead,top,hitY,held=fal
   }
   ctx.restore();
 }
-export function drawAirHead(ctx,x,y,width,scale,label,held=false){
+export function drawAirHead(ctx,x,y,width,scale,held=false){
   ctx.save();const h=Math.max(12,31*scale),w=width;
   ctx.shadowColor='#b8ff55';ctx.shadowBlur=held?15:7;ctx.fillStyle='#baff5a';ctx.strokeStyle='#efffd2';ctx.lineWidth=Math.max(1,1.5*scale);
   // A broad upward arrow: visual identity remains readable without '+SP' text.
   ctx.beginPath();ctx.moveTo(x,y-h);ctx.lineTo(x+w*.47,y-h*.1);ctx.lineTo(x+w*.2,y-h*.1);ctx.lineTo(x+w*.2,y+h*.43);ctx.lineTo(x-w*.2,y+h*.43);ctx.lineTo(x-w*.2,y-h*.1);ctx.lineTo(x-w*.47,y-h*.1);ctx.closePath();ctx.fill();ctx.stroke();ctx.shadowBlur=0;
-  if(scale>.48){ctx.fillStyle='#244415';ctx.font=`800 ${Math.max(9,13*scale)}px sans-serif`;ctx.textAlign='center';ctx.fillText(label,x,y+h*.27);}
   ctx.restore();
 }

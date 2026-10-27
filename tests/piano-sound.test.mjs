@@ -31,7 +31,7 @@ test('loading or failed samples never queue a late key-down or fall back to the 
 test('score pitches and octaves come from the imported timed notes, independently of key lane',()=>{
  const raw=[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}],chart=pianoTrialChart(SONGS[0],raw,TEST_SCORE);
  assert.deepEqual(raw,[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}]);assert.equal(chart[2].soundMidi,69);assert.equal(chart[0].soundMidi,50);assert.equal(chart[1].soundMidi,65);
- assert.equal(pianoTrialChart(SONGS[0],raw),raw);assert.equal(pianoTrialChart(SONGS[1],raw,TEST_SCORE),raw);
+ assert.equal(pianoTrialChart(SONGS[0],raw),raw);for(const song of SONGS){const mapped=pianoTrialChart(song,raw,TEST_SCORE);assert.equal(mapped[2].soundMidi,69,song.id);assert.equal(mapped[1].soundMidi,65,song.id);assert.equal(pianoTrialChart(song,raw),raw);}
  const events=[[1000,0,1],[1000,4,1],[1020,0,0],[1020,4,0],[2000,0,1],[2020,0,0]];assert.deepEqual(scoreChartReplay(chart,3,events),scoreChartReplay(raw,3,events));
 });
 test('score matching respects rests instead of looping harmony or borrowing distant notes',()=>{

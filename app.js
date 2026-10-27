@@ -1,8 +1,10 @@
+import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=unlabeled-1';
+import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=red-blue-1';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=piano-hammer-1';
-import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=melody-score-1';
+import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=all-scores-1';
 import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=hold-air-3';
-import {drawAirRibbons,drawAirHead} from './air.mjs?v=hold-air-3';
+import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hold-air-3';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
@@ -22,7 +24,9 @@ prefs.pianoLevel=Math.max(0,Math.min(100,Number(prefs.pianoLevel)||0));
 const pianoSound=createPianoSound();
 function configurePiano(){pianoSound.configure({enabled:prefs.pianoOn,volume:prefs.pianoLevel});}
 configurePiano();
-let pianoProfile=null;try{const stored=read('pulse-monitoring-piano-score',null);if(stored)pianoProfile=validatePianoProfile(stored);}catch{}
+const pianoProfiles=Object.create(null);
+for(const track of SONGS){try{const stored=read('pulse-piano-score:'+track.id,null)??(track.id===PIANO_TRIAL_SONG?read('pulse-monitoring-piano-score',null):null);if(stored)pianoProfiles[track.id]=validatePianoProfile(stored);}catch{}}
+const currentPianoProfile=()=>pianoProfiles[song().id]??null;
 if(!Array.isArray(prefs.keys)||prefs.keys.length!==8||new Set(prefs.keys).size!==8||prefs.keys.some(code=>['Space','KeyV','KeyR','KeyO'].includes(code)))prefs.keys=[...DEFAULT_KEYS];
 prefs.speed=Math.min(2,Math.max(.5,Number(prefs.speed)||1));
 prefs.offset=Math.min(500,Math.max(-500,Number(prefs.offset)||0));
@@ -53,7 +57,7 @@ async function toggleFullscreen(){if(document.body.classList.contains('chart-exp
 function syncExpandedControls(){const on=!!document.fullscreenElement||document.body.classList.contains('chart-expanded');$('fullscreenButton').setAttribute('aria-pressed',String(on));$('fullscreenButton').setAttribute('aria-label',on?'譜面の全画面を終了':'譜面を全画面にする');$('fullscreenButton').innerHTML=(on?'⛶ 戻す':'⛶ 譜面全画面')+' <kbd>V</kbd>';$('playFullscreen').textContent=(on?'⛶ 戻す':'⛶ 譜面全画面')+' [V]';}
 document.addEventListener('fullscreenchange',syncExpandedControls);
 function renderKeyGuide(){for(let hand=0;hand<2;hand++){$(hand?'rightKeys':'leftKeys').innerHTML=prefs.keys.slice(hand*4,hand*4+4).map(code=>`<span class="guide-key"><kbd data-key="${code}">${label(code)}</kbd></span>`).join('');}$('mappingKeys').innerHTML=prefs.keys.map((code,i)=>`<kbd class="${remapping&&i===remapKeys.length?'current':''}">${remapping?(remapKeys[i]?label(remapKeys[i]):'·'):label(code)}</kbd>`).join('');}
-function syncSettings(){for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'音程データ未読込（試し弾きは利用できます）';}
+function syncSettings(){const pianoProfile=currentPianoProfile();for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'音程データ未読込（試し弾きは利用できます）';}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
 function renderSongs(){
   $('songs').innerHTML=orderedSongs(SONGS,libraryPack,difficulty,librarySort).map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" aria-hidden="true" style="background:${s.color}"></span><span class="song-info"><strong>${s.title}</strong><small>${s.artist} · ${s.pack==='madoka'?'まどマギ':s.pack==='osu'?'osu!定番':s.pack==='taiko'?'太鼓':'ボカロ'}</small></span><span class="song-level"><b>LV.${difficultyMetrics(s,difficulty).level}</b><small>${difficultyMetrics(s,difficulty).count} NOTES</small></span></button>`).join('');
@@ -65,7 +69,7 @@ function moveSong(direction){const choices=orderedSongs(SONGS,libraryPack,diffic
 function selectSong(index){
   if(mode!=='idle'){const target=(index+SONGS.length)%SONGS.length;if(target!==selected)requestSelection(target,difficulty);return;}
   if(mode!=='idle')return;const previous=selected;selected=(index+SONGS.length)%SONGS.length;renderSongs();const s=song();
-  $('pianoTrialStatus').textContent=s.id===PIANO_TRIAL_SONG?(pianoProfile?'ピアノ音 · 読み込んだ譜面の音程で演奏':'ピアノ音 · 設定から音程ファイルを読み込み'):'ピアノ音は試験曲「モニタリング」のみ';$('trackTitle').textContent=s.title;$('trackArtist').textContent=s.artist+' / '+s.vocal;$('bpm').textContent=s.bpm;$('miniArt').style.background=s.color;
+  $('pianoTrialStatus').textContent=currentPianoProfile()?'ピアノ音 · '+currentPianoProfile().title:'ピアノ音 · この曲の音程データ未登録';syncSettings();$('trackTitle').textContent=s.title;$('trackArtist').textContent=s.artist+' / '+s.vocal;$('bpm').textContent=s.bpm;$('miniArt').style.background=s.color;
   $('originalLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').href=s.source;$('sheetLink').textContent=s.sourceLabel||'参考楽譜 ↗';$('chartInfo').textContent=s.chartLabel||'公開採譜を参考にした簡略フレーズ';resetTimer();
   if(ready&&previous!==selected)player.cueVideoById(s.video);updateChartControls();updateBest();loadLeaders();
 }
@@ -141,8 +145,8 @@ function syncPlayback(now){
 function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
-  if(song().id===PIANO_TRIAL_SONG){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
-  let chart;try{chart=pianoTrialChart(song(),makeChart(song(),difficulty),pianoProfile);}catch(error){toast(error.message);return;}
+  if(currentPianoProfile()){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
+  let chart;try{chart=pianoTrialChart(song(),makeChart(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
   upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
   runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
@@ -182,12 +186,12 @@ function applyNotifications(list){
   const now=performance.now();let changed=false;
   for(const event of list){
     if(event.kind==='assist'){blackFlashes[event.note.blackIndex]=now;continue;}
-    if(event.kind==='holdstart'||event.kind==='flickstart'){lastJudge=event.kind==='flickstart'?'flick':'hold';judgeAt=now;continue;}
+    if(event.kind==='holdstart'||event.kind==='flickstart'){lastJudge=event.result;judgeDelta=Math.round(event.delta*1000);judgeAt=now;continue;}
     if(event.kind==='holdtick'){changed=true;continue;}
     if(event.kind==='airbreak'){changed=true;lastJudge='airbreak';judgeAt=now;toast('FLOATの帯がないところではSpaceを離してください');continue;}
     if(event.kind!=='judge')continue;
     changed=true;lastJudge=event.result;judgeDelta=Math.round(event.delta*1000);judgeAt=now;
-    if(event.result!=='miss'){const x=(event.note.lane+.5)*W/8;for(let i=0;i<9;i++)particles.push({x,y:H-97,vx:(Math.random()-.5)*2.5,vy:-Math.random()*4-1,life:1,color:event.note.lane<4?'#f4917e':'#b4e9cf'});}
+    if(event.result!=='miss'){const x=(event.note.lane+.5)*W/8;for(let i=0;i<9;i++)particles.push({x,y:keyboardStrikeY(W,H)+2,vx:(Math.random()-.5)*2.5,vy:-Math.random()*4-1,life:1,color:event.note.lane<4?NOTE_COLORS.left:NOTE_COLORS.right});}
   }
   if(changed)updateStats();
 }
@@ -203,7 +207,6 @@ function syncHeldKeys(){
   }
 }
 function playAttack(list,float=false){
-  if(song().id!==PIANO_TRIAL_SONG)return;
   for(const event of list){
     const n=event.note;if(!n||!Number.isFinite(n.soundMidi))continue;
     if(float?event.kind==='judge'&&n.flick&&event.result!=='miss':event.kind==='holdstart'||(event.kind==='judge'&&!n.end&&!n.flick&&event.result!=='miss'))pianoSound.play({midi:n.soundMidi,hold:n.end?n.end-n.t:0,float});
@@ -239,7 +242,7 @@ function loadPlayer(){
 }
 function resize(){const rect=canvas.getBoundingClientRect();W=rect.width;H=rect.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
 new ResizeObserver(resize).observe(canvas);
-function project(x,depth){return projectPoint(x,W,depth,40,H-99).x;}
+function project(x,depth){return projectPoint(x,W,depth,40,keyboardStrikeY(W,H)).x;}
 function draw(now){
   const dt=Math.min((now-lastFrame)/16.67,3);lastFrame=now;syncPlayback(now);
   const active=['running','buffering','loading','countdown','paused'].includes(mode);
@@ -247,11 +250,11 @@ function draw(now){
   if(mode==='running'){
     applyNotifications(session.advance(t));$('timer').textContent=formatTime(Math.min(song().duration,t))+' / '+formatTime(song().duration);$('progress').style.width=Math.min(100,Math.max(0,t)/song().duration*100)+'%';if(t>=song().duration)finish();
   }
-  ctx.clearRect(0,0,W,H);const top=40,hitY=H-99,span=hitY-top,laneW=W/8;
+  ctx.clearRect(0,0,W,H);const top=40,hitY=keyboardStrikeY(W,H),span=hitY-top,laneW=W/8;
   const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#172026');bg.addColorStop(1,'#24312f');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  for(let lane=0;lane<8;lane++){ctx.beginPath();ctx.moveTo(project(lane*laneW,0),top);ctx.lineTo(project((lane+1)*laneW,0),top);ctx.lineTo((lane+1)*laneW,hitY);ctx.lineTo(lane*laneW,hitY);ctx.closePath();ctx.fillStyle=lane<4?(lane%2?'#ef9e8812':'#ef9e8807'):(lane%2?'#a8e3cb12':'#a8e3cb07');ctx.fill();if(pressed.has(lane)||now-flashes[lane]<170){const glow=ctx.createLinearGradient(0,hitY-160,0,hitY);glow.addColorStop(0,'transparent');glow.addColorStop(1,lane<4?'#ec634b55':'#a8e3cb55');ctx.fillStyle=glow;ctx.fill();}}
+  for(let lane=0;lane<8;lane++){ctx.beginPath();ctx.moveTo(project(lane*laneW,0),top);ctx.lineTo(project((lane+1)*laneW,0),top);ctx.lineTo((lane+1)*laneW,hitY);ctx.lineTo(lane*laneW,hitY);ctx.closePath();ctx.fillStyle=lane<4?(lane%2?'#ff365e18':'#ff365e0b'):(lane%2?'#318cff18':'#318cff0b');ctx.fill();if(pressed.has(lane)||now-flashes[lane]<170){const glow=ctx.createLinearGradient(0,hitY-160,0,hitY);glow.addColorStop(0,'transparent');glow.addColorStop(1,lane<4?'#ff365e66':'#318cff66');ctx.fillStyle=glow;ctx.fill();}}
   for(let i=0;i<=8;i++){ctx.lineWidth=i===4?2:1;ctx.setLineDash(i===4?[8,7]:[]);ctx.strokeStyle=i===4?'#ffffffaa':i===0||i===8?'#ffffff66':'#ffffff40';ctx.beginPath();ctx.moveTo(project(i*laneW,0),top);ctx.lineTo(i*laneW,hitY);ctx.stroke();}ctx.setLineDash([]);ctx.lineWidth=1;
-  ctx.textAlign='center';ctx.font='700 11px "DM Sans",sans-serif';ctx.fillStyle='#f2a38e';ctx.fillText('左手',project(W/4,0),top-12);ctx.fillStyle='#b3e4c8';ctx.fillText('右手',project(W*3/4,0),top-12);
+  ctx.textAlign='center';ctx.font='700 11px "DM Sans",sans-serif';ctx.fillStyle=NOTE_COLORS.left;ctx.fillText('左手',project(W/4,0),top-12);ctx.fillStyle=NOTE_COLORS.right;ctx.fillText('右手',project(W*3/4,0),top-12);
   const lookahead=2.2/prefs.speed;const beat=60/song().bpm;const visualTime=active?t:now/1000*.65;
   for(let b=Math.floor(visualTime/beat);b<visualTime/beat+lookahead/beat+2;b++){const diff=b*beat-visualTime;if(diff<0||diff>lookahead)continue;const depth=1-diff/lookahead,y=top+span*depth*depth;ctx.strokeStyle=b%(song().meter||4)===0?'#c2decd1f':'#c2decd0b';ctx.beginPath();ctx.moveTo(project(0,depth),y);ctx.lineTo(project(W,depth),y);ctx.stroke();}
   let visibleNotes=notes;
@@ -275,7 +278,7 @@ function draw(now){
     const xBase=n.assist?n.boundary*laneW:(n.lane+.5)*laneW;
     const head=projectPoint(xBase,W,depth,top,hitY),x=head.x;
     const width=(n.assist?laneW*.32:laneW*.83)*head.scale,height=(n.assist?12:32)*(.35+.65*depth);
-    const color=n.assist?'#8a99a3':n.flick?'#baff5a':n.lane<4?'#f0937f':'#b3e4c8';
+    const color=n.assist?'#8a99a3':n.flick?'#baff5a':n.lane<4?NOTE_COLORS.left:NOTE_COLORS.right;
     if(n.end){
       const tailDepth=Math.min(1,Math.max(0,1-tailDiff/lookahead));
       const tail=projectPoint(xBase,W,tailDepth,top,hitY);
@@ -285,19 +288,14 @@ function draw(now){
       ctx.globalAlpha=.8;ctx.fillRect(tail.x-tailHalf,tail.y,tailHalf*2,3);
       ctx.strokeStyle=color;ctx.lineWidth=n.started?2:1;ctx.beginPath();ctx.moveTo(tail.x-tailHalf,tail.y);ctx.lineTo(x-headHalf,y);ctx.moveTo(tail.x+tailHalf,tail.y);ctx.lineTo(x+headHalf,y);ctx.stroke();
     }
-    if(n.flick){drawAirHead(ctx,x,y,width,head.scale,label(prefs.keys[n.lane]),spaceHeld);continue;}
-    ctx.globalAlpha=n.assist?.32:.4+.6*depth;ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=depth>.7?8:0;
-    ctx.beginPath();ctx.roundRect(x-width/2,y-height/2,width,height,Math.max(1,3*depth));ctx.fill();ctx.shadowBlur=0;ctx.globalAlpha=1;
-    if(!n.assist&&depth>.25){ctx.fillStyle='#244337';ctx.textAlign='center';ctx.font=`700 ${Math.max(7,(n.flick?12:15)*depth)}px \"DM Sans\",sans-serif`;ctx.fillText(label(prefs.keys[n.lane]),x,y+5*depth);}
+    if(n.flick){drawAirHead(ctx,x,y,width,head.scale,spaceHeld);continue;}
+    if(n.assist){ctx.globalAlpha=.32;ctx.fillStyle=color;ctx.fillRect(x-width/2,y-height/2,width,height);ctx.globalAlpha=1;}
+    else drawNoteHead(ctx,{x,y,width,height,lane:n.lane,time:now});
   }
-  ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.fillRect(0,hitY-1,W,2);ctx.globalAlpha=1;ctx.shadowColor='#b3e4c8';ctx.shadowBlur=12;ctx.fillStyle='#b3e4c8';ctx.fillRect(0,hitY,W,1);ctx.shadowBlur=0;
-  const keyTop=hitY+3,keyH=H-keyTop-4;
-  for(let i=0;i<8;i++){const down=pressed.has(i)||now-flashes[i]<100;const x=i*laneW;const keyGrad=ctx.createLinearGradient(0,keyTop,0,H);keyGrad.addColorStop(0,down?(i<4?'#f5ac98':'#b6e5d2'):'#f3f3e9');keyGrad.addColorStop(1,down?(i<4?'#d8765c':'#76b39b'):'#cbd2bf');ctx.fillStyle=keyGrad;ctx.beginPath();ctx.roundRect(x+1,keyTop,laneW-2,keyH,3);ctx.fill();ctx.fillStyle='#58644e';ctx.textAlign='center';ctx.font='700 12px "DM Sans",sans-serif';ctx.fillText(label(prefs.keys[i]),x+laneW/2,H-20);if(difficulty===2){ctx.font='700 9px \"DM Sans\",sans-serif';ctx.fillStyle='#6a7766';ctx.fillText('FLOAT',x+laneW/2,H-36);}}
-  [1,2,4,5,6].forEach((boundary,i)=>{const x=boundary*laneW,down=now-blackFlashes[i]<130;ctx.fillStyle=down?'#719c88':'#172127';ctx.shadowColor='#0006';ctx.shadowBlur=4;ctx.beginPath();ctx.roundRect(x-laneW*.25,keyTop,laneW*.5,38,2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle=down?'#c4edd7':'#3c494a';ctx.beginPath();ctx.moveTo(x-laneW*.2,keyTop+33);ctx.lineTo(x+laneW*.2,keyTop+33);ctx.stroke();});
-  ctx.strokeStyle='#ffffffdd';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(W/2,keyTop+42);ctx.lineTo(W/2,H);ctx.stroke();
-  ctx.font='700 10px "DM Sans",sans-serif';ctx.textAlign='center';ctx.fillStyle='#6b4b40';ctx.fillText('左手',W/4,H-5);ctx.fillStyle='#355749';ctx.fillText('右手',W*3/4,H-5);
-  const centerY=hitY-88;if(active&&stats.combo>1){ctx.textAlign='center';ctx.fillStyle='#e0ecdf';ctx.font='500 47px "Barlow Condensed",sans-serif';ctx.fillText(String(stats.combo),W/2,centerY);ctx.font='7px "DM Sans",sans-serif';ctx.fillStyle='#78968b';ctx.fillText('C O M B O',W/2,centerY+16);}
-  if(active&&lastJudge&&now-judgeAt<650){ctx.globalAlpha=Math.max(0,1-(now-judgeAt)/650);ctx.textAlign='center';ctx.font='700 19px "Barlow Condensed",sans-serif';ctx.fillStyle=lastJudge==='miss'?'#ef937f':'#c5edcd';ctx.fillText(lastJudge==='airbreak'?'RELEASE SPACE':lastJudge==='flick'?'FLOAT':lastJudge.toUpperCase(),W/2,centerY-44);if(lastJudge!=='miss'&&lastJudge!=='hold'&&lastJudge!=='flick'&&lastJudge!=='airbreak'){ctx.font='8px "DM Sans",sans-serif';ctx.fillStyle='#87b3a3';ctx.fillText((judgeDelta>0?'LATE +':'EARLY ')+judgeDelta+' ms',W/2,centerY-28);}ctx.globalAlpha=1;}
+  ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.fillRect(0,hitY-1,W,2);ctx.globalAlpha=1;ctx.shadowColor=NOTE_COLORS.right;ctx.shadowBlur=12;ctx.fillStyle=NOTE_COLORS.right;ctx.fillRect(0,hitY,W,1);ctx.shadowBlur=0;
+  drawKeyboard(ctx,{width:W,height:H,time:now,pressed,flashes,blackFlashes});
+  if(active)drawCombo(ctx,stats.combo,W,hitY);
+  if(active)drawJudgment(ctx,{result:lastJudge,delta:judgeDelta,width:W,hitY,age:now-judgeAt});
   for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=.035*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,2,3);if(p.life<=0)particles.splice(i,1);}ctx.globalAlpha=1;
   $('spaceGuide').classList.toggle('pressed',spaceHeld);$('spaceGuide').classList.toggle('air-invalid',!!session?.spaceInvalid);$('spaceGuide').querySelector('span').textContent=session?.spaceInvalid?'Spaceを離して！ FLOAT区間の外ではコンボが切れます':'黄緑のFLOATの帯だけSpaceを押し、帯が終わったら離す';document.querySelectorAll('[data-key]').forEach(k=>k.classList.toggle('pressed',pressed.has(prefs.keys.indexOf(k.dataset.key))));requestAnimationFrame(draw);
 }
@@ -333,7 +331,7 @@ document.querySelectorAll('.close-dialog').forEach(button=>button.onclick=()=>bu
 document.querySelectorAll('dialog').forEach(dialog=>{dialog.addEventListener('close',()=>{remapping=false;remapKeys=[];renderKeyGuide();});dialog.addEventListener('click',e=>{if(e.target===dialog){const rect=dialog.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)dialog.close();}});});
 document.querySelectorAll('[data-difficulty]').forEach(button=>button.onclick=()=>selectDifficulty(Number(button.dataset.difficulty)));
 for(const key of ['speed','volume','pianoLevel','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='pianoLevel')pianoSound.warm();if(key==='volume')applyVolume();};
-$('pianoScoreFile').onchange=async()=>{const file=$('pianoScoreFile').files?.[0];if(!file)return;try{if(file.size>500000)throw Error('ファイルは500KB以内で指定してください。');const profile=importPianoScore(await file.text(),file.name);localStorage.setItem('pulse-monitoring-piano-score',JSON.stringify(profile));pianoProfile=profile;syncSettings();if(mode==='idle')selectSong(selected);toast('音程データをこのブラウザに保存しました。次のプレイから反映します。');}catch(error){toast(error.message);}finally{$('pianoScoreFile').value='';}};
+$('pianoScoreFile').onchange=async()=>{const file=$('pianoScoreFile').files?.[0];if(!file)return;const trackId=song().id;try{if(file.size>500000)throw Error('ファイルは500KB以内で指定してください。');const profile=importPianoScore(await file.text(),file.name);localStorage.setItem('pulse-piano-score:'+trackId,JSON.stringify(profile));pianoProfiles[trackId]=profile;syncSettings();if(mode==='idle')selectSong(selected);toast('音程データをこのブラウザに保存しました。次のプレイから反映します。');}catch(error){toast(error.message);}finally{$('pianoScoreFile').value='';}};
 $('pianoOn').onchange=()=>{prefs.pianoOn=$('pianoOn').checked;savePrefs();pianoSound.warm();};
 $('testPiano').onclick=async()=>{configurePiano();pianoSound.warm();$('testPiano').textContent='音源読み込み中…';$('testPiano').disabled=true;const ok=await pianoSound.prepare();$('testPiano').textContent='試し弾き';syncSettings();if(!$('settingsDialog').open)return;if(!ok){toast('ピアノ音源を読み込めませんでした。ページを再読み込みしてください。');return;}for(const midi of [62,65,69])pianoSound.play({midi});};
 $('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();applyVolume();toast('設定を初期値に戻しました');};
@@ -348,7 +346,7 @@ $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mo
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
 let tutorial=null;
-async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=float-name-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
+async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=unlabeled-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
 $('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
 

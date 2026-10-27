@@ -1,3 +1,5 @@
+import {drawKeyboard,keyboardStrikeY} from '../keyboard.mjs';
+import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from '../note-style.mjs';
 import {importPianoScore,validatePianoProfile} from '../score-import.mjs';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from '../piano-trial.mjs';
 import fs from 'node:fs/promises';
@@ -17,9 +19,9 @@ function element(id){if(!elements.has(id)){const classes=new Set();elements.set(
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(){}},hidden:false};
 const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.state=1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;return fakePlayer;}}};
-const scope=vm.createContext({...engine,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
+const scope=vm.createContext({...engine,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
-vm.runInContext(source+`\nglobalThis.qa={start,draw,finish,pause,resume,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
+vm.runInContext(source+`\nglobalThis.qa={quit,start,draw,finish,pause,resume,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
 window.onYouTubeIframeAPIReady();fakePlayer.options.events.onReady();
 scope.qa.start();assert.equal(volumes.at(-1),0);assert.equal(elements.get('videoLoading').classList.contains('hidden'),false);assert.equal(JSON.parse(storage.get('pulse-prefs')).volume,50);
 for(wall=0;wall<30000;wall+=100)scope.qa.draw(wall);
@@ -46,7 +48,7 @@ elements.get('volume').value='0';elements.get('volume').oninput();becomeRunning(
 scope.qa.pause();const before=scope.qa.clock,stats=scope.qa.stats;scope.qa.selectSong(1);assert.equal(elements.get('changeTrackDialog').open,true);assert.equal(scope.qa.selected,0);assert.equal(scope.qa.clock,before);assert.equal(scope.qa.stats,stats);elements.get('changeTrackDialog').close();assert.equal(scope.qa.mode,'paused');
 scope.qa.selectDifficulty(2);assert.equal(scope.qa.difficulty,1);scope.qa.confirmSelection();assert.equal(scope.qa.mode,'idle');assert.equal(scope.qa.difficulty,2);assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);
 const key=(code,shiftKey=false)=>({code,key:code,shiftKey,preventDefault(){},target:{closest(){return null;}}});
-assert.ok(source.includes('pianoTrialChart'),'piano pitches are assigned only to the trial chart');
+assert.ok(source.includes('pianoTrialChart'),'piano pitches are assigned from a timed score');
 const down=code=>listeners.get('keydown')(key(code)),up=code=>listeners.get('keyup')(key(code));
 scope.qa.setHard();down('KeyF');scope.qa.setClock(1.08);down('Space');up('Space');up('KeyF');assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.stats.perfect,1);assert.deepEqual(Array.from(scope.qa.events,e=>Array.from(e)),[[1000,3,1],[1080,0,4],[1080,3,2],[1080,0,5],[1080,3,3],[1080,3,0]]);
 // Space alone never scores; holding it allows fresh lane presses across the chart.
@@ -100,3 +102,16 @@ scope.qa.setClock(2);down('KeyS');assert.equal(soundCalls.length,2);scope.qa.set
 scope.qa.setPractice([{t:1,lane:3,flick:true,soundMidi:69}]);soundCalls.length=0;down('KeyF');assert.equal(soundCalls.length,0);down('Space');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].float,true);up('Space');up('KeyF');assert.equal(soundCalls.length,1);
 elements.get('pianoOn').checked=false;elements.get('pianoOn').onchange();scope.qa.setPractice([{t:1,lane:0,soundMidi:62}],1);down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);
 elements.get('pianoOn').checked=true;elements.get('pianoOn').onchange();elements.get('pianoLevel').value='0';elements.get('pianoLevel').oninput();scope.qa.setPractice([{t:1,lane:0,soundMidi:62}],1);down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);
+
+// Every library song can use its own score, including actual key-down audio.
+elements.get('pianoLevel').value='18';elements.get('pianoLevel').oninput();
+for(let i=0;i<engine.SONGS.length;i++){
+ scope.qa.quit();scope.qa.selectSong(i);scope.qa.setPractice([{t:1,lane:0,soundMidi:60+i%12}],1);
+ const before=soundCalls.length;down('KeyA');up('KeyA');assert.equal(soundCalls.length,before+1,engine.SONGS[i].id);
+}
+scope.qa.quit();scope.qa.selectSong(1);
+elements.get('pianoScoreFile').files=[{size:100,name:'test.mml',text:async()=> 'MML@t120o4l4crd;'}];
+await elements.get('pianoScoreFile').onchange();
+assert.ok(storage.has('pulse-piano-score:tetoris'));assert.equal(storage.has('pulse-piano-score:monitoring'),false);
+assert.match(elements.get('pianoScoreStatus').textContent,/test.mml/);
+scope.qa.selectSong(0);assert.match(elements.get('pianoScoreStatus').textContent,/未読込/);

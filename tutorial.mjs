@@ -1,9 +1,9 @@
-import {drawAirRibbons,drawAirHead} from './air.mjs?v=hold-air-3';
+import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
 import {RhythmSession,isFullCombo} from './engine.mjs?v=hold-air-3';
 import {projectPoint} from './geometry.mjs';
 
 export const LESSONS=[
-  {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、表示されたキーを1回押そう。'},
+  {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、操作ガイドで対応するキーを確認して、1回押そう。'},
   {title:'長押し',lanes:[2],hold:1.2,text:'帯の先頭で押し、帯がなくなるまで押し続けよう。途中で離すと失敗。押し続ける間は0.25秒ごとにコンボが増えます。'},
   {title:'同時押し',lanes:[3,4],text:'白い横線でつながった2つのノーツを、左右の手で同時に押そう。'},
   {title:'FLOAT（フロート）：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
@@ -53,15 +53,15 @@ export function createTutorial({dialog,getKeys,getDifficulty}){
     for(let i=0;i<=8;i++){const a=point(i*laneW,0),b=point(i*laneW,1);ctx.strokeStyle=i===4?'#ffffffaa':'#ffffff30';ctx.lineWidth=i===4?2:1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
     ctx.fillStyle='#ef9b89';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.fillText('左手',290,16);ctx.fillStyle='#b3dfc4';ctx.fillText('右手',510,16);
     ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,hit);ctx.lineTo(W,hit);ctx.stroke();
-    const keys=getKeys();for(let lane=0;lane<8;lane++){ctx.fillStyle=held.has(keys[lane])?(lane<4?'#ef947d':'#a9dcbf'):'#eff0e6';ctx.fillRect(lane*laneW+2,hit+6,laneW-4,62);ctx.fillStyle='#273b34';ctx.font='bold 19px sans-serif';ctx.fillText(keyLabel(keys[lane]),(lane+.5)*laneW,hit+39);}
+    const keys=getKeys();for(let lane=0;lane<8;lane++){ctx.fillStyle=held.has(keys[lane])?(lane<4?'#ef947d':'#a9dcbf'):'#eff0e6';ctx.fillRect(lane*laneW+2,hit+6,laneW-4,62);}
     const lesson=lessons[step],notes=attempt?.session.notes||[];
     drawAirRibbons(ctx,notes,{width:W,time:t,lookahead:2.4,top:22,hitY:hit,held:held.has('Space')});
     const depth=at=>Math.max(0,Math.min(1.08,1-(at-t)/2.4));
     if(notes.length>1&&!lesson.sweep&&!notes.every(n=>n.done)){const d=depth(2.4),a=point((notes[0].lane+.5)*laneW,d),b=point((notes[1].lane+.5)*laneW,d);ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
     for(const n of notes){if(n.done)continue;const d=n.started?1:depth(n.t),head=point((n.lane+.5)*laneW,d),color=n.lane<4?'#ef947d':'#a9dcbf';ctx.fillStyle=color;
       if(n.end){const tail=point((n.lane+.5)*laneW,depth(n.end));ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(head.x-33*head.scale,head.y);ctx.lineTo(tail.x-33*tail.scale,tail.y);ctx.lineTo(tail.x+33*tail.scale,tail.y);ctx.lineTo(head.x+33*head.scale,head.y);ctx.fill();ctx.globalAlpha=1;}
-      if(n.flick){drawAirHead(ctx,head.x,head.y,84*head.scale,head.scale,keyLabel(keys[n.lane]),held.has('Space'));continue;}
-      ctx.fillRect(head.x-42*head.scale,head.y-10*head.scale,84*head.scale,20*head.scale);ctx.fillStyle='#20332c';ctx.font=`bold ${Math.max(10,15*head.scale)}px sans-serif`;ctx.fillText(n.flick?keyLabel(keys[n.lane])+'+SP':keyLabel(keys[n.lane]),head.x,head.y+5*head.scale);
+      if(n.flick){drawAirHead(ctx,head.x,head.y,84*head.scale,head.scale,held.has('Space'));continue;}
+      ctx.fillRect(head.x-42*head.scale,head.y-10*head.scale,84*head.scale,20*head.scale);
     }
     if(!attempt){ctx.fillStyle='#e1ebe3';ctx.font='bold 20px sans-serif';ctx.fillText('下のラインでキーを押す',W/2,150);}
     frame=requestAnimationFrame(draw);
