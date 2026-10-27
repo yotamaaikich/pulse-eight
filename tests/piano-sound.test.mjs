@@ -40,3 +40,10 @@ test('score matching respects rests instead of looping harmony or borrowing dist
 });
 
 test('sample playback preserves a source pitch above C6 instead of clipping it to C6',async()=>{const f=fixture();await f.piano.prepare();f.piano.play({midi:89});assert.equal(f.sources[0].playbackRate.events[0][1],2**((89-78)/12));});
+
+test('quiet recorded attacks are normalized before applying the dedicated piano volume',async()=>{
+ const f=fixture();f.piano.configure({enabled:true,volume:18});await f.piano.prepare();f.piano.play({midi:60});
+ const attack=f.gains.at(-1).gain.events.find(e=>e[0]==='linear');assert.equal(attack[1],.85/.25);
+ const master=f.gains[0].gain.events.filter(e=>e[0]==='target').at(-1)[1];assert.equal(master,.18);
+ assert.ok(Math.abs(.25*attack[1]*master-.153)<1e-8);
+});

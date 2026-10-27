@@ -6,7 +6,7 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
 }}={}){
   let context=null,master=null,enabled=true,volume=18,loading=null;
   const voices=new Set(),samples=new Map();
-  function mix(){if(master)master.gain.setTargetAtTime(enabled?volume/100*.65/Math.sqrt(Math.max(1,voices.size)):0,context.currentTime,.004);}
+  function mix(){if(master)master.gain.setTargetAtTime(enabled?volume/100/Math.sqrt(Math.max(1,voices.size)):0,context.currentTime,.004);}
   function warm(){
     if(!enabled||!volume)return false;
     try{
@@ -18,10 +18,17 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
       if(context.state==='suspended')context.resume().catch(()=>{});
       if(!loading)loading=Promise.all(SAMPLES.map(async([name,midi])=>{
         const buffer=await sampleLoader(new URL('./audio/piano/'+name+'.mp3',import.meta.url),context);
-        let offset=0;
+        let offset=0,normalization=1;
         if(buffer.getChannelData){const data=buffer.getChannelData(0),limit=Math.min(data.length,Math.floor(buffer.sampleRate*.15));for(let i=0;i<limit;i++)if(Math.abs(data[i])>.002){offset=Math.max(0,(i-32)/buffer.sampleRate);break;}}
-        samples.set(midi,{buffer,offset});
-      })).then(()=>true).catch(()=>false);
+        if(buffer.getChannelData){
+          // Match the actual sampled attack level before applying the user's volume.
+          // Quiet recordings must not turn an 18% control into a 2% output peak.
+          let peak=0;const start=Math.floor(offset*buffer.sampleRate),end=Math.min(buffer.length??Infinity,start+Math.floor(buffer.sampleRate*.5));
+          for(let channel=0;channel<(buffer.numberOfChannels||1);channel++){const data=buffer.getChannelData(channel);for(let i=start;i<Math.min(end,data.length);i++)peak=Math.max(peak,Math.abs(data[i]));}
+          if(peak>.001)normalization=Math.min(8,.85/peak);
+        }
+        samples.set(midi,{buffer,offset,normalization});
+      })).then(()=>true).catch(()=>{samples.clear();loading=null;return false;});
       return true;
     }catch{return false;}
   }
@@ -45,11 +52,11 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
       }
     }else{
       const pitch=Math.max(21,Math.min(108,midi)),root=SAMPLES.reduce((a,b)=>Math.abs(b[1]-pitch)<Math.abs(a[1]-pitch)?b:a)[1];
-      const {buffer,offset}=samples.get(root),source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
+      const {buffer,offset,normalization}=samples.get(root),source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
       source.buffer=buffer;source.playbackRate.setValueAtTime(2**((pitch-root)/12),now);
       filter.type='highpass';filter.frequency.value=75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
       const duration=hold>0?Math.min(2.4,Math.max(.9,hold)):.5;
-      gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(1,now+.001);gain.gain.setValueAtTime(1,now+duration-.09);gain.gain.exponentialRampToValueAtTime(.00001,now+duration);
+      gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(normalization,now+.001);gain.gain.setValueAtTime(normalization,now+duration-.09);gain.gain.exponentialRampToValueAtTime(.00001,now+duration);
       ended(source,gain,filter);source.start(now,offset);source.stop(now+duration+.01);
     }
     return true;
