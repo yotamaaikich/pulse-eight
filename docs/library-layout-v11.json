@@ -1,0 +1,2907 @@
+[
+  {
+    "id": "monitoring",
+    "title": "モニタリング",
+    "duration": 181,
+    "bpm": 132,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 352,
+        "holds": 29,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          67,
+          21,
+          72,
+          8,
+          39,
+          60,
+          13,
+          72
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 412,
+        "holdsByThird": [
+          8,
+          10,
+          11
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 682,
+        "holds": 29,
+        "chords": 51,
+        "shapes": 10,
+        "lanes": [
+          159,
+          30,
+          118,
+          21,
+          96,
+          99,
+          21,
+          138
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 742,
+        "holdsByThird": [
+          8,
+          10,
+          11
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1163,
+        "holds": 29,
+        "chords": 77,
+        "shapes": 11,
+        "lanes": [
+          271,
+          40,
+          170,
+          41,
+          180,
+          173,
+          19,
+          269
+        ],
+        "maxSameLaneRun": 6,
+        "collisions": 0,
+        "comboCeiling": 1225,
+        "holdsByThird": [
+          8,
+          10,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tetoris",
+    "title": "テトリス",
+    "duration": 143,
+    "bpm": 170,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 328,
+        "holds": 32,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          73,
+          12,
+          49,
+          17,
+          57,
+          45,
+          11,
+          64
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 407,
+        "holdsByThird": [
+          11,
+          10,
+          11
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 808,
+        "holds": 32,
+        "chords": 98,
+        "shapes": 13,
+        "lanes": [
+          195,
+          37,
+          109,
+          52,
+          111,
+          113,
+          33,
+          158
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 887,
+        "holdsByThird": [
+          11,
+          10,
+          11
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 906,
+        "holds": 32,
+        "chords": 149,
+        "shapes": 14,
+        "lanes": [
+          222,
+          42,
+          113,
+          55,
+          141,
+          106,
+          39,
+          188
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 985,
+        "holdsByThird": [
+          11,
+          10,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mesmerizer",
+    "title": "メズマライザー",
+    "duration": 157,
+    "bpm": 185,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 382,
+        "holds": 34,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          88,
+          16,
+          63,
+          12,
+          58,
+          63,
+          12,
+          70
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 470,
+        "holdsByThird": [
+          12,
+          12,
+          10
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 859,
+        "holds": 34,
+        "chords": 135,
+        "shapes": 13,
+        "lanes": [
+          200,
+          34,
+          113,
+          59,
+          157,
+          121,
+          30,
+          145
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 947,
+        "holdsByThird": [
+          12,
+          12,
+          10
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1095,
+        "holds": 34,
+        "chords": 198,
+        "shapes": 13,
+        "lanes": [
+          249,
+          56,
+          147,
+          63,
+          217,
+          140,
+          39,
+          184
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1183,
+        "holdsByThird": [
+          12,
+          12,
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "id": "override",
+    "title": "オーバーライド",
+    "duration": 139,
+    "bpm": 145,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 326,
+        "holds": 17,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          80,
+          12,
+          57,
+          7,
+          44,
+          61,
+          9,
+          56
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 371,
+        "holdsByThird": [
+          7,
+          5,
+          5
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 500,
+        "holds": 17,
+        "chords": 73,
+        "shapes": 13,
+        "lanes": [
+          127,
+          16,
+          86,
+          19,
+          87,
+          74,
+          17,
+          74
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 545,
+        "holdsByThird": [
+          7,
+          5,
+          5
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1040,
+        "holds": 17,
+        "chords": 134,
+        "shapes": 14,
+        "lanes": [
+          284,
+          39,
+          152,
+          52,
+          167,
+          140,
+          40,
+          166
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1085,
+        "holdsByThird": [
+          7,
+          5,
+          5
+        ]
+      }
+    ]
+  },
+  {
+    "id": "telepathy",
+    "title": "テレパシ",
+    "duration": 145,
+    "bpm": 205,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 363,
+        "holds": 28,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          58,
+          37,
+          48,
+          26,
+          43,
+          59,
+          32,
+          60
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 430,
+        "holdsByThird": [
+          9,
+          10,
+          9
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 549,
+        "holds": 28,
+        "chords": 94,
+        "shapes": 13,
+        "lanes": [
+          112,
+          43,
+          74,
+          39,
+          83,
+          74,
+          36,
+          88
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 616,
+        "holdsByThird": [
+          9,
+          10,
+          9
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 983,
+        "holds": 28,
+        "chords": 151,
+        "shapes": 16,
+        "lanes": [
+          193,
+          66,
+          147,
+          56,
+          158,
+          140,
+          44,
+          179
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1050,
+        "holdsByThird": [
+          9,
+          10,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mimukauwa",
+    "title": "みむかｩわナイストライ",
+    "duration": 218,
+    "bpm": 126,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 353,
+        "holds": 25,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          90,
+          14,
+          76,
+          8,
+          40,
+          48,
+          1,
+          76
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 425,
+        "holdsByThird": [
+          8,
+          8,
+          9
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 750,
+        "holds": 25,
+        "chords": 116,
+        "shapes": 14,
+        "lanes": [
+          183,
+          31,
+          126,
+          29,
+          128,
+          90,
+          15,
+          148
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 822,
+        "holdsByThird": [
+          8,
+          8,
+          9
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1056,
+        "holds": 25,
+        "chords": 180,
+        "shapes": 12,
+        "lanes": [
+          250,
+          46,
+          196,
+          39,
+          182,
+          133,
+          28,
+          182
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1128,
+        "holdsByThird": [
+          8,
+          8,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": "daikirai",
+    "title": "ダイダイダイダイダイキライ",
+    "duration": 155,
+    "bpm": 130,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 319,
+        "holds": 25,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          74,
+          14,
+          50,
+          13,
+          45,
+          52,
+          10,
+          61
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 400,
+        "holdsByThird": [
+          10,
+          8,
+          7
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 651,
+        "holds": 25,
+        "chords": 102,
+        "shapes": 14,
+        "lanes": [
+          147,
+          25,
+          102,
+          42,
+          129,
+          81,
+          20,
+          105
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 732,
+        "holdsByThird": [
+          10,
+          8,
+          7
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1067,
+        "holds": 25,
+        "chords": 154,
+        "shapes": 14,
+        "lanes": [
+          239,
+          48,
+          146,
+          61,
+          215,
+          149,
+          37,
+          172
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1148,
+        "holdsByThird": [
+          10,
+          8,
+          7
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rinne",
+    "title": "いますぐ輪廻",
+    "duration": 123,
+    "bpm": 145,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 250,
+        "holds": 23,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          57,
+          17,
+          39,
+          19,
+          45,
+          19,
+          15,
+          39
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 301,
+        "holdsByThird": [
+          8,
+          7,
+          8
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 616,
+        "holds": 23,
+        "chords": 95,
+        "shapes": 11,
+        "lanes": [
+          146,
+          45,
+          83,
+          43,
+          118,
+          56,
+          19,
+          106
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 667,
+        "holdsByThird": [
+          8,
+          7,
+          8
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 796,
+        "holds": 23,
+        "chords": 133,
+        "shapes": 13,
+        "lanes": [
+          184,
+          53,
+          106,
+          60,
+          148,
+          82,
+          24,
+          139
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 847,
+        "holdsByThird": [
+          8,
+          7,
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mothergoose",
+    "title": "アンノウン・マザーグース",
+    "duration": 286,
+    "bpm": 222,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 501,
+        "holds": 51,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          143,
+          11,
+          60,
+          19,
+          75,
+          83,
+          16,
+          94
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 658,
+        "holdsByThird": [
+          18,
+          17,
+          16
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1063,
+        "holds": 51,
+        "chords": 174,
+        "shapes": 13,
+        "lanes": [
+          333,
+          27,
+          114,
+          58,
+          155,
+          153,
+          16,
+          207
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1220,
+        "holdsByThird": [
+          18,
+          17,
+          16
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1749,
+        "holds": 51,
+        "chords": 283,
+        "shapes": 15,
+        "lanes": [
+          526,
+          51,
+          195,
+          86,
+          277,
+          222,
+          35,
+          357
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1906,
+        "holdsByThird": [
+          18,
+          17,
+          16
+        ]
+      }
+    ]
+  },
+  {
+    "id": "heat",
+    "title": "熱異常",
+    "duration": 241,
+    "bpm": 183,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 629,
+        "holds": 37,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          175,
+          10,
+          103,
+          7,
+          81,
+          108,
+          13,
+          132
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 739,
+        "holdsByThird": [
+          13,
+          15,
+          9
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1146,
+        "holds": 37,
+        "chords": 156,
+        "shapes": 13,
+        "lanes": [
+          325,
+          29,
+          150,
+          51,
+          189,
+          160,
+          31,
+          211
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1256,
+        "holdsByThird": [
+          13,
+          15,
+          9
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1455,
+        "holds": 37,
+        "chords": 211,
+        "shapes": 13,
+        "lanes": [
+          386,
+          48,
+          177,
+          75,
+          257,
+          187,
+          48,
+          277
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1565,
+        "holdsByThird": [
+          13,
+          15,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": "connect",
+    "title": "コネクト -season 03-",
+    "duration": 273,
+    "bpm": 175,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 604,
+        "holds": 50,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          144,
+          25,
+          106,
+          18,
+          83,
+          105,
+          17,
+          106
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 771,
+        "holdsByThird": [
+          16,
+          19,
+          15
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1375,
+        "holds": 50,
+        "chords": 195,
+        "shapes": 14,
+        "lanes": [
+          340,
+          41,
+          233,
+          68,
+          222,
+          217,
+          20,
+          234
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1542,
+        "holdsByThird": [
+          16,
+          19,
+          15
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1641,
+        "holds": 50,
+        "chords": 272,
+        "shapes": 15,
+        "lanes": [
+          401,
+          48,
+          250,
+          84,
+          278,
+          252,
+          33,
+          295
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1808,
+        "holdsByThird": [
+          16,
+          19,
+          15
+        ]
+      }
+    ]
+  },
+  {
+    "id": "magia",
+    "title": "Magia",
+    "duration": 319,
+    "bpm": 125,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 596,
+        "holds": 68,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          141,
+          27,
+          107,
+          19,
+          76,
+          77,
+          28,
+          121
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 829,
+        "holdsByThird": [
+          24,
+          24,
+          20
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1384,
+        "holds": 68,
+        "chords": 215,
+        "shapes": 15,
+        "lanes": [
+          377,
+          59,
+          195,
+          61,
+          209,
+          136,
+          60,
+          287
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1617,
+        "holdsByThird": [
+          24,
+          24,
+          20
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 2166,
+        "holds": 68,
+        "chords": 348,
+        "shapes": 14,
+        "lanes": [
+          655,
+          82,
+          259,
+          83,
+          309,
+          219,
+          102,
+          457
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2399,
+        "holdsByThird": [
+          24,
+          24,
+          20
+        ]
+      }
+    ]
+  },
+  {
+    "id": "luminous",
+    "title": "ルミナス -season 03-",
+    "duration": 250,
+    "bpm": 173,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 522,
+        "holds": 45,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          117,
+          34,
+          90,
+          32,
+          77,
+          63,
+          19,
+          90
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 658,
+        "holdsByThird": [
+          15,
+          15,
+          15
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1198,
+        "holds": 45,
+        "chords": 188,
+        "shapes": 15,
+        "lanes": [
+          280,
+          60,
+          172,
+          75,
+          231,
+          126,
+          48,
+          206
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1334,
+        "holdsByThird": [
+          15,
+          15,
+          15
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1495,
+        "holds": 45,
+        "chords": 258,
+        "shapes": 14,
+        "lanes": [
+          355,
+          48,
+          208,
+          88,
+          295,
+          173,
+          54,
+          274
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1631,
+        "holdsByThird": [
+          15,
+          15,
+          15
+        ]
+      }
+    ]
+  },
+  {
+    "id": "colorful",
+    "title": "カラフル -season 03-",
+    "duration": 274,
+    "bpm": 178,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 609,
+        "holds": 57,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          160,
+          27,
+          106,
+          24,
+          71,
+          98,
+          11,
+          112
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 795,
+        "holdsByThird": [
+          19,
+          20,
+          18
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1315,
+        "holds": 57,
+        "chords": 202,
+        "shapes": 14,
+        "lanes": [
+          327,
+          49,
+          201,
+          58,
+          219,
+          174,
+          33,
+          254
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1501,
+        "holdsByThird": [
+          19,
+          20,
+          18
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1668,
+        "holds": 57,
+        "chords": 288,
+        "shapes": 14,
+        "lanes": [
+          430,
+          49,
+          246,
+          87,
+          283,
+          214,
+          44,
+          315
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1854,
+        "holdsByThird": [
+          19,
+          20,
+          18
+        ]
+      }
+    ]
+  },
+  {
+    "id": "silvergarden",
+    "title": "君の銀の庭",
+    "duration": 307,
+    "bpm": 148,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 632,
+        "holds": 55,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          158,
+          43,
+          109,
+          22,
+          78,
+          96,
+          26,
+          100
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 781,
+        "holdsByThird": [
+          19,
+          21,
+          15
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1385,
+        "holds": 55,
+        "chords": 226,
+        "shapes": 14,
+        "lanes": [
+          331,
+          58,
+          206,
+          84,
+          232,
+          183,
+          50,
+          241
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1534,
+        "holdsByThird": [
+          19,
+          21,
+          15
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1726,
+        "holds": 55,
+        "chords": 341,
+        "shapes": 14,
+        "lanes": [
+          422,
+          63,
+          259,
+          102,
+          287,
+          220,
+          60,
+          313
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1875,
+        "holdsByThird": [
+          19,
+          21,
+          15
+        ]
+      }
+    ]
+  },
+  {
+    "id": "freedomdive",
+    "title": "FREEDOM DiVE",
+    "duration": 270,
+    "bpm": 222.22,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 447,
+        "holds": 39,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          106,
+          29,
+          73,
+          13,
+          65,
+          74,
+          7,
+          80
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 571,
+        "holdsByThird": [
+          13,
+          15,
+          11
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1090,
+        "holds": 39,
+        "chords": 208,
+        "shapes": 15,
+        "lanes": [
+          305,
+          47,
+          135,
+          61,
+          167,
+          123,
+          31,
+          221
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1214,
+        "holdsByThird": [
+          13,
+          15,
+          11
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 2089,
+        "holds": 39,
+        "chords": 309,
+        "shapes": 14,
+        "lanes": [
+          543,
+          61,
+          337,
+          78,
+          338,
+          298,
+          37,
+          397
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2213,
+        "holdsByThird": [
+          13,
+          15,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bluezenith",
+    "title": "Blue Zenith",
+    "duration": 259,
+    "bpm": 200,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 652,
+        "holds": 53,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          137,
+          25,
+          103,
+          26,
+          109,
+          95,
+          23,
+          134
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 851,
+        "holdsByThird": [
+          18,
+          17,
+          18
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 987,
+        "holds": 53,
+        "chords": 185,
+        "shapes": 13,
+        "lanes": [
+          236,
+          30,
+          130,
+          59,
+          163,
+          121,
+          26,
+          222
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1186,
+        "holdsByThird": [
+          18,
+          17,
+          18
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1816,
+        "holds": 53,
+        "chords": 309,
+        "shapes": 16,
+        "lanes": [
+          493,
+          49,
+          229,
+          91,
+          303,
+          226,
+          57,
+          368
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2015,
+        "holdsByThird": [
+          18,
+          17,
+          18
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ghost",
+    "title": "GHOST",
+    "duration": 350,
+    "bpm": 220,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 565,
+        "holds": 43,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          140,
+          25,
+          75,
+          20,
+          80,
+          93,
+          19,
+          113
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 687,
+        "holdsByThird": [
+          17,
+          13,
+          13
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1260,
+        "holds": 43,
+        "chords": 247,
+        "shapes": 13,
+        "lanes": [
+          295,
+          36,
+          171,
+          74,
+          245,
+          175,
+          38,
+          226
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1382,
+        "holdsByThird": [
+          17,
+          13,
+          13
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 2359,
+        "holds": 43,
+        "chords": 411,
+        "shapes": 15,
+        "lanes": [
+          525,
+          87,
+          272,
+          168,
+          505,
+          301,
+          79,
+          422
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2481,
+        "holdsByThird": [
+          17,
+          13,
+          13
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crystallized",
+    "title": "crystallized",
+    "duration": 277,
+    "bpm": 174,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 485,
+        "holds": 42,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          100,
+          26,
+          107,
+          10,
+          71,
+          76,
+          12,
+          83
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 609,
+        "holdsByThird": [
+          16,
+          14,
+          12
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1189,
+        "holds": 42,
+        "chords": 170,
+        "shapes": 14,
+        "lanes": [
+          292,
+          51,
+          182,
+          64,
+          225,
+          124,
+          31,
+          220
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1313,
+        "holdsByThird": [
+          16,
+          14,
+          12
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1494,
+        "holds": 42,
+        "chords": 260,
+        "shapes": 14,
+        "lanes": [
+          394,
+          52,
+          210,
+          85,
+          265,
+          148,
+          45,
+          295
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1618,
+        "holdsByThird": [
+          16,
+          14,
+          12
+        ]
+      }
+    ]
+  },
+  {
+    "id": "exit",
+    "title": "Exit This Earth's Atomosphere",
+    "duration": 332,
+    "bpm": 200,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 728,
+        "holds": 52,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          214,
+          18,
+          100,
+          14,
+          80,
+          90,
+          17,
+          195
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 881,
+        "holdsByThird": [
+          19,
+          16,
+          17
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1730,
+        "holds": 52,
+        "chords": 231,
+        "shapes": 14,
+        "lanes": [
+          496,
+          56,
+          217,
+          71,
+          254,
+          176,
+          46,
+          414
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1883,
+        "holdsByThird": [
+          19,
+          16,
+          17
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 2135,
+        "holds": 52,
+        "chords": 349,
+        "shapes": 14,
+        "lanes": [
+          633,
+          60,
+          269,
+          88,
+          325,
+          231,
+          50,
+          479
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2288,
+        "holdsByThird": [
+          19,
+          16,
+          17
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kitasaitama",
+    "title": "きたさいたま2000",
+    "duration": 121,
+    "bpm": 222,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 224,
+        "holds": 26,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          58,
+          11,
+          50,
+          7,
+          18,
+          32,
+          9,
+          39
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 321,
+        "holdsByThird": [
+          9,
+          10,
+          7
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 495,
+        "holds": 26,
+        "chords": 94,
+        "shapes": 14,
+        "lanes": [
+          129,
+          17,
+          66,
+          38,
+          70,
+          63,
+          17,
+          95
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 592,
+        "holdsByThird": [
+          9,
+          10,
+          7
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 917,
+        "holds": 26,
+        "chords": 146,
+        "shapes": 12,
+        "lanes": [
+          252,
+          30,
+          140,
+          27,
+          129,
+          102,
+          32,
+          205
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1014,
+        "holdsByThird": [
+          9,
+          10,
+          7
+        ]
+      }
+    ]
+  },
+  {
+    "id": "madasaitama",
+    "title": "まださいたま2000",
+    "duration": 129,
+    "bpm": 280,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 271,
+        "holds": 17,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          67,
+          17,
+          34,
+          17,
+          35,
+          35,
+          20,
+          46
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 314,
+        "holdsByThird": [
+          6,
+          8,
+          3
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 547,
+        "holds": 17,
+        "chords": 98,
+        "shapes": 12,
+        "lanes": [
+          147,
+          34,
+          56,
+          42,
+          86,
+          49,
+          34,
+          99
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 590,
+        "holdsByThird": [
+          6,
+          8,
+          3
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 957,
+        "holds": 17,
+        "chords": 164,
+        "shapes": 14,
+        "lanes": [
+          243,
+          65,
+          105,
+          65,
+          159,
+          103,
+          53,
+          164
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1000,
+        "holdsByThird": [
+          6,
+          8,
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yuugen",
+    "title": "幽玄ノ乱",
+    "duration": 126,
+    "bpm": 300,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 244,
+        "holds": 26,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          79,
+          12,
+          30,
+          8,
+          32,
+          16,
+          7,
+          60
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 353,
+        "holdsByThird": [
+          9,
+          8,
+          9
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 584,
+        "holds": 26,
+        "chords": 107,
+        "shapes": 13,
+        "lanes": [
+          177,
+          26,
+          74,
+          24,
+          94,
+          57,
+          17,
+          115
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 693,
+        "holdsByThird": [
+          9,
+          8,
+          9
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 798,
+        "holds": 26,
+        "chords": 133,
+        "shapes": 14,
+        "lanes": [
+          255,
+          50,
+          94,
+          26,
+          112,
+          67,
+          34,
+          160
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 907,
+        "holdsByThird": [
+          9,
+          8,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": "donkama",
+    "title": "ドンカマ2000",
+    "duration": 133,
+    "bpm": 120,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 273,
+        "holds": 17,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          81,
+          11,
+          53,
+          7,
+          30,
+          37,
+          3,
+          51
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 312,
+        "holdsByThird": [
+          5,
+          6,
+          6
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 538,
+        "holds": 17,
+        "chords": 73,
+        "shapes": 13,
+        "lanes": [
+          157,
+          31,
+          83,
+          11,
+          83,
+          67,
+          11,
+          95
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 577,
+        "holdsByThird": [
+          5,
+          6,
+          6
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 910,
+        "holds": 17,
+        "chords": 117,
+        "shapes": 14,
+        "lanes": [
+          249,
+          70,
+          114,
+          42,
+          141,
+          81,
+          46,
+          167
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 949,
+        "holdsByThird": [
+          5,
+          6,
+          6
+        ]
+      }
+    ]
+  },
+  {
+    "id": "angeldream",
+    "title": "エンジェル ドリーム",
+    "duration": 146,
+    "bpm": 180,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 349,
+        "holds": 32,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          74,
+          33,
+          52,
+          20,
+          47,
+          38,
+          19,
+          66
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 455,
+        "holdsByThird": [
+          10,
+          11,
+          11
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 812,
+        "holds": 32,
+        "chords": 111,
+        "shapes": 15,
+        "lanes": [
+          206,
+          47,
+          96,
+          49,
+          128,
+          92,
+          42,
+          152
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 918,
+        "holdsByThird": [
+          10,
+          11,
+          11
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 963,
+        "holds": 32,
+        "chords": 158,
+        "shapes": 15,
+        "lanes": [
+          233,
+          45,
+          116,
+          60,
+          157,
+          103,
+          56,
+          193
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1069,
+        "holdsByThird": [
+          10,
+          11,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": "disappearance",
+    "title": "初音ミクの消失",
+    "duration": 290,
+    "bpm": 240,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 548,
+        "holds": 58,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          151,
+          21,
+          85,
+          9,
+          71,
+          72,
+          9,
+          130
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 755,
+        "holdsByThird": [
+          21,
+          18,
+          19
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1254,
+        "holds": 58,
+        "chords": 228,
+        "shapes": 13,
+        "lanes": [
+          377,
+          40,
+          180,
+          33,
+          167,
+          152,
+          22,
+          283
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1461,
+        "holdsByThird": [
+          21,
+          18,
+          19
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 2286,
+        "holds": 58,
+        "chords": 408,
+        "shapes": 13,
+        "lanes": [
+          705,
+          56,
+          275,
+          86,
+          323,
+          256,
+          55,
+          530
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2493,
+        "holdsByThird": [
+          21,
+          18,
+          19
+        ]
+      }
+    ]
+  },
+  {
+    "id": "intensevoice",
+    "title": "初音ミクの激唱",
+    "duration": 301,
+    "bpm": 200,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 766,
+        "holds": 67,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          179,
+          36,
+          99,
+          50,
+          133,
+          94,
+          23,
+          152
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1016,
+        "holdsByThird": [
+          23,
+          21,
+          23
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 1179,
+        "holds": 67,
+        "chords": 225,
+        "shapes": 14,
+        "lanes": [
+          263,
+          40,
+          134,
+          114,
+          229,
+          135,
+          45,
+          219
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1429,
+        "holdsByThird": [
+          23,
+          21,
+          23
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1961,
+        "holds": 67,
+        "chords": 354,
+        "shapes": 15,
+        "lanes": [
+          492,
+          82,
+          231,
+          154,
+          328,
+          209,
+          65,
+          400
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 2211,
+        "holdsByThird": [
+          23,
+          21,
+          23
+        ]
+      }
+    ]
+  },
+  {
+    "id": "machinegun",
+    "title": "マシンガンポエムドール",
+    "duration": 144,
+    "bpm": 220,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 237,
+        "holds": 24,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          61,
+          16,
+          57,
+          4,
+          33,
+          28,
+          7,
+          31
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 315,
+        "holdsByThird": [
+          10,
+          7,
+          7
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 593,
+        "holds": 24,
+        "chords": 119,
+        "shapes": 13,
+        "lanes": [
+          154,
+          25,
+          101,
+          24,
+          101,
+          74,
+          16,
+          98
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 671,
+        "holdsByThird": [
+          10,
+          7,
+          7
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1029,
+        "holds": 24,
+        "chords": 178,
+        "shapes": 14,
+        "lanes": [
+          231,
+          54,
+          161,
+          65,
+          182,
+          118,
+          43,
+          175
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1107,
+        "holdsByThird": [
+          10,
+          7,
+          7
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jinsei",
+    "title": "人生",
+    "duration": 149,
+    "bpm": 185,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 336,
+        "holds": 31,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          70,
+          21,
+          54,
+          25,
+          39,
+          45,
+          20,
+          62
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 415,
+        "holdsByThird": [
+          9,
+          11,
+          11
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 765,
+        "holds": 31,
+        "chords": 124,
+        "shapes": 13,
+        "lanes": [
+          193,
+          45,
+          107,
+          34,
+          128,
+          83,
+          44,
+          131
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 844,
+        "holdsByThird": [
+          9,
+          11,
+          11
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1030,
+        "holds": 31,
+        "chords": 193,
+        "shapes": 15,
+        "lanes": [
+          268,
+          63,
+          115,
+          64,
+          181,
+          95,
+          51,
+          193
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1109,
+        "holdsByThird": [
+          9,
+          11,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yaminabe",
+    "title": "ヤミナベ!!!!",
+    "duration": 135,
+    "bpm": 264,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 277,
+        "holds": 25,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          71,
+          12,
+          38,
+          7,
+          38,
+          40,
+          6,
+          65
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 362,
+        "holdsByThird": [
+          9,
+          8,
+          8
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 593,
+        "holds": 25,
+        "chords": 112,
+        "shapes": 13,
+        "lanes": [
+          165,
+          22,
+          65,
+          35,
+          103,
+          79,
+          17,
+          107
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 678,
+        "holdsByThird": [
+          9,
+          8,
+          8
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 875,
+        "holds": 25,
+        "chords": 163,
+        "shapes": 13,
+        "lanes": [
+          221,
+          32,
+          111,
+          49,
+          158,
+          125,
+          29,
+          150
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 960,
+        "holdsByThird": [
+          9,
+          8,
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "whatsuppop",
+    "title": "What's up? Pop!",
+    "duration": 165,
+    "bpm": 230,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 391,
+        "holds": 28,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          88,
+          29,
+          62,
+          15,
+          56,
+          56,
+          18,
+          67
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 465,
+        "holdsByThird": [
+          11,
+          9,
+          8
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 718,
+        "holds": 28,
+        "chords": 126,
+        "shapes": 13,
+        "lanes": [
+          158,
+          41,
+          114,
+          35,
+          116,
+          107,
+          33,
+          114
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 792,
+        "holdsByThird": [
+          11,
+          9,
+          8
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1121,
+        "holds": 28,
+        "chords": 192,
+        "shapes": 15,
+        "lanes": [
+          260,
+          64,
+          165,
+          55,
+          194,
+          155,
+          49,
+          179
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1195,
+        "holdsByThird": [
+          11,
+          9,
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ogyarinizer",
+    "title": "おぎゃりないざー",
+    "duration": 130,
+    "bpm": 245,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 253,
+        "holds": 25,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          56,
+          16,
+          53,
+          3,
+          22,
+          43,
+          8,
+          52
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 325,
+        "holdsByThird": [
+          9,
+          8,
+          8
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 561,
+        "holds": 25,
+        "chords": 101,
+        "shapes": 13,
+        "lanes": [
+          136,
+          16,
+          109,
+          20,
+          73,
+          92,
+          13,
+          102
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 633,
+        "holdsByThird": [
+          9,
+          8,
+          8
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 933,
+        "holds": 25,
+        "chords": 151,
+        "shapes": 14,
+        "lanes": [
+          243,
+          30,
+          139,
+          39,
+          152,
+          112,
+          20,
+          198
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1005,
+        "holdsByThird": [
+          9,
+          8,
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "daijobu",
+    "title": "ダイジョブですか？",
+    "duration": 156,
+    "bpm": 224,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 275,
+        "holds": 26,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          55,
+          9,
+          71,
+          6,
+          34,
+          51,
+          4,
+          45
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 364,
+        "holdsByThird": [
+          10,
+          9,
+          7
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 630,
+        "holds": 26,
+        "chords": 116,
+        "shapes": 14,
+        "lanes": [
+          146,
+          21,
+          106,
+          26,
+          95,
+          99,
+          18,
+          119
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 719,
+        "holdsByThird": [
+          10,
+          9,
+          7
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1116,
+        "holds": 26,
+        "chords": 176,
+        "shapes": 14,
+        "lanes": [
+          254,
+          42,
+          173,
+          46,
+          189,
+          171,
+          32,
+          209
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1205,
+        "holdsByThird": [
+          10,
+          9,
+          7
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kusaregedou",
+    "title": "腐れ外道とチョコレゐト",
+    "duration": 201,
+    "bpm": 260,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 384,
+        "holds": 42,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          75,
+          28,
+          70,
+          17,
+          56,
+          58,
+          26,
+          54
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 500,
+        "holdsByThird": [
+          14,
+          16,
+          12
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 875,
+        "holds": 42,
+        "chords": 157,
+        "shapes": 14,
+        "lanes": [
+          190,
+          52,
+          122,
+          69,
+          165,
+          103,
+          30,
+          144
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 991,
+        "holdsByThird": [
+          14,
+          16,
+          12
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1406,
+        "holds": 42,
+        "chords": 251,
+        "shapes": 15,
+        "lanes": [
+          284,
+          71,
+          212,
+          117,
+          245,
+          159,
+          62,
+          256
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1522,
+        "holdsByThird": [
+          14,
+          16,
+          12
+        ]
+      }
+    ]
+  },
+  {
+    "id": "amara",
+    "title": "ÅMARA(大未来電脳)",
+    "duration": 197,
+    "bpm": 230,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 366,
+        "holds": 30,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          87,
+          16,
+          81,
+          12,
+          42,
+          53,
+          10,
+          65
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 440,
+        "holdsByThird": [
+          10,
+          9,
+          11
+        ]
+      },
+      {
+        "difficulty": 1,
+        "notes": 799,
+        "holds": 30,
+        "chords": 155,
+        "shapes": 13,
+        "lanes": [
+          208,
+          27,
+          106,
+          58,
+          144,
+          84,
+          20,
+          152
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 873,
+        "holdsByThird": [
+          10,
+          9,
+          11
+        ]
+      },
+      {
+        "difficulty": 2,
+        "notes": 1440,
+        "holds": 30,
+        "chords": 227,
+        "shapes": 13,
+        "lanes": [
+          385,
+          36,
+          226,
+          67,
+          251,
+          179,
+          34,
+          262
+        ],
+        "maxSameLaneRun": 2,
+        "collisions": 0,
+        "comboCeiling": 1514,
+        "holdsByThird": [
+          10,
+          9,
+          11
+        ]
+      }
+    ]
+  }
+]

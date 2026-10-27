@@ -6,6 +6,26 @@ import {AUDIO_ATTACKS,AUDIO_SOURCES} from '../audio-attacks.mjs';
 import {MONITORING_ATTACKS,MONITORING_PIANO_PROFILE,MONITORING_VOCAL_ANALYSIS} from '../monitoring-vocal.mjs';
 import {pianoTrialChart} from '../piano-trial.mjs';
 
+test('all reviewed tracks use eight keys, varied chords and playable sustain lanes',()=>{
+ for(const song of SONGS.filter(s=>s.id!=='monitoring'))for(let d=0;d<3;d++){
+  const chart=makeChart(song,d),groups=new Map();
+  for(const n of chart){if(!groups.has(n.t))groups.set(n.t,[]);groups.get(n.t).push(n);}
+  for(let lane=0;lane<8;lane++)assert.ok(chart.some(n=>n.lane===lane),`${song.id}/${d}: unused key ${lane}`);
+  for(const h of chart.filter(n=>n.end))assert.ok(!chart.some(n=>n!==h&&n.lane===h.lane&&n.t>=h.t&&n.t<h.end-1e-8),`${song.id}/${d}: blocked hold`);
+  let run=0,last=-1;
+  for(const group of groups.values()){
+   const lane=group.length===1?group[0].lane:-1;run=lane>=0&&lane===last?run+1:1;last=lane;
+   assert.ok(run<=3,`${song.id}/${d}: occupancy resolution recreated a jack run`);
+  }
+  const chords=[...groups.values()].filter(g=>g.length>1);
+  if(d===0)assert.equal(chords.length,0);
+  else{
+   assert.ok(chords.length>=20,`${song.id}/${d}: accents lost`);
+   assert.ok(new Set(chords.map(g=>g.map(n=>n.lane).join(','))).size>=8,`${song.id}/${d}: repeated chord shapes`);
+  }
+ }
+});
+
 test('Monitoring uses all keys and varied two-hand accents without returning to sparse chords',()=>{
  const song=SONGS.find(s=>s.id==='monitoring');
  for(const [difficulty,minimum] of [[1,40],[2,60]]){

@@ -1,0 +1,2137 @@
+[
+  {
+    "id": "monitoring",
+    "duration": 181,
+    "bpm": 132,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 352,
+        "holds": 29,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          67,
+          21,
+          72,
+          8,
+          39,
+          60,
+          13,
+          72
+        ],
+        "maxSameLaneRun": 2
+      },
+      {
+        "difficulty": 1,
+        "notes": 682,
+        "holds": 29,
+        "chords": 51,
+        "shapes": 10,
+        "lanes": [
+          159,
+          30,
+          118,
+          21,
+          96,
+          99,
+          21,
+          138
+        ],
+        "maxSameLaneRun": 2
+      },
+      {
+        "difficulty": 2,
+        "notes": 1163,
+        "holds": 29,
+        "chords": 77,
+        "shapes": 11,
+        "lanes": [
+          271,
+          40,
+          170,
+          41,
+          180,
+          173,
+          19,
+          269
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "tetoris",
+    "duration": 143,
+    "bpm": 170,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 328,
+        "holds": 20,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          77,
+          17,
+          27,
+          37,
+          63,
+          85,
+          22,
+          0
+        ],
+        "maxSameLaneRun": 4
+      },
+      {
+        "difficulty": 1,
+        "notes": 744,
+        "holds": 22,
+        "chords": 34,
+        "shapes": 4,
+        "lanes": [
+          175,
+          59,
+          67,
+          82,
+          146,
+          156,
+          57,
+          2
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 807,
+        "holds": 22,
+        "chords": 48,
+        "shapes": 4,
+        "lanes": [
+          188,
+          71,
+          71,
+          88,
+          158,
+          162,
+          68,
+          1
+        ],
+        "maxSameLaneRun": 7
+      }
+    ]
+  },
+  {
+    "id": "mesmerizer",
+    "duration": 157,
+    "bpm": 185,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 382,
+        "holds": 17,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          114,
+          51,
+          21,
+          49,
+          44,
+          89,
+          12,
+          2
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 1,
+        "notes": 780,
+        "holds": 24,
+        "chords": 54,
+        "shapes": 4,
+        "lanes": [
+          173,
+          100,
+          28,
+          94,
+          159,
+          173,
+          27,
+          26
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 979,
+        "holds": 25,
+        "chords": 83,
+        "shapes": 4,
+        "lanes": [
+          203,
+          140,
+          46,
+          121,
+          200,
+          206,
+          37,
+          26
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "override",
+    "duration": 139,
+    "bpm": 145,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 325,
+        "holds": 3,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          68,
+          42,
+          11,
+          32,
+          58,
+          96,
+          15,
+          3
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 1,
+        "notes": 459,
+        "holds": 3,
+        "chords": 32,
+        "shapes": 3,
+        "lanes": [
+          87,
+          62,
+          17,
+          67,
+          84,
+          118,
+          21,
+          3
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 951,
+        "holds": 3,
+        "chords": 45,
+        "shapes": 4,
+        "lanes": [
+          221,
+          121,
+          42,
+          118,
+          166,
+          220,
+          55,
+          8
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "telepathy",
+    "duration": 145,
+    "bpm": 205,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 362,
+        "holds": 13,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          76,
+          35,
+          51,
+          29,
+          33,
+          75,
+          58,
+          5
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 496,
+        "holds": 15,
+        "chords": 41,
+        "shapes": 4,
+        "lanes": [
+          102,
+          53,
+          72,
+          36,
+          43,
+          99,
+          78,
+          13
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 890,
+        "holds": 20,
+        "chords": 58,
+        "shapes": 4,
+        "lanes": [
+          162,
+          129,
+          125,
+          56,
+          85,
+          173,
+          143,
+          17
+        ],
+        "maxSameLaneRun": 11
+      }
+    ]
+  },
+  {
+    "id": "mimukauwa",
+    "duration": 218,
+    "bpm": 126,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 354,
+        "holds": 9,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          101,
+          97,
+          17,
+          34,
+          23,
+          72,
+          9,
+          1
+        ],
+        "maxSameLaneRun": 9
+      },
+      {
+        "difficulty": 1,
+        "notes": 685,
+        "holds": 12,
+        "chords": 56,
+        "shapes": 4,
+        "lanes": [
+          182,
+          160,
+          37,
+          53,
+          66,
+          147,
+          24,
+          16
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 954,
+        "holds": 12,
+        "chords": 78,
+        "shapes": 4,
+        "lanes": [
+          236,
+          229,
+          61,
+          82,
+          85,
+          200,
+          38,
+          23
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "daikirai",
+    "duration": 155,
+    "bpm": 130,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 323,
+        "holds": 9,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          148,
+          25,
+          34,
+          26,
+          38,
+          35,
+          14,
+          3
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 588,
+        "holds": 13,
+        "chords": 40,
+        "shapes": 4,
+        "lanes": [
+          223,
+          43,
+          64,
+          49,
+          85,
+          81,
+          31,
+          12
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 978,
+        "holds": 14,
+        "chords": 65,
+        "shapes": 4,
+        "lanes": [
+          345,
+          72,
+          110,
+          97,
+          149,
+          131,
+          51,
+          23
+        ],
+        "maxSameLaneRun": 10
+      }
+    ]
+  },
+  {
+    "id": "rinne",
+    "duration": 123,
+    "bpm": 145,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 252,
+        "holds": 10,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          72,
+          29,
+          30,
+          37,
+          15,
+          47,
+          8,
+          14
+        ],
+        "maxSameLaneRun": 3
+      },
+      {
+        "difficulty": 1,
+        "notes": 545,
+        "holds": 11,
+        "chords": 30,
+        "shapes": 4,
+        "lanes": [
+          114,
+          92,
+          68,
+          74,
+          46,
+          104,
+          18,
+          29
+        ],
+        "maxSameLaneRun": 4
+      },
+      {
+        "difficulty": 2,
+        "notes": 709,
+        "holds": 12,
+        "chords": 46,
+        "shapes": 4,
+        "lanes": [
+          149,
+          121,
+          87,
+          100,
+          69,
+          129,
+          20,
+          34
+        ],
+        "maxSameLaneRun": 4
+      }
+    ]
+  },
+  {
+    "id": "mothergoose",
+    "duration": 286,
+    "bpm": 222,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 495,
+        "holds": 24,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          117,
+          65,
+          78,
+          125,
+          29,
+          40,
+          29,
+          12
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 1,
+        "notes": 954,
+        "holds": 33,
+        "chords": 64,
+        "shapes": 4,
+        "lanes": [
+          233,
+          97,
+          144,
+          229,
+          66,
+          81,
+          75,
+          29
+        ],
+        "maxSameLaneRun": 10
+      },
+      {
+        "difficulty": 2,
+        "notes": 1566,
+        "holds": 42,
+        "chords": 100,
+        "shapes": 4,
+        "lanes": [
+          391,
+          147,
+          211,
+          376,
+          122,
+          145,
+          114,
+          60
+        ],
+        "maxSameLaneRun": 17
+      }
+    ]
+  },
+  {
+    "id": "heat",
+    "duration": 241,
+    "bpm": 183,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 631,
+        "holds": 11,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          220,
+          115,
+          58,
+          102,
+          57,
+          73,
+          5,
+          1
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 1,
+        "notes": 1044,
+        "holds": 14,
+        "chords": 54,
+        "shapes": 4,
+        "lanes": [
+          321,
+          162,
+          91,
+          152,
+          120,
+          148,
+          22,
+          28
+        ],
+        "maxSameLaneRun": 11
+      },
+      {
+        "difficulty": 2,
+        "notes": 1329,
+        "holds": 14,
+        "chords": 85,
+        "shapes": 4,
+        "lanes": [
+          387,
+          198,
+          111,
+          194,
+          166,
+          196,
+          33,
+          44
+        ],
+        "maxSameLaneRun": 10
+      }
+    ]
+  },
+  {
+    "id": "connect",
+    "duration": 273,
+    "bpm": 175,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 605,
+        "holds": 27,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          169,
+          132,
+          30,
+          122,
+          72,
+          63,
+          5,
+          12
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 1,
+        "notes": 1266,
+        "holds": 33,
+        "chords": 86,
+        "shapes": 4,
+        "lanes": [
+          302,
+          219,
+          51,
+          256,
+          206,
+          170,
+          22,
+          40
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 1481,
+        "holds": 33,
+        "chords": 112,
+        "shapes": 4,
+        "lanes": [
+          346,
+          244,
+          55,
+          309,
+          250,
+          202,
+          28,
+          47
+        ],
+        "maxSameLaneRun": 14
+      }
+    ]
+  },
+  {
+    "id": "magia",
+    "duration": 319,
+    "bpm": 125,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 594,
+        "holds": 31,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          135,
+          160,
+          28,
+          38,
+          75,
+          149,
+          7,
+          2
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 1282,
+        "holds": 41,
+        "chords": 112,
+        "shapes": 4,
+        "lanes": [
+          280,
+          366,
+          48,
+          81,
+          172,
+          314,
+          13,
+          8
+        ],
+        "maxSameLaneRun": 9
+      },
+      {
+        "difficulty": 2,
+        "notes": 1985,
+        "holds": 43,
+        "chords": 167,
+        "shapes": 4,
+        "lanes": [
+          436,
+          578,
+          72,
+          138,
+          262,
+          466,
+          21,
+          12
+        ],
+        "maxSameLaneRun": 15
+      }
+    ]
+  },
+  {
+    "id": "luminous",
+    "duration": 250,
+    "bpm": 173,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 523,
+        "holds": 20,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          95,
+          128,
+          111,
+          57,
+          32,
+          51,
+          47,
+          2
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 1,
+        "notes": 1095,
+        "holds": 28,
+        "chords": 85,
+        "shapes": 4,
+        "lanes": [
+          146,
+          220,
+          230,
+          117,
+          107,
+          130,
+          137,
+          8
+        ],
+        "maxSameLaneRun": 12
+      },
+      {
+        "difficulty": 2,
+        "notes": 1346,
+        "holds": 28,
+        "chords": 109,
+        "shapes": 4,
+        "lanes": [
+          171,
+          250,
+          264,
+          133,
+          166,
+          167,
+          184,
+          11
+        ],
+        "maxSameLaneRun": 13
+      }
+    ]
+  },
+  {
+    "id": "colorful",
+    "duration": 274,
+    "bpm": 178,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 607,
+        "holds": 37,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          203,
+          92,
+          25,
+          95,
+          107,
+          62,
+          13,
+          10
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 1,
+        "notes": 1201,
+        "holds": 42,
+        "chords": 88,
+        "shapes": 4,
+        "lanes": [
+          341,
+          196,
+          46,
+          178,
+          237,
+          143,
+          26,
+          34
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 1500,
+        "holds": 43,
+        "chords": 120,
+        "shapes": 4,
+        "lanes": [
+          409,
+          240,
+          63,
+          226,
+          315,
+          179,
+          31,
+          37
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "silvergarden",
+    "duration": 307,
+    "bpm": 148,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 631,
+        "holds": 37,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          139,
+          128,
+          89,
+          83,
+          46,
+          96,
+          40,
+          10
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 1,
+        "notes": 1262,
+        "holds": 42,
+        "chords": 103,
+        "shapes": 4,
+        "lanes": [
+          257,
+          217,
+          161,
+          145,
+          128,
+          225,
+          96,
+          33
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 2,
+        "notes": 1548,
+        "holds": 42,
+        "chords": 163,
+        "shapes": 4,
+        "lanes": [
+          307,
+          274,
+          187,
+          195,
+          158,
+          268,
+          115,
+          44
+        ],
+        "maxSameLaneRun": 7
+      }
+    ]
+  },
+  {
+    "id": "freedomdive",
+    "duration": 270,
+    "bpm": 222.22,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 446,
+        "holds": 9,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          97,
+          96,
+          76,
+          52,
+          41,
+          46,
+          37,
+          1
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 967,
+        "holds": 15,
+        "chords": 76,
+        "shapes": 4,
+        "lanes": [
+          198,
+          206,
+          143,
+          88,
+          113,
+          109,
+          96,
+          14
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 1893,
+        "holds": 17,
+        "chords": 113,
+        "shapes": 4,
+        "lanes": [
+          326,
+          332,
+          241,
+          181,
+          302,
+          288,
+          202,
+          21
+        ],
+        "maxSameLaneRun": 13
+      }
+    ]
+  },
+  {
+    "id": "bluezenith",
+    "duration": 259,
+    "bpm": 200,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 657,
+        "holds": 30,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          81,
+          51,
+          98,
+          75,
+          236,
+          38,
+          77,
+          1
+        ],
+        "maxSameLaneRun": 27
+      },
+      {
+        "difficulty": 1,
+        "notes": 870,
+        "holds": 32,
+        "chords": 66,
+        "shapes": 4,
+        "lanes": [
+          124,
+          74,
+          141,
+          93,
+          257,
+          51,
+          119,
+          11
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 2,
+        "notes": 1607,
+        "holds": 39,
+        "chords": 99,
+        "shapes": 4,
+        "lanes": [
+          227,
+          176,
+          288,
+          166,
+          341,
+          144,
+          233,
+          32
+        ],
+        "maxSameLaneRun": 12
+      }
+    ]
+  },
+  {
+    "id": "ghost",
+    "duration": 350,
+    "bpm": 220,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 564,
+        "holds": 15,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          254,
+          110,
+          21,
+          31,
+          56,
+          68,
+          20,
+          4
+        ],
+        "maxSameLaneRun": 13
+      },
+      {
+        "difficulty": 1,
+        "notes": 1122,
+        "holds": 19,
+        "chords": 103,
+        "shapes": 4,
+        "lanes": [
+          435,
+          194,
+          43,
+          71,
+          166,
+          161,
+          42,
+          10
+        ],
+        "maxSameLaneRun": 15
+      },
+      {
+        "difficulty": 2,
+        "notes": 2105,
+        "holds": 22,
+        "chords": 158,
+        "shapes": 4,
+        "lanes": [
+          809,
+          257,
+          69,
+          160,
+          388,
+          321,
+          82,
+          19
+        ],
+        "maxSameLaneRun": 20
+      }
+    ]
+  },
+  {
+    "id": "crystallized",
+    "duration": 277,
+    "bpm": 174,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 480,
+        "holds": 17,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          67,
+          107,
+          61,
+          53,
+          21,
+          137,
+          32,
+          2
+        ],
+        "maxSameLaneRun": 14
+      },
+      {
+        "difficulty": 1,
+        "notes": 1090,
+        "holds": 26,
+        "chords": 70,
+        "shapes": 4,
+        "lanes": [
+          144,
+          256,
+          138,
+          104,
+          59,
+          289,
+          87,
+          13
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 1334,
+        "holds": 26,
+        "chords": 99,
+        "shapes": 4,
+        "lanes": [
+          159,
+          328,
+          192,
+          121,
+          69,
+          343,
+          107,
+          15
+        ],
+        "maxSameLaneRun": 10
+      }
+    ]
+  },
+  {
+    "id": "exit",
+    "duration": 332,
+    "bpm": 200,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 738,
+        "holds": 19,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          289,
+          95,
+          67,
+          153,
+          35,
+          64,
+          26,
+          9
+        ],
+        "maxSameLaneRun": 15
+      },
+      {
+        "difficulty": 1,
+        "notes": 1604,
+        "holds": 24,
+        "chords": 94,
+        "shapes": 4,
+        "lanes": [
+          495,
+          194,
+          137,
+          301,
+          138,
+          208,
+          78,
+          53
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 1914,
+        "holds": 25,
+        "chords": 125,
+        "shapes": 4,
+        "lanes": [
+          564,
+          230,
+          156,
+          374,
+          180,
+          251,
+          94,
+          65
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "kitasaitama",
+    "duration": 121,
+    "bpm": 222,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 225,
+        "holds": 11,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          36,
+          48,
+          23,
+          13,
+          24,
+          56,
+          18,
+          7
+        ],
+        "maxSameLaneRun": 4
+      },
+      {
+        "difficulty": 1,
+        "notes": 440,
+        "holds": 11,
+        "chords": 37,
+        "shapes": 4,
+        "lanes": [
+          74,
+          99,
+          40,
+          19,
+          46,
+          106,
+          41,
+          15
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 831,
+        "holds": 17,
+        "chords": 60,
+        "shapes": 4,
+        "lanes": [
+          133,
+          168,
+          59,
+          49,
+          108,
+          192,
+          94,
+          28
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "madasaitama",
+    "duration": 129,
+    "bpm": 280,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 275,
+        "holds": 4,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          100,
+          39,
+          19,
+          10,
+          23,
+          43,
+          33,
+          8
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 1,
+        "notes": 493,
+        "holds": 8,
+        "chords": 46,
+        "shapes": 4,
+        "lanes": [
+          164,
+          59,
+          38,
+          26,
+          63,
+          74,
+          57,
+          12
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 856,
+        "holds": 9,
+        "chords": 63,
+        "shapes": 4,
+        "lanes": [
+          234,
+          107,
+          65,
+          51,
+          119,
+          150,
+          106,
+          24
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "yuugen",
+    "duration": 126,
+    "bpm": 300,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 245,
+        "holds": 17,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          35,
+          77,
+          34,
+          4,
+          22,
+          46,
+          27,
+          0
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 1,
+        "notes": 520,
+        "holds": 18,
+        "chords": 42,
+        "shapes": 3,
+        "lanes": [
+          66,
+          139,
+          62,
+          11,
+          53,
+          118,
+          69,
+          2
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 727,
+        "holds": 18,
+        "chords": 62,
+        "shapes": 4,
+        "lanes": [
+          84,
+          194,
+          97,
+          20,
+          91,
+          153,
+          85,
+          3
+        ],
+        "maxSameLaneRun": 7
+      }
+    ]
+  },
+  {
+    "id": "donkama",
+    "duration": 133,
+    "bpm": 120,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 275,
+        "holds": 5,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          105,
+          40,
+          28,
+          13,
+          34,
+          30,
+          25,
+          0
+        ],
+        "maxSameLaneRun": 11
+      },
+      {
+        "difficulty": 1,
+        "notes": 498,
+        "holds": 5,
+        "chords": 34,
+        "shapes": 4,
+        "lanes": [
+          169,
+          71,
+          50,
+          24,
+          65,
+          72,
+          46,
+          1
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 2,
+        "notes": 844,
+        "holds": 6,
+        "chords": 51,
+        "shapes": 4,
+        "lanes": [
+          254,
+          110,
+          83,
+          36,
+          106,
+          153,
+          96,
+          6
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "angeldream",
+    "duration": 146,
+    "bpm": 180,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 354,
+        "holds": 21,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          45,
+          91,
+          62,
+          29,
+          28,
+          65,
+          32,
+          2
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 745,
+        "holds": 23,
+        "chords": 45,
+        "shapes": 4,
+        "lanes": [
+          100,
+          157,
+          121,
+          42,
+          76,
+          153,
+          84,
+          12
+        ],
+        "maxSameLaneRun": 8
+      },
+      {
+        "difficulty": 2,
+        "notes": 869,
+        "holds": 23,
+        "chords": 65,
+        "shapes": 4,
+        "lanes": [
+          110,
+          175,
+          135,
+          49,
+          89,
+          201,
+          97,
+          13
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "disappearance",
+    "duration": 290,
+    "bpm": 240,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 548,
+        "holds": 37,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          173,
+          90,
+          19,
+          50,
+          131,
+          77,
+          7,
+          1
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 1128,
+        "holds": 45,
+        "chords": 102,
+        "shapes": 4,
+        "lanes": [
+          386,
+          200,
+          41,
+          88,
+          259,
+          131,
+          13,
+          10
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 2045,
+        "holds": 49,
+        "chords": 167,
+        "shapes": 4,
+        "lanes": [
+          718,
+          331,
+          72,
+          185,
+          455,
+          228,
+          36,
+          20
+        ],
+        "maxSameLaneRun": 12
+      }
+    ]
+  },
+  {
+    "id": "intensevoice",
+    "duration": 301,
+    "bpm": 200,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 762,
+        "holds": 48,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          205,
+          104,
+          61,
+          186,
+          71,
+          96,
+          25,
+          14
+        ],
+        "maxSameLaneRun": 11
+      },
+      {
+        "difficulty": 1,
+        "notes": 1048,
+        "holds": 49,
+        "chords": 93,
+        "shapes": 4,
+        "lanes": [
+          267,
+          141,
+          81,
+          237,
+          113,
+          129,
+          39,
+          41
+        ],
+        "maxSameLaneRun": 10
+      },
+      {
+        "difficulty": 2,
+        "notes": 1739,
+        "holds": 51,
+        "chords": 132,
+        "shapes": 4,
+        "lanes": [
+          449,
+          252,
+          125,
+          379,
+          200,
+          209,
+          69,
+          56
+        ],
+        "maxSameLaneRun": 14
+      }
+    ]
+  },
+  {
+    "id": "machinegun",
+    "duration": 144,
+    "bpm": 220,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 239,
+        "holds": 7,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          55,
+          97,
+          20,
+          16,
+          15,
+          29,
+          5,
+          2
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 522,
+        "holds": 10,
+        "chords": 47,
+        "shapes": 4,
+        "lanes": [
+          128,
+          178,
+          37,
+          42,
+          34,
+          89,
+          9,
+          5
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 919,
+        "holds": 11,
+        "chords": 68,
+        "shapes": 4,
+        "lanes": [
+          184,
+          257,
+          67,
+          84,
+          90,
+          200,
+          23,
+          14
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "jinsei",
+    "duration": 149,
+    "bpm": 185,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 332,
+        "holds": 11,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          70,
+          54,
+          38,
+          32,
+          36,
+          84,
+          17,
+          1
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 695,
+        "holds": 19,
+        "chords": 53,
+        "shapes": 4,
+        "lanes": [
+          141,
+          108,
+          73,
+          54,
+          89,
+          178,
+          44,
+          8
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 916,
+        "holds": 21,
+        "chords": 80,
+        "shapes": 4,
+        "lanes": [
+          174,
+          163,
+          90,
+          71,
+          121,
+          229,
+          59,
+          9
+        ],
+        "maxSameLaneRun": 7
+      }
+    ]
+  },
+  {
+    "id": "yaminabe",
+    "duration": 135,
+    "bpm": 264,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 279,
+        "holds": 10,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          68,
+          32,
+          48,
+          72,
+          10,
+          33,
+          12,
+          4
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 1,
+        "notes": 528,
+        "holds": 17,
+        "chords": 46,
+        "shapes": 4,
+        "lanes": [
+          105,
+          57,
+          100,
+          113,
+          38,
+          61,
+          38,
+          16
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 2,
+        "notes": 778,
+        "holds": 17,
+        "chords": 66,
+        "shapes": 4,
+        "lanes": [
+          158,
+          71,
+          133,
+          167,
+          67,
+          101,
+          60,
+          21
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "whatsuppop",
+    "duration": 165,
+    "bpm": 230,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 388,
+        "holds": 13,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          110,
+          55,
+          31,
+          20,
+          98,
+          58,
+          15,
+          1
+        ],
+        "maxSameLaneRun": 4
+      },
+      {
+        "difficulty": 1,
+        "notes": 634,
+        "holds": 20,
+        "chords": 44,
+        "shapes": 4,
+        "lanes": [
+          166,
+          94,
+          44,
+          32,
+          161,
+          106,
+          28,
+          3
+        ],
+        "maxSameLaneRun": 7
+      },
+      {
+        "difficulty": 2,
+        "notes": 994,
+        "holds": 22,
+        "chords": 66,
+        "shapes": 3,
+        "lanes": [
+          264,
+          139,
+          65,
+          58,
+          240,
+          183,
+          43,
+          2
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "ogyarinizer",
+    "duration": 130,
+    "bpm": 245,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 252,
+        "holds": 12,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          65,
+          59,
+          13,
+          23,
+          44,
+          41,
+          7,
+          0
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 1,
+        "notes": 504,
+        "holds": 14,
+        "chords": 44,
+        "shapes": 4,
+        "lanes": [
+          134,
+          104,
+          22,
+          44,
+          95,
+          83,
+          16,
+          6
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 2,
+        "notes": 847,
+        "holds": 14,
+        "chords": 65,
+        "shapes": 4,
+        "lanes": [
+          228,
+          184,
+          28,
+          67,
+          160,
+          142,
+          28,
+          10
+        ],
+        "maxSameLaneRun": 7
+      }
+    ]
+  },
+  {
+    "id": "daijobu",
+    "duration": 156,
+    "bpm": 224,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 278,
+        "holds": 12,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          65,
+          70,
+          17,
+          41,
+          37,
+          37,
+          9,
+          2
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 1,
+        "notes": 567,
+        "holds": 14,
+        "chords": 49,
+        "shapes": 4,
+        "lanes": [
+          132,
+          114,
+          38,
+          67,
+          104,
+          81,
+          19,
+          12
+        ],
+        "maxSameLaneRun": 4
+      },
+      {
+        "difficulty": 2,
+        "notes": 1012,
+        "holds": 15,
+        "chords": 72,
+        "shapes": 4,
+        "lanes": [
+          209,
+          198,
+          64,
+          144,
+          196,
+          157,
+          28,
+          16
+        ],
+        "maxSameLaneRun": 6
+      }
+    ]
+  },
+  {
+    "id": "kusaregedou",
+    "duration": 201,
+    "bpm": 260,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 387,
+        "holds": 21,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          70,
+          54,
+          59,
+          48,
+          31,
+          76,
+          43,
+          6
+        ],
+        "maxSameLaneRun": 4
+      },
+      {
+        "difficulty": 1,
+        "notes": 780,
+        "holds": 26,
+        "chords": 63,
+        "shapes": 4,
+        "lanes": [
+          149,
+          122,
+          114,
+          84,
+          64,
+          136,
+          94,
+          17
+        ],
+        "maxSameLaneRun": 9
+      },
+      {
+        "difficulty": 2,
+        "notes": 1247,
+        "holds": 30,
+        "chords": 91,
+        "shapes": 4,
+        "lanes": [
+          205,
+          187,
+          174,
+          143,
+          118,
+          233,
+          158,
+          29
+        ],
+        "maxSameLaneRun": 8
+      }
+    ]
+  },
+  {
+    "id": "amara",
+    "duration": 197,
+    "bpm": 230,
+    "difficulties": [
+      {
+        "difficulty": 0,
+        "notes": 365,
+        "holds": 6,
+        "chords": 0,
+        "shapes": 0,
+        "lanes": [
+          112,
+          86,
+          9,
+          51,
+          44,
+          50,
+          9,
+          4
+        ],
+        "maxSameLaneRun": 5
+      },
+      {
+        "difficulty": 1,
+        "notes": 705,
+        "holds": 9,
+        "chords": 64,
+        "shapes": 4,
+        "lanes": [
+          184,
+          146,
+          18,
+          81,
+          123,
+          109,
+          27,
+          17
+        ],
+        "maxSameLaneRun": 6
+      },
+      {
+        "difficulty": 2,
+        "notes": 1310,
+        "holds": 12,
+        "chords": 97,
+        "shapes": 4,
+        "lanes": [
+          325,
+          245,
+          33,
+          157,
+          256,
+          221,
+          45,
+          28
+        ],
+        "maxSameLaneRun": 7
+      }
+    ]
+  }
+]
