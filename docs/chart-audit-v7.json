@@ -1,6 +1,6 @@
 {
   "version": "piano8-vocal-v7",
-  "method": "Active bars quantized to 1/48 beat; chord duplicates removed; first four and last sixteen seconds excluded. Repetition alone is not evidence of poor musical fit. No vocal timing is available in the stock generators.",
+  "method": "Active bars quantized to 1/48 beat; chord duplicates removed. Repetition alone does not measure musical fit. v7 note heads are selected from official-source spectral attacks; 15 tracks also use caption phrase timing. Small timing differences can increase uniqueness.",
   "charts": [
     {
       "id": "monitoring",
