@@ -1,5 +1,6 @@
+import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=unlabeled-1';
-import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=red-blue-1';
+import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=luminous-2';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=piano-hammer-1';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=all-scores-1';
@@ -37,6 +38,7 @@ let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
 if(typeof name!=='string')name='PLAYER';
 const bests=read('pulse-bests',{});
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
+let life=MAX_LIFE;
 let libraryPack='all',spaceHeld=false;
 let librarySort=read('pulse-sort','library');
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
@@ -147,20 +149,21 @@ function start(){
   if(mode==='loading')return;
   if(currentPianoProfile()){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
   let chart;try{chart=pianoTrialChart(song(),makeChart(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
-  upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
+  upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownReady=false;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;life=MAX_LIFE;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
   runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
 }
 function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';pianoSound.stop();countdownUntil=0;countdownReady=false;player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
 function resume(){if(mode!=='paused')return;pianoSound.warm();syncHeldKeys();mode='loading';countdownReady=false;playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
-function quit(){pianoSound.stop();upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
+function quit(){pianoSound.stop();upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();life=MAX_LIFE;events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
 function updateStats(){
   const count=notes.filter(n=>!n.assist).length||1,result=summary(stats,count);
   const score=String(result.score).padStart(7,'0');
   const judged=stats.perfect+stats.great+stats.good+stats.bad+stats.miss;
   const accuracy=judged?(stats.weight/judged*100).toFixed(2):'—';
   $('score').textContent=score;$('accuracy').innerHTML=accuracy+'<small>%</small>';$('maxCombo').textContent=stats.maxCombo;
+  $('lifeValue').textContent=life;$('lifeFill').style.width=(life/MAX_LIFE*100)+'%';$('lifeGauge').setAttribute('aria-valuenow',String(life));$('lifeGauge').classList.toggle('low-life',life<=250);
   $('stageScore').textContent=score;$('stageCombo').textContent=stats.combo;$('stageAccuracy').textContent=accuracy;
 }
 function finish(){
@@ -185,6 +188,7 @@ function recordEvent(t,lane,action){const ms=Math.round(t*1000);if(ms<0||ms>song
 function applyNotifications(list){
   const now=performance.now();let changed=false;
   for(const event of list){
+    life=nextLife(life,event);
     if(event.kind==='assist'){blackFlashes[event.note.blackIndex]=now;continue;}
     if(event.kind==='holdstart'||event.kind==='flickstart'){lastJudge=event.result;judgeDelta=Math.round(event.delta*1000);judgeAt=now;continue;}
     if(event.kind==='holdtick'){changed=true;continue;}
@@ -348,5 +352,3 @@ savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer
 let tutorial=null;
 async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=unlabeled-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
 $('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
-
-

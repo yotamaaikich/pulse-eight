@@ -6,13 +6,13 @@ export function timingFeedback(delta){
 export function drawNoteHead(ctx,{x,y,width,height,lane,time=0}){
   const color=lane<4?NOTE_COLORS.left:NOTE_COLORS.right;
   ctx.save();
-  ctx.shadowColor=color;ctx.shadowBlur=9;
+  ctx.shadowColor=color;ctx.shadowBlur=15;
   const fill=ctx.createLinearGradient(0,y-height/2,0,y+height/2);
   fill.addColorStop(0,'#ffffff');fill.addColorStop(.16,lane<4?'#ff9bb0':'#9edbff');
-  fill.addColorStop(.45,color);fill.addColorStop(1,lane<4?'#a7083d':'#123dab');
+  fill.addColorStop(.36,'#f5fcff');fill.addColorStop(.58,color);fill.addColorStop(1,lane<4?'#a7083d':'#123dab');
   ctx.fillStyle=fill;ctx.strokeStyle='#ffffff';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.roundRect(x-width/2,y-height/2,width,height,2);ctx.fill();ctx.stroke();
-  ctx.shadowBlur=0;ctx.strokeStyle=color;ctx.lineWidth=2;
+  ctx.shadowBlur=0;ctx.fillStyle='#ffffffb3';ctx.fillRect(x-width*.45,y-height*.33,width*.9,Math.max(1,height*.12));ctx.strokeStyle=color;ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(x-width*.43,y+height*.28);ctx.lineTo(x+width*.43,y+height*.28);ctx.stroke();
   // A small four-point glint stays inside each note's silhouette.
   const sx=x+width*.29,sy=y-height*.18,r=Math.min(height*.32,5)*( .8+.2*Math.sin(time/260+lane));

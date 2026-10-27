@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#f4f3ee">
   <meta name="description" content="ボカロ・まどマギ・osu!・太鼓収録曲の35曲を8つのキーで。フル尺のキーボード音ゲー PIANO PULSE。オンラインランキング対応。">
   <title>PIANO PULSE</title>
-  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=red-blue-1"><link rel="stylesheet" href="./creator.css?v=hold-air-3">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=luminous-2"><link rel="stylesheet" href="./creator.css?v=hold-air-3">
 </head>
 <body>
   <header class="topbar">
@@ -32,9 +32,10 @@
           <div class="stage-top"><span><i></i> 8-KEY SESSION</span><span id="timer">00:00 / 03:01</span></div>
           <div class="chart-hud" aria-label="プレイ中の成績">
             <div class="chart-hud-score"><span>SCORE</span><strong id="stageScore">0000000</strong></div>
-            <div><span>COMBO</span><strong id="stageCombo">0</strong></div>
+            <strong id="stageCombo" hidden>0</strong>
             <div><span>ACCURACY</span><strong><span id="stageAccuracy">—</span><small>%</small></strong></div>
           </div>
+          <div class="life-panel"><div><span>HP</span><strong id="lifeValue">1000</strong></div><div id="lifeGauge" class="life-gauge" role="progressbar" aria-label="HP" aria-valuemin="0" aria-valuemax="1000" aria-valuenow="1000"><span id="lifeFill"></span></div></div>
           <p class="chart-ad-notice">YouTubeの公式動画で再生するため、広告が入る場合があります。<br>本編の再生待ち中は譜面を停止します。</p>
           <div class="chart-fullscreen-controls"><button id="chartPause">Ⅱ <kbd>ESC</kbd></button><button id="exitChartFullscreen">⛶ 戻る <kbd>V</kbd></button></div>
           <canvas id="game" tabindex="-1" aria-label="8レーンのノーツ。A S D F J K L セミコロンで演奏"></canvas>
@@ -72,6 +73,6 @@
     <p class="tutorial-note">現在のキー設定を使用 · 失敗しても自動で再挑戦 · Escで終了 · スコアは記録されません</p>
   </dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./app.js?v=unlabeled-1"></script>
+  <script type="module" src="./app.js?v=luminous-2"></script>
 </body>
 </html>
