@@ -1,13 +1,14 @@
+import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=vocal-piano-1';
 import {referenceChart} from './reference-chart.mjs?v=score-attacks-1';
 import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
 import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=luminous-2';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
-import {createPianoSound} from './piano-sound.mjs?v=audible-piano-1';
-import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=all-scores-1';
-import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=lyric-onsets-2';
+import {createPianoSound} from './piano-sound.mjs?v=vocal-piano-1';
+import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=vocal-piano-1';
+import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=vocal-piano-1';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
-import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=lyric-onsets-1';
+import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=vocal-piano-1';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs?v=countdown-sync-1';
@@ -28,7 +29,7 @@ function configurePiano(){pianoSound.configure({enabled:prefs.pianoOn,volume:pre
 configurePiano();
 const pianoProfiles=Object.create(null);
 for(const track of SONGS){try{const stored=read('pulse-piano-score:'+track.id,null)??(track.id===PIANO_TRIAL_SONG?read('pulse-monitoring-piano-score',null):null);if(stored)pianoProfiles[track.id]=validatePianoProfile(stored);}catch{}}
-const currentPianoProfile=()=>pianoProfiles[song().id]??null;
+const currentPianoProfile=()=>song().id==='monitoring'?MONITORING_PIANO_PROFILE:pianoProfiles[song().id]??null;
 if(!Array.isArray(prefs.keys)||prefs.keys.length!==8||new Set(prefs.keys).size!==8||prefs.keys.some(code=>['Space','KeyV','KeyR','KeyO'].includes(code)))prefs.keys=[...DEFAULT_KEYS];
 prefs.speed=Math.min(2,Math.max(.5,Number(prefs.speed)||1));
 prefs.offset=Math.min(500,Math.max(-500,Number(prefs.offset)||0));
@@ -67,7 +68,7 @@ function renderPianoStatus(){
   $('pianoImportShortcut').hidden=!!profile;
   $('pianoTrialStatus').textContent=!profile?'鍵盤音なし：このブラウザには音程データが読み込まれていません。':(on?'鍵盤音 ON · '+prefs.pianoLevel+'%':'鍵盤音 OFF')+(referenceEnabled()?' · 参照譜面の試験プレイ（原曲との同期は未検証・ランキング対象外）':' · '+profile.title);
 }
-function syncSettings(){renderPianoStatus();const pianoProfile=currentPianoProfile();$('referencePractice').checked=prefs.referencePractice!==false;$('referencePracticeSetting').hidden=true;for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'音程データ未読込（試し弾きは利用できます）';}
+function syncSettings(){renderPianoStatus();const pianoProfile=currentPianoProfile();$('referencePractice').checked=prefs.referencePractice!==false;$('referencePracticeSetting').hidden=true;$('pianoScoreDetails').hidden=song().id==='monitoring';for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'音程データ未読込（試し弾きは利用できます）';}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
 function renderSongs(){
   $('songs').innerHTML=orderedSongs(SONGS,libraryPack,difficulty,librarySort).map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" aria-hidden="true" style="background:${s.color}"></span><span class="song-info"><strong>${s.title}</strong><small>${s.artist} · ${s.pack==='madoka'?'まどマギ':s.pack==='osu'?'osu!定番':s.pack==='taiko'?'太鼓':'ボカロ'}</small></span><span class="song-level"><b>LV.${difficultyMetrics(s,difficulty).level}</b><small>${difficultyMetrics(s,difficulty).count} NOTES</small></span></button>`).join('');
@@ -222,8 +223,11 @@ function syncHeldKeys(){
 }
 function playAttack(list,float=false){
   for(const event of list){
-    const n=event.note;if(!n||!Number.isFinite(n.soundMidi))continue;
-    if(float?event.kind==='judge'&&n.flick&&event.result!=='miss':event.kind==='holdstart'||(event.kind==='judge'&&!n.end&&!n.flick&&event.result!=='miss'))pianoSound.play({midi:n.soundMidi,hold:n.end?n.end-n.t:0,float});
+    const n=event.note;if(!n)continue;
+    const pitched=Number.isFinite(n.soundMidi),hasPiano=pitched||song().id==='monitoring';
+    if(!hasPiano)continue;
+    const attack=float?event.kind==='judge'&&n.flick&&event.result!=='miss':event.kind==='holdstart'||(event.kind==='judge'&&!n.end&&!n.flick&&event.result!=='miss');
+    if(attack)pianoSound.play({midi:pitched?n.soundMidi:62,hold:n.end?n.end-n.t:0,float,percussive:!pitched&&!float});
   }
 }
 function hit(lane){flashes[lane]=performance.now();if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,1)){const list=session.press(t,lane);playAttack(list);applyNotifications(list);}}

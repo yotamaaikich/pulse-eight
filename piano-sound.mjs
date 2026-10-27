@@ -35,7 +35,7 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
   async function prepare(){return warm()?await loading:false;}
   function stop(){for(const voice of [...voices])voice.stop();mix();}
   function configure(options){enabled=options.enabled===true;volume=Math.max(0,Math.min(100,Number(options.volume)||0));if(!enabled||!volume)stop();mix();}
-  function play({midi=62,hold=0,float=false}={}){
+  function play({midi=62,hold=0,float=false,percussive=false}={}){
     if(!enabled||!volume||!Number.isFinite(midi)||!warm())return false;
     // Never enqueue a key-down while loading: a late note would feel like key-up sound.
     if(!float&&samples.size!==SAMPLES.length)return false;
@@ -51,12 +51,12 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
         gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(amplitude,now+.002);gain.gain.exponentialRampToValueAtTime(.00001,now+decay);ended(source,gain);source.start(now);source.stop(now+decay+.015);
       }
     }else{
-      const pitch=Math.max(21,Math.min(108,midi)),root=SAMPLES.reduce((a,b)=>Math.abs(b[1]-pitch)<Math.abs(a[1]-pitch)?b:a)[1];
+      const pitch=percussive?60:Math.max(21,Math.min(108,midi)),root=SAMPLES.reduce((a,b)=>Math.abs(b[1]-pitch)<Math.abs(a[1]-pitch)?b:a)[1];
       const {buffer,offset,normalization}=samples.get(root),source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
       source.buffer=buffer;source.playbackRate.setValueAtTime(2**((pitch-root)/12),now);
-      filter.type='highpass';filter.frequency.value=75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
-      const duration=hold>0?Math.min(2.4,Math.max(.9,hold)):.5;
-      gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(normalization,now+.001);gain.gain.setValueAtTime(normalization,now+duration-.09);gain.gain.exponentialRampToValueAtTime(.00001,now+duration);
+      filter.type='highpass';filter.frequency.value=percussive?2300:75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
+      const duration=percussive?.065:hold>0?Math.min(2.4,Math.max(.9,hold)):.5,attack=normalization*(percussive?.5:1),release=percussive?.03:.09;
+      gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(attack,now+.001);gain.gain.setValueAtTime(attack,now+duration-release);gain.gain.exponentialRampToValueAtTime(.00001,now+duration);
       ended(source,gain,filter);source.start(now,offset);source.stop(now+duration+.01);
     }
     return true;

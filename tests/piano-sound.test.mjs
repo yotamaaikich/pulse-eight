@@ -47,3 +47,8 @@ test('quiet recorded attacks are normalized before applying the dedicated piano 
  const master=f.gains[0].gain.events.filter(e=>e[0]==='target').at(-1)[1];assert.equal(master,.18);
  assert.ok(Math.abs(.25*attack[1]*master-.153)<1e-8);
 });
+
+test('unpitched key feedback is a short recorded attack, not a sustained fixed note',async()=>{
+ const f=fixture();await f.piano.prepare();f.piano.play({midi:62,hold:3,percussive:true});
+ assert.equal(f.sources[0].buffer.name,'C4.mp3');assert.equal(f.sources[0].playbackRate.events[0][1],1);assert.ok(Math.abs(f.sources[0].stops[0]-12.075)<1e-8);assert.equal(f.oscillators.length,0);
+});

@@ -1,0 +1,13 @@
+{
+  "video": "kbNdx0yqbZE",
+  "instrumentalVideo": "_oKBQgty04E",
+  "method": "official instrumental aligned and subtracted; residual vocal flux and confidence-filtered YIN pitch",
+  "alignmentMs": 36.372,
+  "phrases": 48,
+  "vocalAttacks": 1099,
+  "attacks": 1185,
+  "pitchedAttacks": 524,
+  "minimumPitchShare": 0.58,
+  "rawAudioPublished": false,
+  "lyricTextPublished": false
+}

@@ -13,15 +13,16 @@ export function scoreNoteAt(voice,timeMs,tolerance=75){
 function playablePitch(midi){while(midi<48)midi+=12;while(midi>84)midi-=12;return midi;}
 export function pianoTrialChart(song,chart,profile=null){
   if(!profile)return chart;
+  const builtIn=profile.sourceKind==='monitoring-vocal-v8',pitchFor=midi=>builtIn?midi:playablePitch(midi);
   const result=chart.map(n=>{const copy={...n};for(const key of ['soundMidi','soundOriginalMidi','soundSourceStart','soundSourceEnd','soundVoice'])delete copy[key];return copy;}),groups=new Map();
   for(const n of result)if(!n.assist){if(!groups.has(n.t))groups.set(n.t,[]);groups.get(n.t).push(n);}
   for(const [time,group]of groups){
     const at=Math.round(time*1000)-(profile.offsetMs||0),used=new Set();
-    const candidates=profile.voices.map((voice,index)=>({note:scoreNoteAt(voice,at),index})).filter(x=>x.note);
+    const candidates=profile.voices.map((voice,index)=>({note:scoreNoteAt(voice,at),index})).filter(x=>x.note&&(!builtIn||Math.abs(x.note[0]-at)<=10));
     // Rightmost key takes the main melodic voice; other keys use available score voices.
     for(const n of [...group].sort((a,b)=>b.lane-a.lane)){
-      const candidate=candidates.find(x=>!used.has(playablePitch(x.note[2])));if(!candidate)continue;
-      const [start,end,midi]=candidate.note,soundMidi=playablePitch(midi);used.add(soundMidi);
+      const candidate=candidates.find(x=>!used.has(pitchFor(x.note[2])));if(!candidate)continue;
+      const [start,end,midi]=candidate.note,soundMidi=pitchFor(midi);used.add(soundMidi);
       Object.assign(n,{soundMidi,soundOriginalMidi:midi,soundSourceStart:start,soundSourceEnd:end,soundVoice:candidate.index});
     }
   }
