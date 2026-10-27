@@ -1,0 +1,4 @@
+Pitch data is imported by the user and stored only in this browser.
+No third-party song arrangement or melody dataset is distributed with the site.
+The piano instrument sample license in CREDITS.txt does not apply to imported songs.
+Import supports MML text and JSON profiles with timed MIDI pitches.

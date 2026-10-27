@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPianoSound} from '../piano-sound.mjs';
-import {pianoTrialChart} from '../piano-trial.mjs';
+import {pianoTrialChart,scoreNoteAt} from '../piano-trial.mjs';
+const TEST_SCORE={offsetMs:0,voices:[[[1000,1500,69,12],[2000,2500,65,12]],[[1000,1500,50,12],[2000,2500,48,12]]]};
 import {SONGS,makeChart,scoreChartReplay} from '../engine.mjs';
 function fixture({fail=false}={}){
  const oscillators=[],sources=[],gains=[],requests=[];let resumes=0;
@@ -27,11 +28,13 @@ test('loading or failed samples never queue a late key-down or fall back to the 
  const f=fixture();assert.equal(f.piano.play({midi:62}),false);assert.equal(f.sources.length,0);await f.piano.prepare();assert.equal(f.sources.length,0);assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources[0].starts[0][0],12);
  const broken=fixture({fail:true});assert.equal(await broken.piano.prepare(),false);assert.equal(broken.piano.play({midi:62}),false);assert.equal(broken.sources.length,0);assert.equal(broken.oscillators.length,0);
 });
-test('trial pitches vary with harmony and do not alter chart timing, lanes or score',()=>{
- const song=SONGS[0],raw=makeChart(song,1),chart=pianoTrialChart(song,raw);assert.ok(raw.every(n=>n.soundMidi===undefined));
- for(let i=0;i<chart.length;i++){const {soundMidi,...note}=chart[i];assert.deepEqual(note,raw[i]);if(!note.assist)assert.ok(soundMidi>=48&&soundMidi<=79);}
- assert.ok(new Set(chart.filter(n=>n.lane===0).map(n=>n.soundMidi)).size>1);
- const events=raw.filter(n=>!n.assist).flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.02)*1000),n.lane,0]]).sort((a,b)=>a[0]-b[0]);
- assert.deepEqual(scoreChartReplay(chart,song.duration,events),scoreChartReplay(raw,song.duration,events));assert.equal(pianoTrialChart(SONGS[1],raw),raw);
- for(const t of new Set(chart.filter(n=>n.chord).map(n=>n.t))){const notes=chart.filter(n=>!n.assist&&n.t===t);assert.equal(new Set(notes.map(n=>n.soundMidi)).size,notes.length);}
+test('score pitches and octaves come from the imported timed notes, independently of key lane',()=>{
+ const raw=[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}],chart=pianoTrialChart(SONGS[0],raw,TEST_SCORE);
+ assert.deepEqual(raw,[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}]);assert.equal(chart[2].soundMidi,69);assert.equal(chart[0].soundMidi,50);assert.equal(chart[1].soundMidi,65);
+ assert.equal(pianoTrialChart(SONGS[0],raw),raw);assert.equal(pianoTrialChart(SONGS[1],raw,TEST_SCORE),raw);
+ const events=[[1000,0,1],[1000,4,1],[1020,0,0],[1020,4,0],[2000,0,1],[2020,0,0]];assert.deepEqual(scoreChartReplay(chart,3,events),scoreChartReplay(raw,3,events));
+});
+test('score matching respects rests instead of looping harmony or borrowing distant notes',()=>{
+ const voice=[[100,200,60,12],[400,700,65,12]];assert.equal(scoreNoteAt(voice,150),voice[0]);assert.equal(scoreNoteAt(voice,240),voice[0]);assert.equal(scoreNoteAt(voice,300),null);assert.equal(scoreNoteAt(voice,350),voice[1]);assert.equal(scoreNoteAt(voice,800),null);
+ assert.equal(pianoTrialChart(SONGS[0],[{t:180,lane:0}],TEST_SCORE)[0].soundMidi,undefined);
 });
