@@ -1,4 +1,4 @@
-import {makeChart} from './engine.mjs?v=vocal-piano-1';
+import {makeChart} from './engine.mjs?v=vocal-piano-2';
 
 export function chartMetrics(chart){
   const count=chart.filter(n=>!n.assist).length;

@@ -1,4 +1,4 @@
-import {MONITORING_ATTACKS,MONITORING_VOCAL_ANALYSIS} from './monitoring-vocal.mjs';
+import {MONITORING_ATTACKS,MONITORING_VOCAL_ANALYSIS} from './monitoring-vocal.mjs?v=vocal-piano-2';
 import {AUDIO_ATTACKS,AUDIO_SOURCES} from './audio-attacks.mjs';
 export {AUDIO_SOURCES};
 export const chartAttacks=id=>id==='monitoring'?MONITORING_ATTACKS:AUDIO_ATTACKS[id];

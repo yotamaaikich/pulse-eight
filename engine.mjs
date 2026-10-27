@@ -1,4 +1,4 @@
-import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs';
+import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs?v=monitoring-v8-1';
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
