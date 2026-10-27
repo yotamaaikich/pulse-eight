@@ -92,6 +92,7 @@ function confirmSelection(){if(!['paused','results'].includes(mode)||$('confirmT
 function updateBest(){const b=bests[scoreKey()];$('personalBest').textContent=b?fmt(b.score):'—';}
 async function api(path,body){const response=await fetch(API_URL+path,{method:body?'POST':'GET',headers:{apikey:PUBLIC_KEY,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'クラウドへ接続できませんでした');return data;}
 async function loadLeaders(){
+  if(referenceEnabled()){leaderRequest++;$('leaders').innerHTML='<li class="empty-state">参照譜面の試験プレイはランキング対象外です。設定で通常譜面へ戻せます。</li>';return;}
   const request=++leaderRequest;$('leaders').innerHTML='<li class="empty-state">ランキングを読み込み中…</li>';
   try{
     const data=await api(`/leaderboard?song=${song().id}&difficulty=${difficulty}`);if(request!==leaderRequest)return;
@@ -103,9 +104,9 @@ async function loadLeaders(){
 function updateChartControls(){
   const ref=referenceEnabled()?referenceChart(song(),difficulty,currentPianoProfile()):null;
   const metric=ref?{count:ref.length,level:Math.max(1,Math.ceil(ref.length/100))}:difficultyMetrics(song(),difficulty);
-  $('leaderDifficulty').textContent=DIFFICULTIES[difficulty]+' LV.'+metric.level;
+  $('leaderDifficulty').textContent=DIFFICULTIES[difficulty]+(ref?' 参照試験':' LV.'+metric.level);
   $('difficultySummary').textContent=DIFFICULTIES[difficulty]+(ref?'（参照試験）':'')+' · '+metric.count+' NOTES · LV.'+metric.level;
-  document.querySelectorAll('[data-difficulty]').forEach(button=>{const info=difficultyMetrics(song(),Number(button.dataset.difficulty));button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+1）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
+  document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),c=ref?referenceChart(song(),d,currentPianoProfile()):null,info=c?{count:c.length,level:Math.max(1,Math.ceil(c.length/100))}:difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+1）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
 }
 function stateText(text){$('playState').textContent=text;}
 function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil)));$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil);updateChartControls();}
