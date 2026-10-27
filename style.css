@@ -17,3 +17,5 @@
 .space-guide.air-invalid{color:#ffab9e;border-color:#ffab9e;background:#572e30}
 
 .song-sort{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0;font-size:11px;color:#67755e}.song-sort select{min-width:0;max-width:170px;border:1px solid #bac6b0;background:#f4f5ed;border-radius:5px;padding:7px;color:#334b3b;font:inherit}.song-level{margin-left:auto;flex:none;text-align:right;display:flex;flex-direction:column;gap:4px}.song-level b{font-family:'Barlow Condensed',sans-serif;font-size:20px;color:#3e6551}.song-level small{font-size:8px;color:#788b71}.song-info{min-width:0}.difficulty-summary{display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px;margin:7px 0 13px;font-size:10px;color:#63765d}.difficulty-summary strong{color:#385943}.difficulty-summary span{font-size:9px}
+
+.piano-toggle{display:flex;align-items:center;gap:9px;margin-top:24px;font-size:12px;font-weight:600}.piano-toggle input{accent-color:var(--accent)}
