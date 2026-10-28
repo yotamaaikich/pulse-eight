@@ -1,0 +1,597 @@
+[
+  {
+    "id": "monitoring",
+    "video": "kbNdx0yqbZE",
+    "sourceSha256": "d7b12388e72e8c1c281b154a01f169509d50db49999869d5de9df454888adbaa",
+    "notes": 1192,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 524,
+    "additionalStableVocal": 2,
+    "harmonicEstimates": 665,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 79,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "tetoris",
+    "video": "Soy4jGPHr3g",
+    "sourceSha256": "2d940c36574de0d6eb34a5d5bebd51a0612ac7e9ecb0de078d3a4fc5e0b151ec",
+    "notes": 896,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 896,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "mesmerizer",
+    "video": "19y8YTbvri8",
+    "sourceSha256": "71d79d859c5ffd86e67349a15e349dcc7ece5818366e55b2acf29c5789d2864f",
+    "notes": 1290,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1290,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "override",
+    "video": "LLjfal8jCYI",
+    "sourceSha256": "3471e4137b3ea1574f2f0ac00b375b2a8a8cd94e40301f31524e3cab6d800fd2",
+    "notes": 938,
+    "midiRange": [
+      49,
+      83
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 938,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "telepathy",
+    "video": "c56TpxfO9q0",
+    "sourceSha256": "896dcc4baf9bcc32e41558372ca0e702259426b8d552a994a57d253ecebe6943",
+    "notes": 878,
+    "midiRange": [
+      48,
+      86
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 878,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "mimukauwa",
+    "video": "Ljr2wMSBHqU",
+    "sourceSha256": "14b5a190ce5db1f537d3bc2f4d8bfd64348bcec264f7aa3895572a53d799ba1f",
+    "notes": 967,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 967,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "daikirai",
+    "video": "klIxS5o65C4",
+    "sourceSha256": "a7f01c2651fb420f1da065390957aaeb72e3631c90f2aa029a03b81d5b081f7b",
+    "notes": 990,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 990,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "rinne",
+    "video": "3iUgKH8c7p4",
+    "sourceSha256": "606dad3915ff0781e48f2de5b743bd42dc9720beefb3c5b790913bd1c7f8b672",
+    "notes": 802,
+    "midiRange": [
+      48,
+      85
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 802,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "mothergoose",
+    "video": "P_CSdxSGfaA",
+    "sourceSha256": "8eb269d97a50f669a366a7623c08abef96f00f29e30a9b7f06f2bb3d222dd00a",
+    "notes": 1600,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1600,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "heat",
+    "video": "b2NTglk9tvI",
+    "sourceSha256": "8215383eb0f21214caaa6f191be4380934675399f1c6ba8eeb94a60289d9caad",
+    "notes": 1343,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 11,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1343,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "connect",
+    "video": "eNvD-D6Gw6c",
+    "sourceSha256": "4a1701eb3a81fd47c9b175632f540442c8a995a45b8af448ad85e91c108a2187",
+    "notes": 1495,
+    "midiRange": [
+      48,
+      84
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1495,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "magia",
+    "video": "ks8WPvlQpbg",
+    "sourceSha256": "72f7bbfe312cc295fb25e2c55bbbf5453413c24c8216873276252d7228564ea1",
+    "notes": 2109,
+    "midiRange": [
+      48,
+      84
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 2108,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 130,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "luminous",
+    "video": "Rlp_4FQESts",
+    "sourceSha256": "0a8dbbe5f0c05f2f4292e65c18498aa8e6e0e1ab8baf76318a6b8e2d78b0165a",
+    "notes": 1359,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1359,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "colorful",
+    "video": "xV0ccSNorlM",
+    "sourceSha256": "a5b9a314157263d3625909ffa46a1c52957ea05224091b3c41b7e57020500cd4",
+    "notes": 1519,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1518,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 340,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "silvergarden",
+    "video": "kFhhLSbuXvI",
+    "sourceSha256": "a85d19c2574e4a40dbe155aaeace949008f85c6a426d85e5f1eaf7321734cd36",
+    "notes": 1581,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1581,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "freedomdive",
+    "video": "k-3y2LVF_SE",
+    "sourceSha256": "d1b449642da8e9ae528010d4837658a213ac72dc05d628e261241dcd0a563f48",
+    "notes": 1980,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1980,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "bluezenith",
+    "video": "vatcanQQJvQ",
+    "sourceSha256": "78d1ce3256e16eb07d4b7b35b198ce0ddfee60a7ed409b9f0ef0e604f6591df4",
+    "notes": 2247,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 11,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 2246,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 269,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "ghost",
+    "video": "OjbjZcBctuM",
+    "sourceSha256": "b7012a450947cb1edc5d43ceeb16680a6414e542ba8b7462be429f80a8ce8751",
+    "notes": 2359,
+    "midiRange": [
+      48,
+      86
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 2359,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "crystallized",
+    "video": "dkYHgxfQZBA",
+    "sourceSha256": "21d6e83816ce653f8ee20790dafe446c51085e12bb0e820ebbf6ae4bfedd921c",
+    "notes": 1702,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1700,
+    "carriedSourceHarmony": 2,
+    "maximumHarmonyCarryMs": 170,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "exit",
+    "video": "QsuAKlNe_rI",
+    "sourceSha256": "f78689869571e706298b8d5c32fbaa507c4ed70d238a2345226f926e4cfaf939",
+    "notes": 2421,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 2421,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "kitasaitama",
+    "video": "TABWSPDMXaE",
+    "sourceSha256": "5d1f300cd92c6d9c25452c33493bdc8ab95a9e1d8440b5391f707438dd124b4b",
+    "notes": 905,
+    "midiRange": [
+      48,
+      86
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 904,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 200,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "madasaitama",
+    "video": "j4LWHsmAufw",
+    "sourceSha256": "edffe61d73ab597ca3439b6b299d20303e097ba129fc296042b48160cc3b49ff",
+    "notes": 918,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 917,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 189,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "yuugen",
+    "video": "0xOwiA2gCtw",
+    "sourceSha256": "3f12e9ca492bd58a5c06ece327df1dcfded98014a35aaf5adc81017452edd7de",
+    "notes": 830,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 11,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 830,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "donkama",
+    "video": "LEoxASk_V2g",
+    "sourceSha256": "878f352abc5d14b1c3b7cadf3dc0559bfb3518e17be568e0c372f93c95143fc9",
+    "notes": 938,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 938,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "angeldream",
+    "video": "qcfupB_h59M",
+    "sourceSha256": "d850fc45e08abea1e5342e2b8264059bbff54f3399d40bdd548b096c5ee14c35",
+    "notes": 827,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 827,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "disappearance",
+    "video": "VWVtIg5cdDU",
+    "sourceSha256": "1d9f7d99e973c2c1d136ff6f8a58617f2120a99f9f318abc4bc1958d137bef39",
+    "notes": 2059,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 2059,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "intensevoice",
+    "video": "MFEaIgMkR_0",
+    "sourceSha256": "d2abf1cd9179a8fdf1861deeea998a121024b8321efa833dd5787733221630b3",
+    "notes": 1819,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1816,
+    "carriedSourceHarmony": 3,
+    "maximumHarmonyCarryMs": 210,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "machinegun",
+    "video": "UgZFpO_Y6qo",
+    "sourceSha256": "ceb79b41b99bd1e34b45f7d9101187bf2797a1422f3cf357ec74a25100df2aab",
+    "notes": 987,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 987,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "jinsei",
+    "video": "wpVa0cnEeIw",
+    "sourceSha256": "256416259a7f4adbb5f74ca7e3681e39713f2eb192a2aacdc7d0050e0a758dd8",
+    "notes": 1188,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1185,
+    "carriedSourceHarmony": 3,
+    "maximumHarmonyCarryMs": 380,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "yaminabe",
+    "video": "NFT6GMPeYJI",
+    "sourceSha256": "ba8c1acf90a5d1bb64013a8563c42443e5bd772aefad5b301e07bb9af9e609f3",
+    "notes": 906,
+    "midiRange": [
+      48,
+      85
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 906,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "whatsuppop",
+    "video": "pS31mdpYuh4",
+    "sourceSha256": "d7301928ab01efeac24a250f7321c3448c14da3a24284441146ca539199eac96",
+    "notes": 1264,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1263,
+    "carriedSourceHarmony": 1,
+    "maximumHarmonyCarryMs": 100,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "ogyarinizer",
+    "video": "1AliuyQ3II4",
+    "sourceSha256": "56e505004492b85af62730df0dac5bf38ba081972e937334f8202aae86fbd099",
+    "notes": 904,
+    "midiRange": [
+      48,
+      86
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 904,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "daijobu",
+    "video": "2AD1jTs516E",
+    "sourceSha256": "95e80fde412640a398931c231468e1dd2f319f52699109fe565ee0d33e4a8aa4",
+    "notes": 1030,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1030,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "kusaregedou",
+    "video": "sHnvEsNU1X0",
+    "sourceSha256": "73ea08940be5330ae5e260402ad03263321610a6295a4ec9c64e003fe37d2cf9",
+    "notes": 1283,
+    "midiRange": [
+      48,
+      88
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1283,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "amara",
+    "video": "p6snD1650ck",
+    "sourceSha256": "39f57ba0515d9f0a8f6c5fd73ce43f3d7b145605f0243d85739cdca81e91ed2f",
+    "notes": 1318,
+    "midiRange": [
+      48,
+      87
+    ],
+    "pitchClasses": 12,
+    "confirmedMonitoring": 0,
+    "additionalStableVocal": 0,
+    "harmonicEstimates": 1318,
+    "carriedSourceHarmony": 0,
+    "maximumHarmonyCarryMs": 0,
+    "auditoryPlaytest": false
+  }
+]

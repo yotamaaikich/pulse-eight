@@ -1,0 +1,252 @@
+[
+  {
+    "name": "monitoring / formerly unpitched",
+    "sourceMs": 2900,
+    "request": {
+      "midi": 51,
+      "hold": 0,
+      "float": false,
+      "velocity": 0.75
+    },
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.15950967371463776,
+      "rms": 0.019837765465646334,
+      "bodyRms150to400Ms": 0,
+      "firstMs": 10.52154195011338,
+      "lastMs": 105.51020408163265,
+      "sha256": "19bf90008a9e6c2e8e00a9a4e8b4e2e89f3cd95c3e0af5708d0b5a2a3a76c91d"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.08712390065193176,
+      "rms": 0.024745620582479363,
+      "bodyRms150to400Ms": 0.02570971404603988,
+      "firstMs": 10.748299319727892,
+      "lastMs": 460.3628117913832,
+      "sha256": "c15d7f36c3bb3e2f1dfec62ef1e363730d14df0a2167b0914b25e4260c3ccadd"
+    }
+  },
+  {
+    "name": "tetoris / formerly unpitched",
+    "sourceMs": 1453,
+    "request": {
+      "midi": 49,
+      "hold": 0,
+      "float": false,
+      "velocity": 0.75
+    },
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.15950967371463776,
+      "rms": 0.019837765465646334,
+      "bodyRms150to400Ms": 0,
+      "firstMs": 10.52154195011338,
+      "lastMs": 105.51020408163265,
+      "sha256": "01b52663884da04f57de6d20d70a72dfc32dbd47c668f7d6aad0dd2de3b77f8d"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.13162364065647125,
+      "rms": 0.039447758252043844,
+      "bodyRms150to400Ms": 0.03369075864280472,
+      "firstMs": 9.229024943310657,
+      "lastMs": 455.578231292517,
+      "sha256": "4d911cf73d31f72c5c6f93d3ef2007d529e36c01be6ca129280f4e9d0e4fab6c"
+    }
+  },
+  {
+    "name": "mesmerizer / formerly unpitched",
+    "sourceMs": 1334,
+    "request": {
+      "midi": 68,
+      "hold": 0,
+      "float": false,
+      "velocity": 0.75
+    },
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.15950967371463776,
+      "rms": 0.019837765465646334,
+      "bodyRms150to400Ms": 5.830103911947804e-14,
+      "firstMs": 10.52154195011338,
+      "lastMs": 105.51020408163265,
+      "sha256": "dc6fec000689cf9d63d0abe6c74f5ae3405da03ca39029eccefe54680a293111"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.1355784684419632,
+      "rms": 0.038186920203005605,
+      "bodyRms150to400Ms": 0.037454775570079875,
+      "firstMs": 9.433106575963718,
+      "lastMs": 458.93424036281175,
+      "sha256": "2ec49d157684600bfd76216da27d7fc021decd87924c8969ccad8b4056caf94e"
+    }
+  },
+  {
+    "name": "piano 69",
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.1788894534111023,
+      "rms": 0.04962253795454383,
+      "bodyRms150to400Ms": 0.04816051636688751,
+      "firstMs": 8.594104308390023,
+      "lastMs": 458.66213151927434,
+      "sha256": "4c9c197c1b39267c13e49d02735ac4e23b5988ade69231ce5a0a4259cde190b3"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.1788894534111023,
+      "rms": 0.04962253795454383,
+      "bodyRms150to400Ms": 0.04816051636688751,
+      "firstMs": 8.594104308390023,
+      "lastMs": 458.66213151927434,
+      "sha256": "4c9c197c1b39267c13e49d02735ac4e23b5988ade69231ce5a0a4259cde190b3"
+    }
+  },
+  {
+    "name": "piano 85",
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.10367442667484283,
+      "rms": 0.030795882711816835,
+      "bodyRms150to400Ms": 0.019090378991432757,
+      "firstMs": 7.755102040816326,
+      "lastMs": 449.2517006802721,
+      "sha256": "abe8186366562968f5b2edeb6cd8c878432bd2c928aa39319f6f418a01910118"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.10367442667484283,
+      "rms": 0.030795882711816835,
+      "bodyRms150to400Ms": 0.019090378991432757,
+      "firstMs": 7.755102040816326,
+      "lastMs": 449.2517006802721,
+      "sha256": "abe8186366562968f5b2edeb6cd8c878432bd2c928aa39319f6f418a01910118"
+    }
+  },
+  {
+    "name": "piano 69 / MP3 unavailable",
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.15590903162956238,
+      "rms": 0.03999724983804809,
+      "bodyRms150to400Ms": 0.029576251232884796,
+      "firstMs": 8.571428571428571,
+      "lastMs": 260.24943310657596,
+      "sha256": "9232f4ab3afc2a647036a4cec2cce5392190578d7b686fcd2e80a98265e7e6a3"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.15590903162956238,
+      "rms": 0.043277331422115026,
+      "bodyRms150to400Ms": 0.03729089613028194,
+      "firstMs": 8.571428571428571,
+      "lastMs": 457.00680272108843,
+      "sha256": "997ea8425ba348fd214937fde203bfb59d99994f62d771cf370450193c21fbe3"
+    }
+  },
+  {
+    "name": "piano 85 / MP3 unavailable",
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.12474200874567032,
+      "rms": 0.0200784700558567,
+      "bodyRms150to400Ms": 0,
+      "firstMs": 7.891156462585034,
+      "lastMs": 109.97732426303854,
+      "sha256": "0d145e905cf4ac7cdc0024df925b80b9c2494c99403e225733edd465937fc5d5"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.12474200874567032,
+      "rms": 0.023147880045697077,
+      "bodyRms150to400Ms": 0.00913547205033892,
+      "firstMs": 7.891156462585034,
+      "lastMs": 449.8866213151927,
+      "sha256": "2b4dbf77559875dd2c78d3df6ef373cd729e3ca642bb7ea908f8a123ef281017"
+    }
+  },
+  {
+    "name": "chord",
+    "after": {
+      "started": [
+        true,
+        true
+      ],
+      "peak": 0.14901645481586456,
+      "rms": 0.03642135524974089,
+      "bodyRms150to400Ms": 0.03666324814572457,
+      "firstMs": 9.682539682539682,
+      "lastMs": 457.7324263038549,
+      "sha256": "98cb50848ef79ecc9fd3321a268482cd4ca2e100fa50d43f379a552040902d92"
+    }
+  },
+  {
+    "name": "long note",
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.18410718441009521,
+      "rms": 0.06121018551459869,
+      "bodyRms150to400Ms": 0.05485081168046817,
+      "firstMs": 9.070294784580499,
+      "lastMs": 1946.5532879818593,
+      "sha256": "24284a8995a8bae14becaa628b39f38a659db329cb5cca4c6853aa671c6eadd1"
+    }
+  },
+  {
+    "name": "FLOAT",
+    "before": {
+      "started": [
+        true
+      ],
+      "peak": 0.028113748878240585,
+      "rms": 0.003422475329973948,
+      "bodyRms150to400Ms": 0.00001442419174406329,
+      "firstMs": 6.235827664399093,
+      "lastMs": 151.7233560090703,
+      "sha256": "fb67dad310c5ba1959e33c51785202a79dcabd6cf191901e660fdbbccba3debf"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "peak": 0.028113748878240585,
+      "rms": 0.0034224753233404754,
+      "bodyRms150to400Ms": 0.00001442419174406329,
+      "firstMs": 6.235827664399093,
+      "lastMs": 151.7233560090703,
+      "sha256": "d656a6711846c4bc776aec2a698e2115e5064bfaf00845e26b00a283681572aa"
+    }
+  }
+]

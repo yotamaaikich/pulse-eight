@@ -57,7 +57,7 @@ test('bundled Monitoring pitches only decorate their own analyzed attack and pre
  }
  const profile={sourceKind:MONITORING_PIANO_PROFILE.sourceKind,offsetMs:0,voices:[[[1000,1600,85,12]]]};
  const notes=pianoTrialChart(SONGS[0],[{t:1,lane:0},{t:1.2,lane:1}],profile);
- assert.equal(notes[0].soundMidi,85);assert.equal(notes[1].soundMidi,undefined);
+ assert.equal(notes[0].soundMidi,85);assert.ok(Number.isFinite(notes[1].soundMidi));assert.notEqual(notes[1].soundOrigin,'confirmed-vocal');
  assert.equal(MONITORING_VOCAL_ANALYSIS.rawAudioPublished,false);assert.equal(MONITORING_VOCAL_ANALYSIS.lyricTextPublished,false);
  assert.equal(MONITORING_VOCAL_ANALYSIS.pitchedAttacks,MONITORING_PIANO_PROFILE.voices[0].length);
 });

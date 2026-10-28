@@ -1,5 +1,5 @@
 // Piano on physical note heads; a separate chime on FLOAT completion.
-// Missing pitch data uses a short recorded hammer attack, never an invented tune.
+// Every library head has a source-derived piano pitch. No noise/strike substitute.
 export function keySoundRequests(notifications,float=false){
  const requests=[];
  for(const event of notifications){
@@ -7,8 +7,8 @@ export function keySoundRequests(notifications,float=false){
   const attack=float?event.kind==='judge'&&n.flick:
    event.kind==='holdstart'||event.kind==='flickstart'||event.kind==='judge'&&!n.end&&!n.flick;
   if(!attack)continue;
-  const pitched=Number.isFinite(n.soundMidi);
-  requests.push({midi:pitched?n.soundMidi:62,hold:n.end?n.end-n.t:0,float,percussive:!pitched&&!float});
+  if(!Number.isFinite(n.soundMidi))continue;
+  requests.push({midi:n.soundMidi,hold:n.end?n.end-n.t:0,float,velocity:n.soundVelocity??1});
  }
  return requests;
 }

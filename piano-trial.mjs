@@ -1,6 +1,7 @@
+import {applySourcePiano} from './source-piano.mjs?v=source-piano-15';
 export const PIANO_TRIAL_SONG='monitoring';
 // Follow actual pitched notes in the reference score, never a generated chord cycle.
-// Nearby endings/attacks tolerate the simplified chart's rounding. Longer rests stay silent.
+// Longer score rests do not borrow distant imported notes; source harmony stays available.
 export function scoreNoteAt(voice,timeMs,tolerance=75){
   let low=0,high=voice.length;
   while(low<high){const mid=(low+high)>>1;if(voice[mid][0]<=timeMs)low=mid+1;else high=mid;}
@@ -12,9 +13,10 @@ export function scoreNoteAt(voice,timeMs,tolerance=75){
 }
 function playablePitch(midi){while(midi<48)midi+=12;while(midi>84)midi-=12;return midi;}
 export function pianoTrialChart(song,chart,profile=null){
-  if(!profile)return chart;
+  const result=applySourcePiano(song,chart);
+  if(!profile)return result;
   const builtIn=profile.sourceKind==='monitoring-vocal-v8',pitchFor=midi=>builtIn?midi:playablePitch(midi);
-  const result=chart.map(n=>{const copy={...n};for(const key of ['soundMidi','soundOriginalMidi','soundSourceStart','soundSourceEnd','soundVoice'])delete copy[key];return copy;}),groups=new Map();
+  const groups=new Map();
   for(const n of result)if(!n.assist){if(!groups.has(n.t))groups.set(n.t,[]);groups.get(n.t).push(n);}
   for(const [time,group]of groups){
     const at=Math.round(time*1000)-(profile.offsetMs||0),used=new Set();
@@ -23,7 +25,7 @@ export function pianoTrialChart(song,chart,profile=null){
     for(const n of [...group].sort((a,b)=>b.lane-a.lane)){
       const candidate=candidates.find(x=>!used.has(pitchFor(x.note[2])));if(!candidate)continue;
       const [start,end,midi]=candidate.note,soundMidi=pitchFor(midi);used.add(soundMidi);
-      Object.assign(n,{soundMidi,soundOriginalMidi:midi,soundSourceStart:start,soundSourceEnd:end,soundVoice:candidate.index});
+      Object.assign(n,{soundMidi,soundOriginalMidi:midi,soundSourceStart:start,soundSourceEnd:end,soundVoice:candidate.index,soundOrigin:builtIn?'confirmed-vocal':'imported-score',soundVelocity:1});
     }
   }
   return result;

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPianoSound} from '../piano-sound.mjs';
 import {pianoTrialChart,scoreNoteAt} from '../piano-trial.mjs';
-import {createKeyStrike} from '../piano-fallback.mjs';
+import {createInlinePiano} from '../piano-fallback.mjs';
 const TEST_SCORE={offsetMs:0,voices:[[[1000,1500,69,12],[2000,2500,65,12]],[[1000,1500,50,12],[2000,2500,48,12]]]};
 import {SONGS,makeChart,scoreChartReplay} from '../engine.mjs';
 function fixture({fail=false,failSample=null}={}){
@@ -26,19 +26,19 @@ test('chords attenuate the combined bus and OFF/zero volume prevent new sampled 
  f.piano.configure({enabled:true,volume:0});assert.equal(f.piano.play({midi:62}),false);assert.equal(f.gains[0].gain.events.at(-1)[1],0);
 });
 test('loading or failed MP3s use the inline recorded piano immediately without queuing a late key-down',async()=>{
- const f=fixture();assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources.length,1);assert.equal(f.sources[0].starts[0][0],12);assert.equal(f.sources[0].buffer.duration,.42);
+ const f=fixture();assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources.length,1);assert.equal(f.sources[0].starts[0][0],12);assert.equal(f.sources[0].buffer.duration,3.2);
  await f.piano.prepare();assert.equal(f.sources.length,1);assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources[1].buffer.name,'C4.mp3');
- const broken=fixture({fail:true});assert.equal(await broken.piano.prepare(),true);assert.equal(broken.piano.play({midi:62}),true);assert.equal(broken.sources[0].buffer.duration,.42);assert.equal(broken.oscillators.length,0);
+ const broken=fixture({fail:true});assert.equal(await broken.piano.prepare(),true);assert.equal(broken.piano.play({midi:62}),true);assert.equal(broken.sources[0].buffer.duration,3.2);assert.equal(broken.oscillators.length,0);
 });
 test('score pitches and octaves come from the imported timed notes, independently of key lane',()=>{
  const raw=[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}],chart=pianoTrialChart(SONGS[0],raw,TEST_SCORE);
  assert.deepEqual(raw,[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}]);assert.equal(chart[2].soundMidi,69);assert.equal(chart[0].soundMidi,50);assert.equal(chart[1].soundMidi,65);
- assert.equal(pianoTrialChart(SONGS[0],raw),raw);for(const song of SONGS){const mapped=pianoTrialChart(song,raw,TEST_SCORE);assert.equal(mapped[2].soundMidi,69,song.id);assert.equal(mapped[1].soundMidi,65,song.id);assert.equal(pianoTrialChart(song,raw),raw);}
+ assert.ok(pianoTrialChart(SONGS[0],raw).every(n=>Number.isFinite(n.soundMidi)));for(const song of SONGS){const mapped=pianoTrialChart(song,raw,TEST_SCORE);assert.equal(mapped[2].soundMidi,69,song.id);assert.equal(mapped[1].soundMidi,65,song.id);assert.ok(pianoTrialChart(song,raw).every(n=>Number.isFinite(n.soundMidi)));}
  const events=[[1000,0,1],[1000,4,1],[1020,0,0],[1020,4,0],[2000,0,1],[2020,0,0]];assert.deepEqual(scoreChartReplay(chart,3,events),scoreChartReplay(raw,3,events));
 });
 test('score matching respects rests instead of looping harmony or borrowing distant notes',()=>{
  const voice=[[100,200,60,12],[400,700,65,12]];assert.equal(scoreNoteAt(voice,150),voice[0]);assert.equal(scoreNoteAt(voice,240),voice[0]);assert.equal(scoreNoteAt(voice,300),null);assert.equal(scoreNoteAt(voice,350),voice[1]);assert.equal(scoreNoteAt(voice,800),null);
- assert.equal(pianoTrialChart(SONGS[0],[{t:180,lane:0}],TEST_SCORE)[0].soundMidi,undefined);
+ const fallback=pianoTrialChart(SONGS[0],[{t:180,lane:0}],TEST_SCORE)[0];assert.ok(Number.isFinite(fallback.soundMidi));assert.notEqual(fallback.soundOrigin,'imported-score');
 });
 
 test('sample playback preserves a source pitch above C6 instead of clipping it to C6',async()=>{const f=fixture();await f.piano.prepare();f.piano.play({midi:89});assert.equal(f.sources[0].playbackRate.events[0][1],2**((89-78)/12));});
@@ -50,9 +50,11 @@ test('quiet recorded attacks are normalized before applying the dedicated piano 
  assert.ok(Math.abs(.25*attack[1]*master-.153)<1e-8);
 });
 
-test('unpitched key feedback is a short recorded attack, not a sustained fixed note',async()=>{
- const f=fixture();await f.piano.prepare();f.piano.play({midi:62,hold:3,percussive:true});
- assert.equal(f.sources[0].buffer.duration,.12);assert.equal(f.sources[0].playbackRate.events[0][1],1);assert.ok(Math.abs(f.sources[0].stops[0]-12.12)<1e-8);assert.equal(f.oscillators.length,0);
+test('all piano attacks retain half a second of pitched body, with softer inferred accompaniment',async()=>{
+ const f=fixture();await f.piano.prepare();assert.equal(f.piano.play({midi:62,velocity:.75}),true);
+ assert.equal(f.sources[0].buffer.name,'C4.mp3');assert.equal(f.sources[0].stops[0],12.51);assert.equal(f.oscillators.length,0);
+ assert.equal(f.gains.at(-1).gain.events.find(e=>e[0]==='linear')[1],.85/.25*.75);
+ assert.equal(f.piano.play({}),false);
 });
 
 test('one failed sample does not mute the ready piano roots, and only that sample is retried',async()=>{
@@ -68,14 +70,14 @@ test('decaying tails cannot turn dense keyboard passages down below half the con
  assert.ok(f.gains[0].gain.events.at(-1)[1]>=.09);
 });
 
-test('unpitched attacks are normalized after filtering and have audible body without clipping',()=>{
- const f=fixture(),{buffer}=createKeyStrike(f.context),data=buffer.getChannelData(0);let peak=0,sum=0;
- for(let i=0;i<data.length;i++){peak=Math.max(peak,Math.abs(data[i]));if(i<buffer.sampleRate*.08)sum+=data[i]*data[i];}
- const rms=Math.sqrt(sum/Math.round(buffer.sampleRate*.08));
- assert.ok(rms>=.19&&rms<=.21);assert.ok(peak<=.85);assert.ok(buffer.duration<=.12);
+test('inline fallback retains recorded piano body and high notes do not run out after 0.1 seconds',()=>{
+ const f=fixture(),{buffer,normalization}=createInlinePiano(f.context),data=buffer.getChannelData(0);
+ assert.equal(buffer.duration,3.2);assert.ok(buffer.duration/2**((88-60)/12)>.5);
+ let early=0,body=0;for(let i=0;i<data.length;i++){if(i<buffer.sampleRate*.08)early+=data[i]**2;if(i>=buffer.sampleRate*.15&&i<buffer.sampleRate*.4)body+=data[i]**2;}
+ assert.ok(body>early*.1);assert.ok(normalization>1);
 });
 
 test('an interrupted context is resumed before the inline fallback is scheduled',()=>{
- const f=fixture();f.context.state='interrupted';assert.equal(f.piano.play({percussive:true}),true);
+ const f=fixture();f.context.state='interrupted';assert.equal(f.piano.play({midi:65}),true);
  assert.equal(f.context.state,'running');assert.equal(f.resumes,1);assert.equal(f.sources.length,1);
 });

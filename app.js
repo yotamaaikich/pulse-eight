@@ -4,10 +4,11 @@ import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
 import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=luminous-2';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
-import {createPianoSound} from './piano-sound.mjs?v=audible-14';
-import {keySoundRequests} from './key-sound.mjs?v=attack-feedback-13';
+import {createPianoSound} from './piano-sound.mjs?v=source-piano-15';
+import {pianoFeedbackAt} from './source-piano.mjs?v=source-piano-15';
+import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
-import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=library-review-11';
+import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=source-piano-15';
 import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=arrangement-12';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=arrangement-12';
@@ -67,10 +68,10 @@ document.addEventListener('fullscreenchange',syncExpandedControls);
 function renderKeyGuide(){for(let hand=0;hand<2;hand++){$(hand?'rightKeys':'leftKeys').innerHTML=prefs.keys.slice(hand*4,hand*4+4).map(code=>`<span class="guide-key"><kbd data-key="${code}">${label(code)}</kbd></span>`).join('');}$('mappingKeys').innerHTML=prefs.keys.map((code,i)=>`<kbd class="${remapping&&i===remapKeys.length?'current':''}">${remapping?(remapKeys[i]?label(remapKeys[i]):'·'):label(code)}</kbd>`).join('');}
 function renderPianoStatus(){
   const profile=currentPianoProfile(),on=prefs.pianoOn&&prefs.pianoLevel>0;
-  $('pianoImportShortcut').hidden=!!profile;
-  $('pianoTrialStatus').textContent=(on?'鍵盤音 ON · '+prefs.pianoLevel+'%':'鍵盤音 OFF')+(profile?' · '+profile.title:' · 打鍵音（音程データ未登録）');
+  $('pianoImportShortcut').hidden=true;
+  $('pianoTrialStatus').textContent=(on?'鍵盤音 ON · '+prefs.pianoLevel+'%':'鍵盤音 OFF')+(profile?' · '+profile.title:' · 曲別ピアノ（音声からの推定）');
 }
-function syncSettings(){renderPianoStatus();const pianoProfile=currentPianoProfile();$('referencePractice').checked=prefs.referencePractice!==false;$('referencePracticeSetting').hidden=true;$('pianoScoreDetails').hidden=song().id==='monitoring';for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('testStrike').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'音程データ未読込（試し弾きは利用できます）';}
+function syncSettings(){renderPianoStatus();const pianoProfile=currentPianoProfile();$('referencePractice').checked=prefs.referencePractice!==false;$('referencePracticeSetting').hidden=true;$('pianoScoreDetails').hidden=song().id==='monitoring';for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('testSongPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'曲別ピアノ読込済み · 公式音声からの音高推定';}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
 function visibleSongs(){const query=librarySearch.trim().toLocaleLowerCase('ja');return orderedSongs(SONGS,libraryPack,difficulty,librarySort).filter(({s})=>!query||[s.title,s.artist,s.vocal].some(value=>String(value??'').toLocaleLowerCase('ja').includes(query)));}
 function renderSongs(){
@@ -232,7 +233,7 @@ function syncHeldKeys(){
 function playAttack(list,float=false){
   let started=0;for(const request of keySoundRequests(list,float))if(pianoSound.play(request))started++;return started;
 }
-function hit(lane){flashes[lane]=performance.now();if(mode!=='running')return;const t=inputTime(),list=recordEvent(t,lane,1)?session.press(t,lane):[];if(!playAttack(list))pianoSound.play({percussive:true});applyNotifications(list);}
+function hit(lane){flashes[lane]=performance.now();if(mode!=='running')return;const t=inputTime(),list=recordEvent(t,lane,1)?session.press(t,lane):[];if(!playAttack(list)){const feedback=pianoFeedbackAt(song(),t,lane);if(feedback)pianoSound.play(feedback);}applyNotifications(list);}
 function releaseLane(lane,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,lane,0))applyNotifications(session.release(t,lane));}
 function spaceInput(down,force=false){if(mode!=='running'&&!force)return;const t=inputTime();if(recordEvent(t,0,down?4:5))applyNotifications(session[down?'pressSpace':'releaseSpace'](t));}
 function hitUpper(lane){if(mode!=='running')return;const t=inputTime();if(recordEvent(t,lane,2)){const list=session.pressFlick(t,lane);playAttack(list,true);applyNotifications(list);}}
@@ -358,7 +359,7 @@ $('pianoScoreFile').onchange=async()=>{const file=$('pianoScoreFile').files?.[0]
 $('referencePractice').onchange=()=>{if(mode!=='idle'&&mode!=='results'){syncSettings();toast('曲を終了してから切り替えてください。');return;}prefs.referencePractice=$('referencePractice').checked;savePrefs();selectSong(selected);};
 $('pianoOn').onchange=()=>{prefs.pianoOn=$('pianoOn').checked;savePrefs();pianoSound.warm();};
 $('testPiano').onclick=()=>{configurePiano();for(const midi of [62,65,69])pianoSound.play({midi});};
-$('testStrike').onclick=()=>{configurePiano();pianoSound.play({percussive:true});};
+$('testSongPiano').onclick=()=>{configurePiano();const feedback=pianoFeedbackAt(song(),Math.max(1,clock));if(feedback)pianoSound.play(feedback);};
 $('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();applyVolume();toast('設定を初期値に戻しました');};
 $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('remapHint').textContent='左から順に8つのキーを押してください。Escでキャンセル。';};
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
