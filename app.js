@@ -42,7 +42,7 @@ const bests=read('pulse-bests',{});
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
 let referenceRun=false;
 let life=MAX_LIFE;
-let libraryPack='all',spaceHeld=false;
+let libraryPack='all',librarySearch='',spaceHeld=false;
 let librarySort=read('pulse-sort','library');
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
@@ -70,17 +70,22 @@ function renderPianoStatus(){
 }
 function syncSettings(){renderPianoStatus();const pianoProfile=currentPianoProfile();$('referencePractice').checked=prefs.referencePractice!==false;$('referencePracticeSetting').hidden=true;$('pianoScoreDetails').hidden=song().id==='monitoring';for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'音程データ未読込（試し弾きは利用できます）';}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
+function visibleSongs(){const query=librarySearch.trim().toLocaleLowerCase('ja');return orderedSongs(SONGS,libraryPack,difficulty,librarySort).filter(({s})=>!query||[s.title,s.artist,s.vocal].some(value=>String(value??'').toLocaleLowerCase('ja').includes(query)));}
 function renderSongs(){
-  $('songs').innerHTML=orderedSongs(SONGS,libraryPack,difficulty,librarySort).map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}"><span class="song-art" aria-hidden="true" style="background:${s.color}"></span><span class="song-info"><strong>${s.title}</strong><small>${s.artist} · ${s.pack==='madoka'?'まどマギ':s.pack==='osu'?'osu!定番':s.pack==='taiko'?'太鼓':'ボカロ'}</small></span><span class="song-level"><b>LV.${difficultyMetrics(s,difficulty).level}</b><small>${difficultyMetrics(s,difficulty).count} NOTES</small></span></button>`).join('');
-  $('trackCount').textContent=SONGS.filter(s=>libraryPack==='all'||s.pack===libraryPack).length+' TRACKS';
+  const choices=visibleSongs();
+  $('songs').innerHTML=choices.map(({s,i})=>`<button class="song ${i===selected?'selected':''}" data-song="${i}" aria-pressed="${i===selected}" style="--song-color:${s.color}"><span class="song-art" aria-hidden="true" style="background-color:${s.color}"><img data-jacket src="https://i.ytimg.com/vi/${s.video}/mqdefault.jpg" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span><span class="song-info"><strong>${s.title}</strong><small>${s.artist}</small></span><span class="song-level"><b>LV.${difficultyMetrics(s,difficulty).level}</b><small>${difficultyMetrics(s,difficulty).count} NOTES</small></span></button>`).join('')||'<p class="search-empty">該当する曲がありません。<br>曲名や作者名を変えて検索してください。</p>';
+  $('trackCount').textContent=choices.length+' TRACKS';
+  document.querySelectorAll('[data-jacket]').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;}));
   document.querySelectorAll('[data-pack]').forEach(button=>{button.classList.toggle('active',button.dataset.pack===libraryPack);button.setAttribute('aria-pressed',String(button.dataset.pack===libraryPack));});
   document.querySelectorAll('[data-song]').forEach(b=>b.addEventListener('click',()=>selectSong(Number(b.dataset.song))));
 }
-function moveSong(direction){const choices=orderedSongs(SONGS,libraryPack,difficulty,librarySort).map(({i})=>i),current=choices.indexOf(selected);if(!choices.length)return;selectSong(choices[current<0?(direction>0?0:choices.length-1):(current+direction+choices.length)%choices.length]);}
+function moveSong(direction){const choices=visibleSongs().map(({i})=>i),current=choices.indexOf(selected);if(!choices.length)return;selectSong(choices[current<0?(direction>0?0:choices.length-1):(current+direction+choices.length)%choices.length]);}
 function selectSong(index){
   if(mode!=='idle'){const target=(index+SONGS.length)%SONGS.length;if(target!==selected)requestSelection(target,difficulty);return;}
   if(mode!=='idle')return;const previous=selected;selected=(index+SONGS.length)%SONGS.length;renderSongs();const s=song();
-  syncSettings();$('trackTitle').textContent=s.title;$('trackArtist').textContent=s.artist+' / '+s.vocal;$('bpm').textContent=s.bpm;$('miniArt').style.background=s.color;
+  const list=$('songs'),row=list.querySelector('.song.selected');
+  if(row&&Number.isFinite(row.offsetTop)){const top=row.offsetTop-list.offsetTop;if(top<list.scrollTop)list.scrollTop=top;else if(top+row.offsetHeight>list.scrollTop+list.clientHeight)list.scrollTop=top+row.offsetHeight-list.clientHeight;}
+  syncSettings();$('trackTitle').textContent=s.title;$('trackArtist').textContent=s.artist+' / '+s.vocal;$('bpm').textContent=s.bpm;$('miniArt').style.background=s.color;$('miniArt').style.backgroundImage=`url("https://i.ytimg.com/vi/${s.video}/mqdefault.jpg")`;
   $('originalLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').href='https://www.youtube.com/watch?v='+s.video;$('sheetLink').textContent='譜面の参照音源 ↗';$('chartInfo').textContent=s.chartLabel||'公開採譜を参考にした簡略フレーズ';resetTimer();
   if(ready&&previous!==selected)player.cueVideoById(s.video);updateChartControls();updateBest();loadLeaders();
 }
@@ -359,6 +364,7 @@ $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('re
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
 $('refreshScores').onclick=loadLeaders;
 $('songSort').value=librarySort;$('songSort').onchange=()=>{librarySort=$('songSort').value;write('pulse-sort',librarySort);renderSongs();};
+$('songSearch').oninput=()=>{librarySearch=$('songSearch').value;renderSongs();};
 document.querySelectorAll('[data-pack]').forEach(button=>button.onclick=()=>{libraryPack=button.dataset.pack;renderSongs();});
 $('pauseChange').onclick=()=>requestSelection();$('changeSong').onchange=updateSelectionWarning;$('changeDifficulty').onchange=updateSelectionWarning;$('confirmTrackChange').onclick=confirmSelection;
 $('fullscreenButton').onclick=toggleFullscreen;$('playFullscreen').onclick=toggleFullscreen;
