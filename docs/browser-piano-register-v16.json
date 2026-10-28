@@ -1,0 +1,193 @@
+[
+  {
+    "id": "monitoring",
+    "t": 2.9,
+    "lane": 7,
+    "sourceMs": 2900,
+    "voice": 0,
+    "beforeMidi": 48,
+    "afterMidi": 63,
+    "before": {
+      "midi": 48,
+      "started": true,
+      "rms": 0.04111306544884251,
+      "bass200HzRms": 0.03147544555973997,
+      "bassEnergyFraction": 0.5861166436613697,
+      "peak": 0.13613000512123108,
+      "sha256": "036f9778e8a997638751c92f97a2de9dbaef1f583c51eccc05904ac012d20554"
+    },
+    "after": {
+      "midi": 63,
+      "started": true,
+      "rms": 0.0428797917921945,
+      "bass200HzRms": 0.005431576831192129,
+      "bassEnergyFraction": 0.016045251116699674,
+      "peak": 0.1377589851617813,
+      "sha256": "d1a4fd8971cf425c3de9cd2a8b348e91b3a474671be35c145b8698d1874d178b"
+    }
+  },
+  {
+    "id": "monitoring",
+    "t": 4.267,
+    "lane": 5,
+    "sourceMs": 4267,
+    "voice": 0,
+    "beforeMidi": 67,
+    "afterMidi": 67,
+    "unchanged": true,
+    "before": {
+      "midi": 67,
+      "started": true,
+      "rms": 0.03914252712027006,
+      "bass200HzRms": 0.0022449742202666095,
+      "bassEnergyFraction": 0.003289462911798574,
+      "peak": 0.13702461123466492,
+      "sha256": "5f9097007adae1e18236cdf3d4c55210fde198d69b1bff237534463c2fb5a342"
+    },
+    "after": {
+      "midi": 67,
+      "started": true,
+      "rms": 0.03914252712027006,
+      "bass200HzRms": 0.0022449742202666095,
+      "bassEnergyFraction": 0.003289462911798574,
+      "peak": 0.13702461123466492,
+      "sha256": "5f9097007adae1e18236cdf3d4c55210fde198d69b1bff237534463c2fb5a342"
+    }
+  },
+  {
+    "id": "tetoris",
+    "t": 1.453,
+    "lane": 7,
+    "sourceMs": 1453,
+    "voice": 0,
+    "beforeMidi": 49,
+    "afterMidi": 61,
+    "before": {
+      "midi": 49,
+      "started": true,
+      "rms": 0.03944775825203895,
+      "bass200HzRms": 0.0288135738795821,
+      "bassEnergyFraction": 0.5335186459985449,
+      "peak": 0.13162364065647125,
+      "sha256": "5999fb9cf66a53f9dd3838fab2cbdfc1265efcbea082614343ef4617919b55f1"
+    },
+    "after": {
+      "midi": 61,
+      "started": true,
+      "rms": 0.0330777423969996,
+      "bass200HzRms": 0.004217239566591351,
+      "bassEnergyFraction": 0.01625491951920078,
+      "peak": 0.11036241054534912,
+      "sha256": "fa5342229c71a58e68ce356263008acaf88faa71f24bddbe63c73fa5248a1629"
+    }
+  },
+  {
+    "id": "tetoris",
+    "t": 2.162,
+    "lane": 3,
+    "sourceMs": 2162,
+    "voice": 1,
+    "beforeMidi": 66,
+    "afterMidi": 66,
+    "unchanged": true,
+    "before": {
+      "midi": 66,
+      "started": true,
+      "rms": 0.040099074920452775,
+      "bass200HzRms": 0.0028031484287664825,
+      "bassEnergyFraction": 0.004886787810426502,
+      "peak": 0.13809078931808472,
+      "sha256": "5718a3921e5749d9188b8afca4bd8bbc3b71cfb0e4217b6ed403f27569e63cd0"
+    },
+    "after": {
+      "midi": 66,
+      "started": true,
+      "rms": 0.040099074920452775,
+      "bass200HzRms": 0.0028031484287664825,
+      "bassEnergyFraction": 0.004886787810426502,
+      "peak": 0.13809078931808472,
+      "sha256": "5718a3921e5749d9188b8afca4bd8bbc3b71cfb0e4217b6ed403f27569e63cd0"
+    }
+  },
+  {
+    "id": "mimukauwa",
+    "t": 11.71,
+    "lane": 4,
+    "sourceMs": 11710,
+    "voice": 0,
+    "beforeMidi": 53,
+    "afterMidi": 69,
+    "before": {
+      "midi": 53,
+      "started": true,
+      "rms": 0.023844891975529782,
+      "bass200HzRms": 0.003907410437956874,
+      "bassEnergyFraction": 0.0268526620438387,
+      "peak": 0.08332515507936478,
+      "sha256": "6a78d9ea3a25dd9168c4e42b773839affb00d1e0922002581fa54928d0f53e41"
+    },
+    "after": {
+      "midi": 69,
+      "started": true,
+      "rms": 0.037218154447480126,
+      "bass200HzRms": 0.0014578104231763938,
+      "bassEnergyFraction": 0.001534236938087208,
+      "peak": 0.13416707515716553,
+      "sha256": "96b76edc4f1e8b6820e150e393a7c4644cb4f3b2c093413c0d9a5b05b4148e6e"
+    }
+  },
+  {
+    "id": "magia",
+    "t": 4.157,
+    "lane": 2,
+    "sourceMs": 4157,
+    "voice": 0,
+    "beforeMidi": 50,
+    "afterMidi": 62,
+    "before": {
+      "midi": 50,
+      "started": true,
+      "rms": 0.037838344918911394,
+      "bass200HzRms": 0.026153308844085784,
+      "bassEnergyFraction": 0.47773715765455566,
+      "peak": 0.12685269117355347,
+      "sha256": "6fe46d9fa0a02f3203dfff415f00490400c383d5e0ec59e369400ca47dcb7b72"
+    },
+    "after": {
+      "midi": 62,
+      "started": true,
+      "rms": 0.03223839581608387,
+      "bass200HzRms": 0.003469712374556561,
+      "bassEnergyFraction": 0.011583508018993858,
+      "peak": 0.10811614245176315,
+      "sha256": "0caf979aab0f0ef99fc5a4535b011a63d1e65020a00529820f10cac28bac8a84"
+    }
+  },
+  {
+    "id": "crystallized",
+    "t": 18.674,
+    "lane": 2,
+    "sourceMs": 18674,
+    "voice": 0,
+    "beforeMidi": 52,
+    "afterMidi": 81,
+    "before": {
+      "midi": 52,
+      "started": true,
+      "rms": 0.024300534717973558,
+      "bass200HzRms": 0.004427885000890593,
+      "bassEnergyFraction": 0.033201752354714016,
+      "peak": 0.08533370494842529,
+      "sha256": "0a8aeaff1024de9b5bd9bb383023e76054ec71f3e2221865c01dbfa192762873"
+    },
+    "after": {
+      "midi": 81,
+      "started": true,
+      "rms": 0.02680337310210206,
+      "bass200HzRms": 0.0009439894916295782,
+      "bassEnergyFraction": 0.0012403818880755938,
+      "peak": 0.08120850473642349,
+      "sha256": "4685074d1b35578cce3707013a743adbea30ce7468051e13d6f721b258668dac"
+    }
+  }
+]

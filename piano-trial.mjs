@@ -1,4 +1,4 @@
-import {applySourcePiano} from './source-piano.mjs?v=source-piano-15';
+import {applySourcePiano} from './source-piano.mjs?v=piano-register-16';
 export const PIANO_TRIAL_SONG='monitoring';
 // Follow actual pitched notes in the reference score, never a generated chord cycle.
 // Longer score rests do not borrow distant imported notes; source harmony stays available.

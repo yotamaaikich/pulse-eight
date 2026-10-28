@@ -3,10 +3,21 @@ import assert from 'node:assert/strict';
 import {pianoTrialChart} from '../piano-trial.mjs';
 import {MONITORING_PIANO_PROFILE} from '../monitoring-vocal.mjs';
 import {SONG_PIANO_NOTES} from '../song-piano-data.mjs';
-import {pianoFeedbackAt} from '../source-piano.mjs';
+import {pianoFeedbackAt,arrangedPianoPitch} from '../source-piano.mjs';
 import {chartAttacks} from '../audio-chart.mjs';
 import {keySoundRequests} from '../key-sound.mjs';
 import {SONGS,makeChart,RhythmSession} from '../engine.mjs';
+
+test('estimated bass cannot escape into key feedback; confirmed melodies retain their register',()=>{
+ for(const kind of [0,3])for(let midi=48;midi<=88;midi++){
+  const voiced=arrangedPianoPitch(midi,kind);assert.ok(voiced>=60);assert.equal(voiced%12,midi%12);
+  if(midi>=60)assert.equal(voiced,midi);
+ }
+ assert.equal(arrangedPianoPitch(55,1),55);assert.equal(arrangedPianoPitch(57,2),57);
+ for(const [id,rows]of Object.entries(SONG_PIANO_NOTES))for(const row of rows){
+  if(row[3]!==1&&row[3]!==2){assert.ok(row[1]>=60,id+' bass estimate in main voice');assert.ok(row[2]>=60,id+' bass estimate in chord');}
+ }
+});
 
 test('all source pitch annotations match each song and preserve chart timing and previously confirmed pitches',()=>{
  const locked=new Map(MONITORING_PIANO_PROFILE.voices[0].map(n=>[n[0],n[2]]));

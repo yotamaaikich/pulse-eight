@@ -1,0 +1,859 @@
+{
+  "chartVersion": "piano8-arrangement-v12",
+  "songs": 35,
+  "charts": 105,
+  "heads": 95730,
+  "estimatedBelowC4Before": 41340,
+  "estimatedBelowC4After": 0,
+  "changedHeads": 41370,
+  "sourcePrimaryPreserved": 26996,
+  "sourcePrimaryRepaired": 19848,
+  "secondaryMidHighChanges": 131,
+  "instrumentFilesUnchanged": [
+    "piano-sound.mjs",
+    "piano-fallback.mjs"
+  ],
+  "auditoryPlaytest": false,
+  "perChart": [
+    {
+      "id": "monitoring",
+      "difficulty": 0,
+      "heads": 344,
+      "estimatedBelowC4Before": 70,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 70
+    },
+    {
+      "id": "monitoring",
+      "difficulty": 1,
+      "heads": 674,
+      "estimatedBelowC4Before": 129,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 129
+    },
+    {
+      "id": "monitoring",
+      "difficulty": 2,
+      "heads": 1128,
+      "estimatedBelowC4Before": 231,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 231
+    },
+    {
+      "id": "tetoris",
+      "difficulty": 0,
+      "heads": 332,
+      "estimatedBelowC4Before": 102,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 102
+    },
+    {
+      "id": "tetoris",
+      "difficulty": 1,
+      "heads": 842,
+      "estimatedBelowC4Before": 274,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 276
+    },
+    {
+      "id": "tetoris",
+      "difficulty": 2,
+      "heads": 990,
+      "estimatedBelowC4Before": 327,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 331
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 0,
+      "heads": 380,
+      "estimatedBelowC4Before": 65,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 65
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 1,
+      "heads": 856,
+      "estimatedBelowC4Before": 144,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 144
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 2,
+      "heads": 1128,
+      "estimatedBelowC4Before": 198,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 198
+    },
+    {
+      "id": "override",
+      "difficulty": 0,
+      "heads": 308,
+      "estimatedBelowC4Before": 46,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 46
+    },
+    {
+      "id": "override",
+      "difficulty": 1,
+      "heads": 503,
+      "estimatedBelowC4Before": 71,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 71
+    },
+    {
+      "id": "override",
+      "difficulty": 2,
+      "heads": 1039,
+      "estimatedBelowC4Before": 161,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 161
+    },
+    {
+      "id": "telepathy",
+      "difficulty": 0,
+      "heads": 347,
+      "estimatedBelowC4Before": 171,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 171
+    },
+    {
+      "id": "telepathy",
+      "difficulty": 1,
+      "heads": 579,
+      "estimatedBelowC4Before": 276,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 276
+    },
+    {
+      "id": "telepathy",
+      "difficulty": 2,
+      "heads": 995,
+      "estimatedBelowC4Before": 476,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 476
+    },
+    {
+      "id": "mimukauwa",
+      "difficulty": 0,
+      "heads": 353,
+      "estimatedBelowC4Before": 292,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 292
+    },
+    {
+      "id": "mimukauwa",
+      "difficulty": 1,
+      "heads": 771,
+      "estimatedBelowC4Before": 628,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 629
+    },
+    {
+      "id": "mimukauwa",
+      "difficulty": 2,
+      "heads": 1070,
+      "estimatedBelowC4Before": 852,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 853
+    },
+    {
+      "id": "daikirai",
+      "difficulty": 0,
+      "heads": 319,
+      "estimatedBelowC4Before": 84,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 84
+    },
+    {
+      "id": "daikirai",
+      "difficulty": 1,
+      "heads": 664,
+      "estimatedBelowC4Before": 176,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 178
+    },
+    {
+      "id": "daikirai",
+      "difficulty": 2,
+      "heads": 1086,
+      "estimatedBelowC4Before": 270,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 270
+    },
+    {
+      "id": "rinne",
+      "difficulty": 0,
+      "heads": 251,
+      "estimatedBelowC4Before": 93,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 93
+    },
+    {
+      "id": "rinne",
+      "difficulty": 1,
+      "heads": 610,
+      "estimatedBelowC4Before": 236,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 236
+    },
+    {
+      "id": "rinne",
+      "difficulty": 2,
+      "heads": 798,
+      "estimatedBelowC4Before": 323,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 323
+    },
+    {
+      "id": "mothergoose",
+      "difficulty": 0,
+      "heads": 533,
+      "estimatedBelowC4Before": 294,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 294
+    },
+    {
+      "id": "mothergoose",
+      "difficulty": 1,
+      "heads": 1091,
+      "estimatedBelowC4Before": 605,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 606
+    },
+    {
+      "id": "mothergoose",
+      "difficulty": 2,
+      "heads": 1780,
+      "estimatedBelowC4Before": 991,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 993
+    },
+    {
+      "id": "heat",
+      "difficulty": 0,
+      "heads": 619,
+      "estimatedBelowC4Before": 234,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 234
+    },
+    {
+      "id": "heat",
+      "difficulty": 1,
+      "heads": 1146,
+      "estimatedBelowC4Before": 432,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 432
+    },
+    {
+      "id": "heat",
+      "difficulty": 2,
+      "heads": 1549,
+      "estimatedBelowC4Before": 544,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 544
+    },
+    {
+      "id": "connect",
+      "difficulty": 0,
+      "heads": 604,
+      "estimatedBelowC4Before": 320,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 320
+    },
+    {
+      "id": "connect",
+      "difficulty": 1,
+      "heads": 1396,
+      "estimatedBelowC4Before": 707,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 707
+    },
+    {
+      "id": "connect",
+      "difficulty": 2,
+      "heads": 1714,
+      "estimatedBelowC4Before": 859,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 859
+    },
+    {
+      "id": "magia",
+      "difficulty": 0,
+      "heads": 595,
+      "estimatedBelowC4Before": 386,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 386
+    },
+    {
+      "id": "magia",
+      "difficulty": 1,
+      "heads": 1424,
+      "estimatedBelowC4Before": 911,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 911
+    },
+    {
+      "id": "magia",
+      "difficulty": 2,
+      "heads": 2216,
+      "estimatedBelowC4Before": 1386,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 1388
+    },
+    {
+      "id": "luminous",
+      "difficulty": 0,
+      "heads": 521,
+      "estimatedBelowC4Before": 169,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 169
+    },
+    {
+      "id": "luminous",
+      "difficulty": 1,
+      "heads": 1207,
+      "estimatedBelowC4Before": 393,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 394
+    },
+    {
+      "id": "luminous",
+      "difficulty": 2,
+      "heads": 1542,
+      "estimatedBelowC4Before": 515,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 516
+    },
+    {
+      "id": "colorful",
+      "difficulty": 0,
+      "heads": 608,
+      "estimatedBelowC4Before": 208,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 208
+    },
+    {
+      "id": "colorful",
+      "difficulty": 1,
+      "heads": 1340,
+      "estimatedBelowC4Before": 462,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 462
+    },
+    {
+      "id": "colorful",
+      "difficulty": 2,
+      "heads": 1735,
+      "estimatedBelowC4Before": 619,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 619
+    },
+    {
+      "id": "silvergarden",
+      "difficulty": 0,
+      "heads": 634,
+      "estimatedBelowC4Before": 278,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 278
+    },
+    {
+      "id": "silvergarden",
+      "difficulty": 1,
+      "heads": 1404,
+      "estimatedBelowC4Before": 603,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 603
+    },
+    {
+      "id": "silvergarden",
+      "difficulty": 2,
+      "heads": 1792,
+      "estimatedBelowC4Before": 777,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 777
+    },
+    {
+      "id": "freedomdive",
+      "difficulty": 0,
+      "heads": 448,
+      "estimatedBelowC4Before": 250,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 250
+    },
+    {
+      "id": "freedomdive",
+      "difficulty": 1,
+      "heads": 1093,
+      "estimatedBelowC4Before": 643,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 643
+    },
+    {
+      "id": "freedomdive",
+      "difficulty": 2,
+      "heads": 2101,
+      "estimatedBelowC4Before": 1087,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 1087
+    },
+    {
+      "id": "bluezenith",
+      "difficulty": 0,
+      "heads": 618,
+      "estimatedBelowC4Before": 156,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 156
+    },
+    {
+      "id": "bluezenith",
+      "difficulty": 1,
+      "heads": 1057,
+      "estimatedBelowC4Before": 294,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 294
+    },
+    {
+      "id": "bluezenith",
+      "difficulty": 2,
+      "heads": 1871,
+      "estimatedBelowC4Before": 555,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 556
+    },
+    {
+      "id": "ghost",
+      "difficulty": 0,
+      "heads": 605,
+      "estimatedBelowC4Before": 486,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 486
+    },
+    {
+      "id": "ghost",
+      "difficulty": 1,
+      "heads": 1266,
+      "estimatedBelowC4Before": 928,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 929
+    },
+    {
+      "id": "ghost",
+      "difficulty": 2,
+      "heads": 2354,
+      "estimatedBelowC4Before": 1595,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 1596
+    },
+    {
+      "id": "crystallized",
+      "difficulty": 0,
+      "heads": 486,
+      "estimatedBelowC4Before": 274,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 274
+    },
+    {
+      "id": "crystallized",
+      "difficulty": 1,
+      "heads": 1199,
+      "estimatedBelowC4Before": 650,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 651
+    },
+    {
+      "id": "crystallized",
+      "difficulty": 2,
+      "heads": 1546,
+      "estimatedBelowC4Before": 801,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 801
+    },
+    {
+      "id": "exit",
+      "difficulty": 0,
+      "heads": 754,
+      "estimatedBelowC4Before": 349,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 349
+    },
+    {
+      "id": "exit",
+      "difficulty": 1,
+      "heads": 1669,
+      "estimatedBelowC4Before": 754,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 755
+    },
+    {
+      "id": "exit",
+      "difficulty": 2,
+      "heads": 2339,
+      "estimatedBelowC4Before": 1015,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 1016
+    },
+    {
+      "id": "kitasaitama",
+      "difficulty": 0,
+      "heads": 230,
+      "estimatedBelowC4Before": 131,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 131
+    },
+    {
+      "id": "kitasaitama",
+      "difficulty": 1,
+      "heads": 503,
+      "estimatedBelowC4Before": 288,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 288
+    },
+    {
+      "id": "kitasaitama",
+      "difficulty": 2,
+      "heads": 928,
+      "estimatedBelowC4Before": 511,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 511
+    },
+    {
+      "id": "madasaitama",
+      "difficulty": 0,
+      "heads": 270,
+      "estimatedBelowC4Before": 169,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 169
+    },
+    {
+      "id": "madasaitama",
+      "difficulty": 1,
+      "heads": 569,
+      "estimatedBelowC4Before": 341,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 341
+    },
+    {
+      "id": "madasaitama",
+      "difficulty": 2,
+      "heads": 981,
+      "estimatedBelowC4Before": 571,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 571
+    },
+    {
+      "id": "yuugen",
+      "difficulty": 0,
+      "heads": 243,
+      "estimatedBelowC4Before": 72,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 72
+    },
+    {
+      "id": "yuugen",
+      "difficulty": 1,
+      "heads": 591,
+      "estimatedBelowC4Before": 161,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 161
+    },
+    {
+      "id": "yuugen",
+      "difficulty": 2,
+      "heads": 834,
+      "estimatedBelowC4Before": 250,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 250
+    },
+    {
+      "id": "donkama",
+      "difficulty": 0,
+      "heads": 274,
+      "estimatedBelowC4Before": 240,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 240
+    },
+    {
+      "id": "donkama",
+      "difficulty": 1,
+      "heads": 553,
+      "estimatedBelowC4Before": 478,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 478
+    },
+    {
+      "id": "donkama",
+      "difficulty": 2,
+      "heads": 943,
+      "estimatedBelowC4Before": 827,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 827
+    },
+    {
+      "id": "angeldream",
+      "difficulty": 0,
+      "heads": 349,
+      "estimatedBelowC4Before": 77,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 77
+    },
+    {
+      "id": "angeldream",
+      "difficulty": 1,
+      "heads": 806,
+      "estimatedBelowC4Before": 182,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 182
+    },
+    {
+      "id": "angeldream",
+      "difficulty": 2,
+      "heads": 991,
+      "estimatedBelowC4Before": 216,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 216
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 0,
+      "heads": 539,
+      "estimatedBelowC4Before": 235,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 235
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 1,
+      "heads": 1286,
+      "estimatedBelowC4Before": 517,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 517
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 2,
+      "heads": 2293,
+      "estimatedBelowC4Before": 914,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 914
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 0,
+      "heads": 679,
+      "estimatedBelowC4Before": 204,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 204
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 1,
+      "heads": 1332,
+      "estimatedBelowC4Before": 389,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 390
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 2,
+      "heads": 2025,
+      "estimatedBelowC4Before": 623,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 624
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 0,
+      "heads": 248,
+      "estimatedBelowC4Before": 59,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 59
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 1,
+      "heads": 600,
+      "estimatedBelowC4Before": 147,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 147
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 2,
+      "heads": 1029,
+      "estimatedBelowC4Before": 246,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 246
+    },
+    {
+      "id": "jinsei",
+      "difficulty": 0,
+      "heads": 329,
+      "estimatedBelowC4Before": 76,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 76
+    },
+    {
+      "id": "jinsei",
+      "difficulty": 1,
+      "heads": 771,
+      "estimatedBelowC4Before": 178,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 179
+    },
+    {
+      "id": "jinsei",
+      "difficulty": 2,
+      "heads": 1055,
+      "estimatedBelowC4Before": 262,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 263
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 0,
+      "heads": 268,
+      "estimatedBelowC4Before": 97,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 97
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 1,
+      "heads": 629,
+      "estimatedBelowC4Before": 223,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 223
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 2,
+      "heads": 875,
+      "estimatedBelowC4Before": 327,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 327
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 0,
+      "heads": 370,
+      "estimatedBelowC4Before": 198,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 198
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 1,
+      "heads": 792,
+      "estimatedBelowC4Before": 435,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 436
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 2,
+      "heads": 1153,
+      "estimatedBelowC4Before": 612,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 613
+    },
+    {
+      "id": "ogyarinizer",
+      "difficulty": 0,
+      "heads": 252,
+      "estimatedBelowC4Before": 151,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 151
+    },
+    {
+      "id": "ogyarinizer",
+      "difficulty": 1,
+      "heads": 568,
+      "estimatedBelowC4Before": 324,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 324
+    },
+    {
+      "id": "ogyarinizer",
+      "difficulty": 2,
+      "heads": 967,
+      "estimatedBelowC4Before": 531,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 531
+    },
+    {
+      "id": "daijobu",
+      "difficulty": 0,
+      "heads": 285,
+      "estimatedBelowC4Before": 161,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 161
+    },
+    {
+      "id": "daijobu",
+      "difficulty": 1,
+      "heads": 632,
+      "estimatedBelowC4Before": 346,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 346
+    },
+    {
+      "id": "daijobu",
+      "difficulty": 2,
+      "heads": 1119,
+      "estimatedBelowC4Before": 602,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 602
+    },
+    {
+      "id": "kusaregedou",
+      "difficulty": 0,
+      "heads": 384,
+      "estimatedBelowC4Before": 130,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 130
+    },
+    {
+      "id": "kusaregedou",
+      "difficulty": 1,
+      "heads": 888,
+      "estimatedBelowC4Before": 298,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 299
+    },
+    {
+      "id": "kusaregedou",
+      "difficulty": 2,
+      "heads": 1417,
+      "estimatedBelowC4Before": 447,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 447
+    },
+    {
+      "id": "amara",
+      "difficulty": 0,
+      "heads": 368,
+      "estimatedBelowC4Before": 125,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 125
+    },
+    {
+      "id": "amara",
+      "difficulty": 1,
+      "heads": 829,
+      "estimatedBelowC4Before": 275,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 275
+    },
+    {
+      "id": "amara",
+      "difficulty": 2,
+      "heads": 1460,
+      "estimatedBelowC4Before": 469,
+      "estimatedBelowC4After": 0,
+      "changedHeads": 469
+    }
+  ]
+}

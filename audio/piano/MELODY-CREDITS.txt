@@ -1,9 +1,11 @@
-PIANO PULSE v15 pitch annotations
+PIANO PULSE v16 pitch annotations
 
 song-piano-data.mjs contains an independent source-harmony piano arrangement
 estimated from the exact official-video audio used by each game song.
 Source IDs, audio hashes, counts and analysis limits: ../../docs/song-piano-v15.json
 Method, coverage and output checks: ../../docs/piano-sound-v15.md
+Bass-register repairs: ../../docs/piano-register-v16.md
+Per-song counts: ../../docs/song-piano-v16.json
 No original song audio, lyric text or third-party MIDI/score is included.
 These estimates are not a complete or exact melody transcription.
 
