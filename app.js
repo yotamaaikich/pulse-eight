@@ -6,9 +6,9 @@ import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=library-review-11';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=library-review-11';
-import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=library-review-11';
+import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=arrangement-12';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
-import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=library-review-11';
+import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=arrangement-12';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate} from './playback.mjs?v=countdown-sync-1';

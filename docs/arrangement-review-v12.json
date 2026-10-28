@@ -1,0 +1,598 @@
+[
+  {
+    "id": "monitoring",
+    "title": "モニタリング",
+    "sections": 25,
+    "referenceSections": 14,
+    "additionalMeasuredHolds": 0,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/628",
+      "difficulty": "MASTER",
+      "cutDuration": 125.316,
+      "alignedSegments": [
+        [
+          9.336,
+          37.336
+        ],
+        [
+          57.881,
+          95.881
+        ],
+        [
+          134.609,
+          176.609
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "tetoris",
+    "title": "テトリス",
+    "sections": 26,
+    "referenceSections": 16,
+    "additionalMeasuredHolds": 19,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/627",
+      "difficulty": "MASTER",
+      "cutDuration": 94.255,
+      "alignedSegments": [
+        [
+          2.058,
+          60.058
+        ],
+        [
+          114.882,
+          138.882
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "mesmerizer",
+    "title": "メズマライザー",
+    "sections": 31,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 14,
+    "referenceAnalysis": {
+      "status": "audio-version-not-matched",
+      "reference": "https://sekai.best/music/531"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "override",
+    "title": "オーバーライド",
+    "sections": 21,
+    "referenceSections": 1,
+    "additionalMeasuredHolds": 3,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/521",
+      "difficulty": "MASTER",
+      "cutDuration": 111.059,
+      "alignedSegments": [
+        [
+          13.343,
+          19.343
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "telepathy",
+    "title": "テレパシ",
+    "sections": 31,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 24,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "mimukauwa",
+    "title": "みむかｩわナイストライ",
+    "sections": 29,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 22,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "daikirai",
+    "title": "ダイダイダイダイダイキライ",
+    "sections": 21,
+    "referenceSections": 12,
+    "additionalMeasuredHolds": 14,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/722",
+      "difficulty": "MASTER",
+      "cutDuration": 103.825,
+      "alignedSegments": [
+        [
+          8.272,
+          72.272
+        ],
+        [
+          94.888,
+          102.888
+        ],
+        [
+          140.272,
+          152.272
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "rinne",
+    "title": "いますぐ輪廻",
+    "sections": 19,
+    "referenceSections": 17,
+    "additionalMeasuredHolds": 12,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/733",
+      "difficulty": "MASTER",
+      "cutDuration": 118.491,
+      "alignedSegments": [
+        [
+          8.963,
+          118.963
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "mothergoose",
+    "title": "アンノウン・マザーグース",
+    "sections": 66,
+    "referenceSections": 26,
+    "additionalMeasuredHolds": 11,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/115",
+      "difficulty": "MASTER",
+      "cutDuration": 127.829,
+      "alignedSegments": [
+        [
+          12.452,
+          68.452
+        ],
+        [
+          74.486,
+          112.486
+        ],
+        [
+          254.888,
+          272.888
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "heat",
+    "title": "熱異常",
+    "sections": 46,
+    "referenceSections": 19,
+    "additionalMeasuredHolds": 11,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/451",
+      "difficulty": "MASTER",
+      "cutDuration": 113.044,
+      "alignedSegments": [
+        [
+          10.982,
+          84.982
+        ],
+        [
+          208.982,
+          238.982
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "connect",
+    "title": "コネクト -season 03-",
+    "sections": 50,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 21,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "magia",
+    "title": "Magia",
+    "sections": 42,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 42,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "luminous",
+    "title": "ルミナス -season 03-",
+    "sections": 45,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 16,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "colorful",
+    "title": "カラフル -season 03-",
+    "sections": 51,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 28,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "silvergarden",
+    "title": "君の銀の庭",
+    "sections": 48,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 24,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "freedomdive",
+    "title": "FREEDOM DiVE",
+    "sections": 63,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 28,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "bluezenith",
+    "title": "Blue Zenith",
+    "sections": 54,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 32,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "ghost",
+    "title": "GHOST",
+    "sections": 80,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 18,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "crystallized",
+    "title": "crystallized",
+    "sections": 51,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 19,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "exit",
+    "title": "Exit This Earth's Atomosphere",
+    "sections": 69,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 25,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "kitasaitama",
+    "title": "きたさいたま2000",
+    "sections": 28,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 10,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "madasaitama",
+    "title": "まださいたま2000",
+    "sections": 38,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 6,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "yuugen",
+    "title": "幽玄ノ乱",
+    "sections": 40,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 17,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "donkama",
+    "title": "ドンカマ2000",
+    "sections": 17,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 7,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "angeldream",
+    "title": "エンジェル ドリーム",
+    "sections": 28,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 16,
+    "referenceAnalysis": {
+      "status": "independent-audio-arrangement"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "disappearance",
+    "title": "初音ミクの消失",
+    "sections": 73,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 50,
+    "referenceAnalysis": {
+      "status": "audio-version-not-matched",
+      "reference": "https://sekai.best/music/49"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "intensevoice",
+    "title": "初音ミクの激唱",
+    "sections": 63,
+    "referenceSections": 31,
+    "additionalMeasuredHolds": 47,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/131",
+      "difficulty": "MASTER",
+      "cutDuration": 151.849,
+      "alignedSegments": [
+        [
+          150.26,
+          296.26
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "machinegun",
+    "title": "マシンガンポエムドール",
+    "sections": 33,
+    "referenceSections": 30,
+    "additionalMeasuredHolds": 9,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/176",
+      "difficulty": "MASTER",
+      "cutDuration": 132.058,
+      "alignedSegments": [
+        [
+          10.493,
+          138.493
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "jinsei",
+    "title": "人生",
+    "sections": 29,
+    "referenceSections": 26,
+    "additionalMeasuredHolds": 14,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/370",
+      "difficulty": "MASTER",
+      "cutDuration": 141.091,
+      "alignedSegments": [
+        [
+          9.684,
+          145.684
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "yaminabe",
+    "title": "ヤミナベ!!!!",
+    "sections": 37,
+    "referenceSections": 32,
+    "additionalMeasuredHolds": 15,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/329",
+      "difficulty": "MASTER",
+      "cutDuration": 120.871,
+      "alignedSegments": [
+        [
+          11.598,
+          127.598
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "whatsuppop",
+    "title": "What's up? Pop!",
+    "sections": 40,
+    "referenceSections": 34,
+    "additionalMeasuredHolds": 9,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/315",
+      "difficulty": "MASTER",
+      "cutDuration": 152.154,
+      "alignedSegments": [
+        [
+          11.789,
+          107.789
+        ],
+        [
+          111.789,
+          159.789
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "ogyarinizer",
+    "title": "おぎゃりないざー",
+    "sections": 33,
+    "referenceSections": 26,
+    "additionalMeasuredHolds": 16,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/486",
+      "difficulty": "MASTER",
+      "cutDuration": 119.731,
+      "alignedSegments": [
+        [
+          10.184,
+          94.184
+        ],
+        [
+          104.184,
+          124.184
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "daijobu",
+    "title": "ダイジョブですか？",
+    "sections": 37,
+    "referenceSections": 31,
+    "additionalMeasuredHolds": 9,
+    "referenceAnalysis": {
+      "status": "matched-sections",
+      "reference": "https://sekai.best/music/487",
+      "difficulty": "MASTER",
+      "cutDuration": 141.648,
+      "alignedSegments": [
+        [
+          11.02,
+          147.02
+        ]
+      ],
+      "waveformCorrelationMinimum": 0.9,
+      "aggregateSeconds": 8,
+      "sourceNotesRedistributed": false
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "kusaregedou",
+    "title": "腐れ外道とチョコレゐト",
+    "sections": 55,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 28,
+    "referenceAnalysis": {
+      "status": "audio-version-not-matched",
+      "reference": "https://sekai.best/music/250"
+    },
+    "auditoryPlaytest": false
+  },
+  {
+    "id": "amara",
+    "title": "ÅMARA(大未来電脳)",
+    "sections": 47,
+    "referenceSections": 0,
+    "additionalMeasuredHolds": 11,
+    "referenceAnalysis": {
+      "status": "not-available"
+    },
+    "auditoryPlaytest": false
+  }
+]

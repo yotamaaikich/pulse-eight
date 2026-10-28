@@ -1,8 +1,8 @@
-import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs?v=library-review-11';
+import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs?v=arrangement-12';
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
-export const CHART_VERSION = 'piano8-vocal-v11';
+export const CHART_VERSION = 'piano8-arrangement-v12';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const FLICK_WINDOW = 0.22;

@@ -17,6 +17,6 @@ export function review(song,difficulty){
   holdsByThird:[0,1,2].map(k=>holds.filter(n=>n.t>=song.duration*k/3&&n.t<song.duration*(k+1)/3).length)};
 }
 const report=SONGS.map(s=>({id:s.id,title:s.title,duration:s.duration,bpm:s.bpm,difficulties:[0,1,2].map(d=>review(s,d))}));
-writeFileSync(process.argv[2]||'docs/library-layout-v11.json',JSON.stringify(report,null,2));
+writeFileSync(process.argv[2]||'docs/library-layout-v12.json',JSON.stringify(report,null,2));
 if(process.argv[3])writeFileSync(process.argv[3],JSON.stringify(SONGS.map(s=>({id:s.id,title:s.title,duration:s.duration,charts:[0,1,2].map(d=>makeChart(s,d))}))));
 console.log(report.map(s=>({id:s.id,...s.difficulties[1]})));
