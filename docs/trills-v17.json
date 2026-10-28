@@ -1,0 +1,3272 @@
+{
+  "chartVersion": "piano8-trills-v17",
+  "songs": 35,
+  "charts": 105,
+  "heads": 95730,
+  "changedLanes": 653,
+  "trillPhrases": 80,
+  "movingTrillPhrases": 63,
+  "timingUnchanged": true,
+  "holdChordFloatCountsUnchanged": true,
+  "pianoPitchesUnchanged": true,
+  "auditoryPlaytest": false,
+  "chartsWithTrills": [
+    {
+      "id": "tetoris",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "tetoris-1-0",
+          "start": 29.34,
+          "end": 30.757,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 29.34,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 30.218,
+              "pair": [
+                3,
+                7
+              ],
+              "lanes": [
+                3,
+                7,
+                3,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-1-1",
+          "start": 51.569,
+          "end": 52.817,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 51.569,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 52.278,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-1-2",
+          "start": 81.402,
+          "end": 82.629,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 81.402,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 82.11,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-1-3",
+          "start": 107.692,
+          "end": 109.637,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 107.692,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 108.4,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4,
+                0,
+                4
+              ]
+            },
+            {
+              "at": 109.109,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tetoris",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "tetoris-2-0",
+          "start": 26.167,
+          "end": 28.641,
+          "notes": 15,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 26.167,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 26.865,
+              "pair": [
+                0,
+                1
+              ],
+              "lanes": [
+                0,
+                1,
+                0,
+                1
+              ]
+            },
+            {
+              "at": 27.574,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                2,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "at": 28.282,
+              "pair": [
+                0,
+                1
+              ],
+              "lanes": [
+                0,
+                1,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-2-1",
+          "start": 50.512,
+          "end": 53.176,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 50.512,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 51.22,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            },
+            {
+              "at": 51.929,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 52.637,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-2-2",
+          "start": 78.927,
+          "end": 80.873,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 78.927,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 79.636,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 80.344,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-2-3",
+          "start": 81.402,
+          "end": 82.629,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 81.402,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 82.11,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                6,
+                5,
+                6,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-2-4",
+          "start": 101.685,
+          "end": 104.349,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 101.685,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 102.394,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            },
+            {
+              "at": 103.102,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 103.811,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tetoris-2-5",
+          "start": 108.041,
+          "end": 109.987,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 108.041,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 108.749,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 109.458,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "mesmerizer-1-0",
+          "start": 47.399,
+          "end": 48.207,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 47.399,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 48.047,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-1-1",
+          "start": 70.905,
+          "end": 72.053,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 70.905,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 71.564,
+              "pair": [
+                3,
+                7
+              ],
+              "lanes": [
+                3,
+                7,
+                3,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-1-2",
+          "start": 116.322,
+          "end": 117.45,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 116.322,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 116.971,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "mesmerizer-2-0",
+          "start": 40.754,
+          "end": 41.891,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 40.754,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            },
+            {
+              "at": 41.402,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-2-1",
+          "start": 56.478,
+          "end": 57.616,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 56.478,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "at": 57.127,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-2-2",
+          "start": 70.905,
+          "end": 72.053,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 70.905,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 71.564,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-2-3",
+          "start": 92.646,
+          "end": 94.432,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 92.646,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 93.295,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            },
+            {
+              "at": 93.943,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-2-4",
+          "start": 116.322,
+          "end": 117.45,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 116.322,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 116.971,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mesmerizer-2-5",
+          "start": 129.782,
+          "end": 130.989,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 129.782,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 130.43,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "disappearance-1-0",
+          "start": 135.608,
+          "end": 137.025,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 135.608,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4,
+                0,
+                4
+              ]
+            },
+            {
+              "at": 136.367,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4,
+                0,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-1-1",
+          "start": 186.612,
+          "end": 187.86,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 186.612,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 187.61,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-1-2",
+          "start": 213.741,
+          "end": 214.978,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 213.741,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 214.739,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-1-3",
+          "start": 226.612,
+          "end": 227.859,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 226.612,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 227.609,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-1-4",
+          "start": 241.857,
+          "end": 243.024,
+          "notes": 6,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 241.857,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 242.855,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-1-5",
+          "start": 268.556,
+          "end": 269.734,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 268.556,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 269.484,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-1-6",
+          "start": 273.295,
+          "end": 274.792,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 273.295,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 274.114,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "disappearance-2-0",
+          "start": 28.981,
+          "end": 30.108,
+          "notes": 10,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 28.981,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 29.519,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 29.988,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-1",
+          "start": 41.243,
+          "end": 43.238,
+          "notes": 16,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 41.243,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 41.732,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 42.241,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 42.859,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-2",
+          "start": 43.607,
+          "end": 44.485,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 43.607,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "at": 44.116,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                5,
+                6,
+                5,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-3",
+          "start": 57.366,
+          "end": 58.484,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 57.366,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 58.114,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-4",
+          "start": 101.865,
+          "end": 102.733,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 101.865,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 102.354,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-5",
+          "start": 107.612,
+          "end": 108.51,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 107.612,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 108.111,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-6",
+          "start": 115.354,
+          "end": 116.362,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 115.354,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 115.993,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-7",
+          "start": 135.449,
+          "end": 136.736,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 135.449,
+              "pair": [
+                6,
+                7
+              ],
+              "lanes": [
+                6,
+                7,
+                6,
+                7
+              ]
+            },
+            {
+              "at": 136.107,
+              "pair": [
+                6,
+                7
+              ],
+              "lanes": [
+                6,
+                7,
+                6,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-8",
+          "start": 186.862,
+          "end": 187.86,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 186.862,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 187.361,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-9",
+          "start": 226.861,
+          "end": 227.859,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 226.861,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 227.49,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-10",
+          "start": 253.031,
+          "end": 254.109,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 253.031,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 253.74,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "disappearance-2-11",
+          "start": 268.047,
+          "end": 270.362,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 268.047,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 268.676,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            },
+            {
+              "at": 269.245,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 269.913,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "intensevoice-1-0",
+          "start": 140.018,
+          "end": 140.767,
+          "notes": 6,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 140.018,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 140.617,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-1-1",
+          "start": 243.214,
+          "end": 244.431,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 243.214,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 243.832,
+              "pair": [
+                3,
+                7
+              ],
+              "lanes": [
+                3,
+                7,
+                3,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-1-2",
+          "start": 255.067,
+          "end": 255.825,
+          "notes": 6,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 255.067,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 255.675,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-1-3",
+          "start": 268.117,
+          "end": 268.865,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 268.117,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 268.716,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "intensevoice-2-0",
+          "start": 27.085,
+          "end": 28.282,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 27.085,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            },
+            {
+              "at": 27.833,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-1",
+          "start": 94.133,
+          "end": 95.17,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 94.133,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 94.731,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-2",
+          "start": 179.329,
+          "end": 180.387,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 179.329,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 179.928,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-3",
+          "start": 186.672,
+          "end": 187.73,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 186.672,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 187.281,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-4",
+          "start": 240.071,
+          "end": 241.119,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 240.071,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 240.67,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-5",
+          "start": 246.816,
+          "end": 249.23,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 246.816,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "at": 247.434,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                5,
+                6,
+                5,
+                6
+              ]
+            },
+            {
+              "at": 248.023,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 248.691,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-6",
+          "start": 250.567,
+          "end": 252.233,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 250.567,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 251.166,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            },
+            {
+              "at": 251.774,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "intensevoice-2-7",
+          "start": 262.859,
+          "end": 263.877,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 262.859,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 263.478,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "machinegun-1-0",
+          "start": 24.072,
+          "end": 25.169,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 24.072,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 24.96,
+              "pair": [
+                0,
+                4
+              ],
+              "lanes": [
+                0,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-1-1",
+          "start": 34.438,
+          "end": 35.665,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 34.438,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 35.386,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-1-2",
+          "start": 57.067,
+          "end": 58.444,
+          "notes": 7,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 57.067,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 57.895,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "machinegun-2-0",
+          "start": 10.044,
+          "end": 11.171,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 10.044,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 10.642,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-2-1",
+          "start": 24.072,
+          "end": 25.309,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 24.072,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 24.82,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-2-2",
+          "start": 30.817,
+          "end": 31.854,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 30.817,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 31.435,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-2-3",
+          "start": 52.577,
+          "end": 53.804,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 52.577,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 53.256,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                3,
+                2,
+                3,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-2-4",
+          "start": 56.807,
+          "end": 58.583,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 56.807,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 57.356,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 58.164,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                6,
+                5,
+                6,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-2-5",
+          "start": 68.122,
+          "end": 69.748,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 68.122,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 68.66,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            },
+            {
+              "at": 69.349,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "machinegun-2-6",
+          "start": 92.786,
+          "end": 93.753,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 92.786,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                6,
+                5,
+                6,
+                5
+              ]
+            },
+            {
+              "at": 93.344,
+              "pair": [
+                6,
+                7
+              ],
+              "lanes": [
+                6,
+                7,
+                6,
+                7
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "yaminabe-1-0",
+          "start": 15.621,
+          "end": 17.207,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 15.621,
+              "pair": [
+                3,
+                7
+              ],
+              "lanes": [
+                3,
+                7,
+                3,
+                7
+              ]
+            },
+            {
+              "at": 16.529,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-1-1",
+          "start": 27.803,
+          "end": 28.552,
+          "notes": 6,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 27.803,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 28.402,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-1-2",
+          "start": 44.954,
+          "end": 46.251,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 44.954,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 45.733,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-1-3",
+          "start": 112.132,
+          "end": 113.598,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 112.132,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 112.94,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "yaminabe-2-0",
+          "start": 13.566,
+          "end": 14.853,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 13.566,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 14.254,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-2-1",
+          "start": 29.709,
+          "end": 30.966,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 29.709,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "at": 30.507,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                5,
+                6,
+                5,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-2-2",
+          "start": 45.224,
+          "end": 46.421,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 45.224,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 45.902,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-2-3",
+          "start": 53.405,
+          "end": 55.231,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 53.405,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 54.074,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 54.692,
+              "pair": [
+                0,
+                1
+              ],
+              "lanes": [
+                0,
+                1,
+                0,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-2-4",
+          "start": 75.006,
+          "end": 75.904,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 75.006,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 75.525,
+              "pair": [
+                5,
+                6
+              ],
+              "lanes": [
+                6,
+                5,
+                6,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-2-5",
+          "start": 111.992,
+          "end": 114.117,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 111.992,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 112.501,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            },
+            {
+              "at": 113.09,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 113.598,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "yaminabe-2-6",
+          "start": 120.193,
+          "end": 122.797,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 120.193,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 120.992,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 121.71,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "at": 122.319,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 1,
+      "phrases": [
+        {
+          "id": "whatsuppop-1-0",
+          "start": 81.382,
+          "end": 82.659,
+          "notes": 6,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 81.382,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 82.419,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-1-1",
+          "start": 94.093,
+          "end": 95.719,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 94.093,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            },
+            {
+              "at": 95.07,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-1-2",
+          "start": 129.752,
+          "end": 131.398,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 129.752,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 130.35,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 130.949,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-1-3",
+          "start": 147.002,
+          "end": 148.21,
+          "notes": 8,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 147.002,
+              "pair": [
+                1,
+                5
+              ],
+              "lanes": [
+                1,
+                5,
+                1,
+                5
+              ]
+            },
+            {
+              "at": 147.751,
+              "pair": [
+                2,
+                6
+              ],
+              "lanes": [
+                2,
+                6,
+                2,
+                6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 2,
+      "phrases": [
+        {
+          "id": "whatsuppop-2-1",
+          "start": 85.023,
+          "end": 86.211,
+          "notes": 8,
+          "moving": false,
+          "blocks": [
+            {
+              "at": 85.023,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 85.802,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-2-2",
+          "start": 90.76,
+          "end": 92.846,
+          "notes": 16,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 90.76,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 91.279,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 91.798,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 92.456,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-2-3",
+          "start": 120.453,
+          "end": 122.099,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 120.453,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 121.051,
+              "pair": [
+                1,
+                2
+              ],
+              "lanes": [
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "at": 121.65,
+              "pair": [
+                0,
+                1
+              ],
+              "lanes": [
+                0,
+                1,
+                0,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-2-4",
+          "start": 129.901,
+          "end": 131.558,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 129.901,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 130.5,
+              "pair": [
+                2,
+                3
+              ],
+              "lanes": [
+                2,
+                3,
+                2,
+                3
+              ]
+            },
+            {
+              "at": 131.099,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                4,
+                3,
+                4,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "whatsuppop-2-5",
+          "start": 146.474,
+          "end": 148.21,
+          "notes": 12,
+          "moving": true,
+          "blocks": [
+            {
+              "at": 146.474,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                4,
+                5,
+                4,
+                5
+              ]
+            },
+            {
+              "at": 147.002,
+              "pair": [
+                3,
+                4
+              ],
+              "lanes": [
+                3,
+                4,
+                3,
+                4
+              ]
+            },
+            {
+              "at": 147.751,
+              "pair": [
+                4,
+                5
+              ],
+              "lanes": [
+                5,
+                4,
+                5,
+                4
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

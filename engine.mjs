@@ -1,8 +1,9 @@
 import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs?v=arrangement-12';
+import {applyTrills} from './trills.mjs?v=trills-17';
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
-export const CHART_VERSION = 'piano8-arrangement-v12';
+export const CHART_VERSION = 'piano8-trills-v17';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const FLICK_WINDOW = 0.22;
@@ -53,7 +54,7 @@ function makeRawChart(song,difficulty){return makeAudioChart(song,difficulty);}
 // Reuse the authored rhythm, but place AIR in short phrases with real release gaps.
 export function makeChart(song,difficulty){
   const chart=makeRawChart(song,difficulty);
-  if(difficulty!==2)return chart;
+  if(difficulty!==2)return applyTrills(song,chart,difficulty);
   const anchors=chart.filter(n=>n.flick&&!n.assist);
   for(const n of chart)delete n.flick;
   const manual=chart.filter(n=>!n.assist),eligible=[],nextAt=Array(8).fill(Infinity);
@@ -71,7 +72,7 @@ export function makeChart(song,difficulty){
     for(const n of phrase)n.flick=true;
     previousEnd=phrase.at(-1).t;
   }
-  return chart;
+  return applyTrills(song,chart,difficulty);
 }
 export function judgment(delta) {
   const d = Math.round(Math.abs(delta)*1000000)/1000000;

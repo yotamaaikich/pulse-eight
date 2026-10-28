@@ -9,9 +9,9 @@ import {pianoFeedbackAt} from './source-piano.mjs?v=piano-register-16';
 import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=piano-register-16';
-import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=arrangement-12';
+import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=trills-17';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
-import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=arrangement-12';
+import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=trills-17';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate,inputClock} from './playback.mjs?v=approach-13';
@@ -373,5 +373,5 @@ $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mo
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
 let tutorial=null;
-async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=unlabeled-1');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
+async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=trills-17');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
 $('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;

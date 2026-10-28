@@ -1,4 +1,4 @@
-import {makeChart} from './engine.mjs?v=arrangement-12';
+import {makeChart} from './engine.mjs?v=trills-17';
 
 export function chartMetrics(chart){
   const count=chart.filter(n=>!n.assist).length;
