@@ -42,21 +42,21 @@ export function drawAirRibbons(ctx,notes,{width,time,lookahead,top,hitY,held=fal
   }
   ctx.restore();
 }
-export function drawAirHead(ctx,x,y,width,scale,held=false){
-  ctx.save();ctx.globalAlpha=1;const h=Math.max(5,18*scale),w=width,c=Math.min(6*scale,w*.1,h*.3);
+export function drawAirHead(ctx,x,y,width,scale,held=false,heightScale=1){
+  ctx.save();ctx.globalAlpha=1;const h=Math.max(3.5,Math.max(5,18*scale)*heightScale),w=width,c=Math.min(6*scale,w*.1,h*.3);
   const face=ctx.createLinearGradient(0,y-h/2,0,y+h/2);
   face.addColorStop(0,'#fbffed');face.addColorStop(.18,'#e9ffb9');face.addColorStop(.4,held?'#e3ffd2':'#baff73');face.addColorStop(.6,'#57dba6');face.addColorStop(1,'#175950');
-  ctx.shadowColor='#94ff9b';ctx.shadowBlur=held?19:12;ctx.fillStyle=face;ctx.strokeStyle='#eaffd9';ctx.lineWidth=Math.max(.8,1.4*scale);
+  ctx.shadowColor='#94ff9b';ctx.shadowBlur=(held?19:12)*heightScale;ctx.fillStyle=face;ctx.strokeStyle='#eaffd9';ctx.lineWidth=Math.max(.8,1.4*scale*heightScale);
   ctx.beginPath();ctx.moveTo(x-w/2+c,y-h/2);ctx.lineTo(x+w/2-c,y-h/2);ctx.lineTo(x+w/2,y-h/2+c);ctx.lineTo(x+w/2,y+h/2-c);ctx.lineTo(x+w/2-c,y+h/2);ctx.lineTo(x-w/2+c,y+h/2);ctx.lineTo(x-w/2,y+h/2-c);ctx.lineTo(x-w/2,y-h/2+c);ctx.closePath();ctx.fill();ctx.stroke();
   ctx.shadowBlur=0;ctx.fillStyle='#ffffffbb';ctx.fillRect(x-w*.43,y-h*.32,w*.86,Math.max(.7,h*.12));
-  ctx.strokeStyle='#74ffd5';ctx.lineWidth=Math.max(.8,1.6*scale);ctx.beginPath();ctx.moveTo(x-w*.4,y+h*.31);ctx.lineTo(x+w*.4,y+h*.31);ctx.stroke();
+  ctx.strokeStyle='#74ffd5';ctx.lineWidth=Math.max(.8,1.6*scale*heightScale);ctx.beginPath();ctx.moveTo(x-w*.4,y+h*.31);ctx.lineTo(x+w*.4,y+h*.31);ctx.stroke();
   // Detached double chevrons read as an upward action, while the luminous
   // beveled head keeps the same center and lane width as the normal notes.
   const a=Math.max(4,w*.22);ctx.lineJoin='round';ctx.lineCap='round';
   for(const lift of [1.8,.98]){
     const tip=y-h*lift;ctx.beginPath();ctx.moveTo(x-a,tip+h*.5);ctx.lineTo(x,tip);ctx.lineTo(x+a,tip+h*.5);
-    ctx.strokeStyle=held?'#9effad':'#8be99a';ctx.lineWidth=Math.max(2,5*scale);ctx.shadowColor='#9bffa4';ctx.shadowBlur=held?12:7;ctx.stroke();
-    ctx.strokeStyle='#f6ffe2';ctx.lineWidth=Math.max(.8,1.6*scale);ctx.shadowBlur=0;ctx.stroke();
+    ctx.strokeStyle=held?'#9effad':'#8be99a';ctx.lineWidth=Math.max(2,5*scale*heightScale);ctx.shadowColor='#9bffa4';ctx.shadowBlur=(held?12:7)*heightScale;ctx.stroke();
+    ctx.strokeStyle='#f6ffe2';ctx.lineWidth=Math.max(.8,1.6*scale*heightScale);ctx.shadowBlur=0;ctx.stroke();
   }
   const sx=x+w*.32,sy=y-h*.02,r=Math.min(3.6,h*.22);ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(sx,sy-r);ctx.lineTo(sx+r*.28,sy-r*.25);ctx.lineTo(sx+r,sy);ctx.lineTo(sx+r*.28,sy+r*.25);ctx.lineTo(sx,sy+r);ctx.lineTo(sx-r*.28,sy+r*.25);ctx.lineTo(sx-r,sy);ctx.lineTo(sx-r*.28,sy-r*.25);ctx.closePath();ctx.fill();
   ctx.restore();

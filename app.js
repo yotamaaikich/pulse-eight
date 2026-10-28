@@ -2,7 +2,7 @@ import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-
 import {referenceChart} from './reference-chart.mjs?v=score-attacks-1';
 import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
-import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=luminous-2';
+import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=compact-22';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=source-piano-15';
 import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
@@ -10,7 +10,7 @@ import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=hands-19';
 import {chartMetrics,difficultyMetrics,orderedSongs} from './catalog.mjs?v=levels-20';
-import {drawAirRibbons,drawAirHead} from './air.mjs?v=float-21';
+import {drawAirRibbons,drawAirHead} from './air.mjs?v=compact-22';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hands-19';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
@@ -273,6 +273,7 @@ function draw(now){
     applyNotifications(session.advance(t));$('timer').textContent=formatTime(Math.min(song().duration,t))+' / '+formatTime(song().duration);$('progress').style.width=Math.min(100,Math.max(0,t)/song().duration*100)+'%';if(t>=song().duration)finish();
   }
   ctx.clearRect(0,0,W,H);const top=40,hitY=keyboardStrikeY(W,H),span=hitY-top,laneW=W/8;
+  const heightScale=document.fullscreenElement||document.body.classList.contains('chart-expanded')?1:Math.max(.45,Math.min(1,H/1000));
   const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#172026');bg.addColorStop(1,'#24312f');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   for(let lane=0;lane<8;lane++){ctx.beginPath();ctx.moveTo(project(lane*laneW,0),top);ctx.lineTo(project((lane+1)*laneW,0),top);ctx.lineTo((lane+1)*laneW,hitY);ctx.lineTo(lane*laneW,hitY);ctx.closePath();ctx.fillStyle=lane<4?(lane%2?'#ff365e18':'#ff365e0b'):(lane%2?'#318cff18':'#318cff0b');ctx.fill();if(pressed.has(lane)||now-flashes[lane]<170){const glow=ctx.createLinearGradient(0,hitY-160,0,hitY);glow.addColorStop(0,'transparent');glow.addColorStop(1,lane<4?'#ff365e66':'#318cff66');ctx.fillStyle=glow;ctx.fill();}}
   for(let i=0;i<=8;i++){ctx.lineWidth=i===4?2:1;ctx.setLineDash(i===4?[8,7]:[]);ctx.strokeStyle=i===4?'#ffffffaa':i===0||i===8?'#ffffff66':'#ffffff40';ctx.beginPath();ctx.moveTo(project(i*laneW,0),top);ctx.lineTo(i*laneW,hitY);ctx.stroke();}ctx.setLineDash([]);ctx.lineWidth=1;
@@ -288,7 +289,7 @@ function draw(now){
   for(const [at,group]of chords){
     if(group.length<2)continue;const depth=Math.min(1,Math.max(0,1-(at-visualTime)/lookahead));if(depth<.18)continue;
     const points=group.map(n=>projectPoint((n.lane+.5)*laneW,W,depth,top,hitY)).sort((a,b)=>a.x-b.x);
-    const headTop=points[0].y-16*(.35+.65*depth),lineY=headTop-5;
+    const headTop=points[0].y-16*(.35+.65*depth)*heightScale,lineY=headTop-5*heightScale;
     ctx.strokeStyle='#ffffff';ctx.globalAlpha=.35+.55*depth;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(points[0].x,lineY);ctx.lineTo(points.at(-1).x,lineY);
     for(const p of points){ctx.moveTo(p.x,lineY);ctx.lineTo(p.x,headTop);}ctx.stroke();ctx.globalAlpha=1;
   }
@@ -300,7 +301,7 @@ function draw(now){
     const y=top+span*depth*depth;
     const xBase=n.assist?n.boundary*laneW:(n.lane+.5)*laneW;
     const head=projectPoint(xBase,W,depth,top,hitY),x=head.x;
-    const width=(n.assist?laneW*.32:laneW*.83)*head.scale,height=(n.assist?12:32)*(.35+.65*depth);
+    const width=(n.assist?laneW*.32:laneW*.83)*head.scale,height=(n.assist?12:32)*(.35+.65*depth)*heightScale;
     const color=n.assist?'#8a99a3':n.flick?'#baff5a':n.lane<4?NOTE_COLORS.left:NOTE_COLORS.right;
     if(n.end){
       const tailDepth=Math.min(1,Math.max(0,1-tailDiff/lookahead));
@@ -308,12 +309,12 @@ function draw(now){
       const headHalf=laneW*.21*head.scale,tailHalf=laneW*.21*tail.scale;
       ctx.globalAlpha=n.started?.65:.3;ctx.fillStyle=color;
       ctx.beginPath();ctx.moveTo(tail.x-tailHalf,tail.y);ctx.lineTo(tail.x+tailHalf,tail.y);ctx.lineTo(x+headHalf,y);ctx.lineTo(x-headHalf,y);ctx.closePath();ctx.fill();
-      ctx.globalAlpha=.8;ctx.fillRect(tail.x-tailHalf,tail.y,tailHalf*2,3);
+      ctx.globalAlpha=.8;ctx.fillRect(tail.x-tailHalf,tail.y,tailHalf*2,3*heightScale);
       ctx.strokeStyle=color;ctx.lineWidth=n.started?2:1;ctx.beginPath();ctx.moveTo(tail.x-tailHalf,tail.y);ctx.lineTo(x-headHalf,y);ctx.moveTo(tail.x+tailHalf,tail.y);ctx.lineTo(x+headHalf,y);ctx.stroke();
     }
-    if(n.flick){drawAirHead(ctx,x,y,width,head.scale,spaceHeld);continue;}
+    if(n.flick){drawAirHead(ctx,x,y,width,head.scale,spaceHeld,heightScale);continue;}
     if(n.assist){ctx.globalAlpha=.32;ctx.fillStyle=color;ctx.fillRect(x-width/2,y-height/2,width,height);ctx.globalAlpha=1;}
-    else drawNoteHead(ctx,{x,y,width,height,lane:n.lane,time:now});
+    else drawNoteHead(ctx,{x,y,width,height,lane:n.lane,time:now,heightScale});
   }
   ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.fillRect(0,hitY-1,W,2);ctx.globalAlpha=1;ctx.shadowColor=NOTE_COLORS.right;ctx.shadowBlur=12;ctx.fillStyle=NOTE_COLORS.right;ctx.fillRect(0,hitY,W,1);ctx.shadowBlur=0;
   drawKeyboard(ctx,{width:W,height:H,time:now,pressed,flashes,blackFlashes});

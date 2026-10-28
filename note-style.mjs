@@ -3,10 +3,10 @@ export function timingFeedback(delta){
   if(!Number.isFinite(delta)||Math.abs(delta)<.0005)return null;
   return {label:delta<0?'FAST':'LATE',color:delta<0?'#68ccff':'#ff779f',ms:Math.abs(Math.round(delta*1000))};
 }
-export function drawNoteHead(ctx,{x,y,width,height,lane,time=0}){
+export function drawNoteHead(ctx,{x,y,width,height,lane,time=0,heightScale=1}){
   const color=lane<4?NOTE_COLORS.left:NOTE_COLORS.right;
   ctx.save();
-  ctx.shadowColor=color;ctx.shadowBlur=15;
+  ctx.shadowColor=color;ctx.shadowBlur=15*heightScale;
   const fill=ctx.createLinearGradient(0,y-height/2,0,y+height/2);
   fill.addColorStop(0,'#ffffff');fill.addColorStop(.16,lane<4?'#ff9bb0':'#9edbff');
   fill.addColorStop(.36,'#f5fcff');fill.addColorStop(.58,color);fill.addColorStop(1,lane<4?'#a7083d':'#123dab');
@@ -15,7 +15,7 @@ export function drawNoteHead(ctx,{x,y,width,height,lane,time=0}){
   ctx.shadowBlur=0;ctx.fillStyle='#ffffffb3';ctx.fillRect(x-width*.45,y-height*.33,width*.9,Math.max(1,height*.12));ctx.strokeStyle=color;ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(x-width*.43,y+height*.28);ctx.lineTo(x+width*.43,y+height*.28);ctx.stroke();
   // A small four-point glint stays inside each note's silhouette.
-  const sx=x+width*.29,sy=y-height*.18,r=Math.min(height*.32,5)*( .8+.2*Math.sin(time/260+lane));
+  const sx=x+width*.29,sy=y-height*.18,r=Math.min(height*.32,5*heightScale)*( .8+.2*Math.sin(time/260+lane));
   ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(sx,sy-r);ctx.lineTo(sx+r*.3,sy-r*.3);ctx.lineTo(sx+r,sy);ctx.lineTo(sx+r*.3,sy+r*.3);ctx.lineTo(sx,sy+r);ctx.lineTo(sx-r*.3,sy+r*.3);ctx.lineTo(sx-r,sy);ctx.lineTo(sx-r*.3,sy-r*.3);ctx.closePath();ctx.fill();ctx.restore();
 }
 export function drawCombo(ctx,combo,width,hitY){
