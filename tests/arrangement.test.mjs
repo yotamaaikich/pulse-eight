@@ -9,6 +9,14 @@ import {makeChart,RhythmSession} from '../engine.mjs';
 import {applyTrills} from '../trills.mjs';
 import {TRILL_PHRASES,TRILL_CONTOURS} from '../trill-data.mjs';
 
+test('each authored NORMAL and HARD chart uses all eight fixed input lanes for trills',()=>{
+ for(const id of Object.keys(TRILL_PHRASES))for(const d of [1,2]){
+  const notes=makeChart(SONGS.find(s=>s.id===id),d).filter(n=>n.trill);
+  const counts=Array.from({length:8},(_,lane)=>notes.filter(n=>n.lane===lane).length);
+  assert.ok(counts.every(count=>count>0),id+'/'+d+': unused trill lane '+counts);
+ }
+});
+
 test('authored trills alternate two keys within each block and move by one lane with the phrase',()=>{
  for(const id of Object.keys(TRILL_PHRASES))for(const d of [1,2]){
   const song=SONGS.find(s=>s.id===id),chart=makeChart(song,d),phrases=Map.groupBy(chart.filter(n=>n.trill),n=>n.trill);

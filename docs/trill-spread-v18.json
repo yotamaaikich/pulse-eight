@@ -1,0 +1,1647 @@
+{
+  "chartVersion": "piano8-trills-v18",
+  "fixedKeys": [
+    "A",
+    "S",
+    "D",
+    "F",
+    "J",
+    "K",
+    "L",
+    ";"
+  ],
+  "songs": 35,
+  "charts": 105,
+  "heads": 95730,
+  "changedTrillLanes": 517,
+  "trillPhrases": 80,
+  "allTrillChartsUseEightLanes": true,
+  "timingAndTrillSectionsUnchanged": true,
+  "pianoPitchesUnchanged": true,
+  "holdsChordsFloatsUnchanged": true,
+  "auditoryPlaytest": false,
+  "chartsWithTrills": [
+    {
+      "id": "tetoris",
+      "difficulty": 1,
+      "heads": 36,
+      "before": [
+        2,
+        6,
+        4,
+        4,
+        6,
+        8,
+        4,
+        2
+      ],
+      "after": [
+        2,
+        4,
+        6,
+        4,
+        6,
+        6,
+        6,
+        2
+      ],
+      "phrases": [
+        {
+          "id": "tetoris-1-0",
+          "start": 29.34,
+          "blocks": [
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-1-1",
+          "start": 51.569,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-1-2",
+          "start": 81.402,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-1-3",
+          "start": 107.692,
+          "blocks": [
+            [
+              2,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tetoris",
+      "difficulty": 2,
+      "heads": 79,
+      "before": [
+        4,
+        13,
+        16,
+        16,
+        18,
+        10,
+        2,
+        0
+      ],
+      "after": [
+        8,
+        13,
+        8,
+        10,
+        12,
+        12,
+        12,
+        4
+      ],
+      "phrases": [
+        {
+          "id": "tetoris-2-0",
+          "start": 26.167,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-2-1",
+          "start": 50.512,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-2-2",
+          "start": 78.927,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-2-3",
+          "start": 81.402,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-2-4",
+          "start": 101.685,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "tetoris-2-5",
+          "start": 108.041,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 1,
+      "heads": 22,
+      "before": [
+        1,
+        2,
+        4,
+        6,
+        3,
+        2,
+        2,
+        2
+      ],
+      "after": [
+        1,
+        2,
+        2,
+        4,
+        5,
+        4,
+        2,
+        2
+      ],
+      "phrases": [
+        {
+          "id": "mesmerizer-1-0",
+          "start": 47.399,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-1-1",
+          "start": 70.905,
+          "blocks": [
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-1-2",
+          "start": 116.322,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mesmerizer",
+      "difficulty": 2,
+      "heads": 52,
+      "before": [
+        0,
+        4,
+        10,
+        14,
+        16,
+        8,
+        0,
+        0
+      ],
+      "after": [
+        4,
+        8,
+        6,
+        6,
+        8,
+        6,
+        8,
+        6
+      ],
+      "phrases": [
+        {
+          "id": "mesmerizer-2-0",
+          "start": 40.754,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-2-1",
+          "start": 56.478,
+          "blocks": [
+            [
+              6,
+              7
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-2-2",
+          "start": 70.905,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-2-3",
+          "start": 92.646,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-2-4",
+          "start": 116.322,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "mesmerizer-2-5",
+          "start": 129.782,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 1,
+      "heads": 46,
+      "before": [
+        5,
+        7,
+        6,
+        5,
+        10,
+        8,
+        5,
+        0
+      ],
+      "after": [
+        4,
+        4,
+        7,
+        7,
+        6,
+        7,
+        7,
+        4
+      ],
+      "phrases": [
+        {
+          "id": "disappearance-1-0",
+          "start": 135.608,
+          "blocks": [
+            [
+              0,
+              4
+            ],
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-1-1",
+          "start": 186.612,
+          "blocks": [
+            [
+              3,
+              7
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-1-2",
+          "start": 213.741,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-1-3",
+          "start": 226.612,
+          "blocks": [
+            [
+              3,
+              7
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-1-4",
+          "start": 241.857,
+          "blocks": [
+            [
+              2,
+              6
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-1-5",
+          "start": 268.556,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-1-6",
+          "start": 273.295,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              1,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disappearance",
+      "difficulty": 2,
+      "heads": 114,
+      "before": [
+        0,
+        10,
+        32,
+        35,
+        19,
+        8,
+        6,
+        4
+      ],
+      "after": [
+        8,
+        20,
+        18,
+        15,
+        15,
+        14,
+        16,
+        8
+      ],
+      "phrases": [
+        {
+          "id": "disappearance-2-0",
+          "start": 28.981,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-1",
+          "start": 41.243,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-2",
+          "start": 43.607,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-3",
+          "start": 57.366,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-4",
+          "start": 101.865,
+          "blocks": [
+            [
+              6,
+              7
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-5",
+          "start": 107.612,
+          "blocks": [
+            [
+              6,
+              7
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-6",
+          "start": 115.354,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-7",
+          "start": 135.449,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-8",
+          "start": 186.862,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-9",
+          "start": 226.861,
+          "blocks": [
+            [
+              6,
+              7
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-10",
+          "start": 253.031,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "disappearance-2-11",
+          "start": 268.047,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 1,
+      "heads": 26,
+      "before": [
+        1,
+        5,
+        2,
+        5,
+        4,
+        5,
+        2,
+        2
+      ],
+      "after": [
+        1,
+        5,
+        2,
+        5,
+        4,
+        5,
+        2,
+        2
+      ],
+      "phrases": [
+        {
+          "id": "intensevoice-1-0",
+          "start": 140.018,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              1,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-1-1",
+          "start": 243.214,
+          "blocks": [
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-1-2",
+          "start": 255.067,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-1-3",
+          "start": 268.117,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              0,
+              4
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intensevoice",
+      "difficulty": 2,
+      "heads": 76,
+      "before": [
+        0,
+        2,
+        14,
+        22,
+        22,
+        14,
+        2,
+        0
+      ],
+      "after": [
+        6,
+        12,
+        8,
+        10,
+        12,
+        12,
+        12,
+        4
+      ],
+      "phrases": [
+        {
+          "id": "intensevoice-2-0",
+          "start": 27.085,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-1",
+          "start": 94.133,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-2",
+          "start": 179.329,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-3",
+          "start": 186.672,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-4",
+          "start": 240.071,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-5",
+          "start": 246.816,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-6",
+          "start": 250.567,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "intensevoice-2-7",
+          "start": 262.859,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 1,
+      "heads": 19,
+      "before": [
+        1,
+        3,
+        2,
+        2,
+        4,
+        5,
+        2,
+        0
+      ],
+      "after": [
+        1,
+        2,
+        3,
+        5,
+        3,
+        2,
+        1,
+        2
+      ],
+      "phrases": [
+        {
+          "id": "machinegun-1-0",
+          "start": 24.072,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-1-1",
+          "start": 34.438,
+          "blocks": [
+            [
+              3,
+              7
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-1-2",
+          "start": 57.067,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machinegun",
+      "difficulty": 2,
+      "heads": 64,
+      "before": [
+        0,
+        4,
+        14,
+        16,
+        12,
+        10,
+        6,
+        2
+      ],
+      "after": [
+        6,
+        10,
+        8,
+        10,
+        10,
+        8,
+        8,
+        4
+      ],
+      "phrases": [
+        {
+          "id": "machinegun-2-0",
+          "start": 10.044,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-2-1",
+          "start": 24.072,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-2-2",
+          "start": 30.817,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-2-3",
+          "start": 52.577,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-2-4",
+          "start": 56.807,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-2-5",
+          "start": 68.122,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "machinegun-2-6",
+          "start": 92.786,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 1,
+      "heads": 30,
+      "before": [
+        0,
+        3,
+        6,
+        4,
+        4,
+        5,
+        6,
+        2
+      ],
+      "after": [
+        1,
+        4,
+        4,
+        4,
+        5,
+        6,
+        4,
+        2
+      ],
+      "phrases": [
+        {
+          "id": "yaminabe-1-0",
+          "start": 15.621,
+          "blocks": [
+            [
+              3,
+              7
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-1-1",
+          "start": 27.803,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-1-2",
+          "start": 44.954,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-1-3",
+          "start": 112.132,
+          "blocks": [
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yaminabe",
+      "difficulty": 2,
+      "heads": 76,
+      "before": [
+        2,
+        4,
+        12,
+        24,
+        20,
+        10,
+        4,
+        0
+      ],
+      "after": [
+        8,
+        12,
+        12,
+        10,
+        8,
+        12,
+        10,
+        4
+      ],
+      "phrases": [
+        {
+          "id": "yaminabe-2-0",
+          "start": 13.566,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-2-1",
+          "start": 29.709,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-2-2",
+          "start": 45.224,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-2-3",
+          "start": 53.405,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-2-4",
+          "start": 75.006,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-2-5",
+          "start": 111.992,
+          "blocks": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "yaminabe-2-6",
+          "start": 120.193,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 1,
+      "heads": 34,
+      "before": [
+        0,
+        5,
+        8,
+        6,
+        4,
+        5,
+        6,
+        0
+      ],
+      "after": [
+        2,
+        2,
+        4,
+        5,
+        8,
+        6,
+        4,
+        3
+      ],
+      "phrases": [
+        {
+          "id": "whatsuppop-1-0",
+          "start": 81.382,
+          "blocks": [
+            [
+              3,
+              7
+            ],
+            [
+              3,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-1-1",
+          "start": 94.093,
+          "blocks": [
+            [
+              2,
+              6
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-1-2",
+          "start": 129.752,
+          "blocks": [
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-1-3",
+          "start": 147.002,
+          "blocks": [
+            [
+              0,
+              4
+            ],
+            [
+              1,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsuppop",
+      "difficulty": 2,
+      "heads": 60,
+      "before": [
+        2,
+        6,
+        10,
+        16,
+        18,
+        8,
+        0,
+        0
+      ],
+      "after": [
+        2,
+        8,
+        12,
+        10,
+        6,
+        10,
+        10,
+        2
+      ],
+      "phrases": [
+        {
+          "id": "whatsuppop-2-1",
+          "start": 85.023,
+          "blocks": [
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-2-2",
+          "start": 90.76,
+          "blocks": [
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-2-3",
+          "start": 120.453,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-2-4",
+          "start": 129.901,
+          "blocks": [
+            [
+              5,
+              6
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "whatsuppop-2-5",
+          "start": 146.474,
+          "blocks": [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

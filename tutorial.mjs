@@ -1,5 +1,5 @@
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
-import {RhythmSession,isFullCombo} from './engine.mjs?v=trills-17';
+import {RhythmSession,isFullCombo} from './engine.mjs?v=trills-18';
 import {projectPoint} from './geometry.mjs';
 
 export const LESSONS=[

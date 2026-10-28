@@ -20,18 +20,26 @@ function shiftsFor(id,notes){
 function pairPath(chart,notes,preferred,shifts){
  const members=new Set(notes),start=notes[0].t-.065,end=notes.at(-1).t+.065;
  const occupied=new Set(chart.filter(n=>!members.has(n)&&n.t<=end&&(n.end??(n.flick?n.t+.39:n.t))>=start).map(n=>n.lane));
- const pairs=[preferred,[1,5],[2,6],[3,4],[2,3],[4,5],[1,2],[5,6],[0,1],[6,7],[0,7]];
+ const usage=Array(8).fill(0);for(const n of chart)if(n.trill&&!members.has(n))usage[n.lane]++;
  const previous=chart.filter(n=>n.t<notes[0].t).at(-1);
- for(const pair of pairs)for(const offset of [0,-1,1,-2,2,-3,3,-4,4]){
-  const path=shifts.map(shift=>pair.map(lane=>lane+offset+shift));
-  if(path.flat().some(lane=>lane<0||lane>7||occupied.has(lane)))continue;
-  const lanes=[];let last=previous?.lane;
-  for(let i=0;i<notes.length;i+=4){
-   const pair=path[i/4],ordered=pair[0]===last?[pair[1],pair[0]]:pair;
-   for(let j=0;j<Math.min(4,notes.length-i);j++){const lane=ordered[j%2];lanes.push(lane);last=lane;}
+ // Keep the authored trill spacing, but choose its location across all eight
+ // fixed input lanes. The previous first-free search crowded the middle keys.
+ for(const span of new Set([preferred[1]-preferred[0],1,4,7])){
+  let best=null;
+  for(let base=0;base+span<8;base++){
+   const path=shifts.map(shift=>[base+shift,base+span+shift]);
+   if(path.flat().some(lane=>lane<0||lane>7||occupied.has(lane)))continue;
+   const lanes=[],counts=Array(8).fill(0);let last=previous?.lane;
+   for(let i=0;i<notes.length;i+=4){
+    const pair=path[i/4],ordered=pair[0]===last?[pair[1],pair[0]]:pair;
+    for(let j=0;j<Math.min(4,notes.length-i);j++){const lane=ordered[j%2];lanes.push(lane);counts[lane]++;last=lane;}
+   }
+   const newLanes=counts.filter((count,lane)=>count>0&&usage[lane]===0).length;
+   const score=counts.reduce((sum,count,lane)=>sum+2*usage[lane]*count+count*count,0)/notes.length-newLanes*12+Math.abs(base-preferred[0])*.015;
+   if(!best||score<best.score)best={lanes,score};
   }
-  return lanes;
- }
+  if(best)return best.lanes;
+  }
  return null;
 }
 export function applyTrills(song,chart,difficulty){
@@ -63,6 +71,13 @@ export function applyTrills(song,chart,difficulty){
   }
   consider();if(!best)continue;
   best.notes.forEach((n,i)=>Object.assign(n,{lane:best.lanes[i],degree:best.lanes[i],trill:song.id+'-'+difficulty+'-'+index,trillStep:Math.floor(i/4)}));
+ }
+ // A second pass considers the complete phrase distribution, so a short chart
+ // cannot leave an outer key idle just because its last phrase has no room.
+ for(const [index,[,,a,b]]of phrases.entries()){
+  const notes=result.filter(n=>n.trill===song.id+'-'+difficulty+'-'+index);if(!notes.length)continue;
+  const lanes=pairPath(result,notes,[a,b],shiftsFor(song.id,notes));if(!lanes)continue;
+  notes.forEach((n,i)=>Object.assign(n,{lane:lanes[i],degree:lanes[i]}));
  }
  return result.sort((a,b)=>a.t-b.t||a.lane-b.lane);
 }
