@@ -1,0 +1,60 @@
+[
+  {
+    "name": "pitched",
+    "ready": true,
+    "started": [
+      true
+    ],
+    "firstMs": 9.546485260770975,
+    "peak": 0.15595026314258575,
+    "rmsFirst100ms": 0.05890765414644039
+  },
+  {
+    "name": "unpitched-strike",
+    "ready": true,
+    "started": [
+      true
+    ],
+    "firstMs": 11.791383219954648,
+    "peak": 0.048136867582798004,
+    "rmsFirst100ms": 0.010015717112397836
+  },
+  {
+    "name": "dense-strikes",
+    "ready": true,
+    "started": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "firstMs": 7.8684807256235825,
+    "peak": 0.1925474852323532,
+    "rmsFirst100ms": 0.040062868313007156
+  },
+  {
+    "name": "FLOAT-head-and-chime",
+    "ready": true,
+    "started": [
+      true,
+      true
+    ],
+    "firstMs": 6.621315192743764,
+    "peak": 0.11016887426376343,
+    "rmsFirst100ms": 0.041826426267283855
+  },
+  {
+    "name": "one-sample-unavailable",
+    "ready": true,
+    "started": [
+      true
+    ],
+    "firstMs": 10.793650793650793,
+    "peak": 0.20351752638816833,
+    "rmsFirst100ms": 0.06788016418016171
+  }
+]

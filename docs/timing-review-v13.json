@@ -1,0 +1,632 @@
+[
+  {
+    "id": "monitoring",
+    "attacks": 1192,
+    "counts": {
+      "aligned": 70,
+      "unresolved": 315,
+      "ambiguous": 36,
+      "outside-bound": 76,
+      "boundary-retained": 0,
+      "correctionCandidates": 695
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 14.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "d7b12388e72e8c1c281b154a01f169509d50db49999869d5de9df454888adbaa",
+    "sourceVerified": true
+  },
+  {
+    "id": "tetoris",
+    "attacks": 896,
+    "counts": {
+      "aligned": 74,
+      "unresolved": 227,
+      "ambiguous": 23,
+      "outside-bound": 63,
+      "boundary-retained": 0,
+      "correctionCandidates": 509
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "2d940c36574de0d6eb34a5d5bebd51a0612ac7e9ecb0de078d3a4fc5e0b151ec",
+    "sourceVerified": true
+  },
+  {
+    "id": "mesmerizer",
+    "attacks": 1290,
+    "counts": {
+      "aligned": 196,
+      "unresolved": 410,
+      "ambiguous": 56,
+      "outside-bound": 141,
+      "boundary-retained": 0,
+      "correctionCandidates": 487
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 9.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "71d79d859c5ffd86e67349a15e349dcc7ece5818366e55b2acf29c5789d2864f",
+    "sourceVerified": true
+  },
+  {
+    "id": "override",
+    "attacks": 938,
+    "counts": {
+      "aligned": 26,
+      "unresolved": 148,
+      "ambiguous": 10,
+      "outside-bound": 18,
+      "boundary-retained": 0,
+      "correctionCandidates": 736
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 34,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "3471e4137b3ea1574f2f0ac00b375b2a8a8cd94e40301f31524e3cab6d800fd2",
+    "sourceVerified": true
+  },
+  {
+    "id": "telepathy",
+    "attacks": 878,
+    "counts": {
+      "aligned": 77,
+      "unresolved": 192,
+      "ambiguous": 28,
+      "outside-bound": 56,
+      "boundary-retained": 0,
+      "correctionCandidates": 525
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 12.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "896dcc4baf9bcc32e41558372ca0e702259426b8d552a994a57d253ecebe6943",
+    "sourceVerified": true
+  },
+  {
+    "id": "mimukauwa",
+    "attacks": 967,
+    "counts": {
+      "aligned": 73,
+      "unresolved": 165,
+      "ambiguous": 40,
+      "outside-bound": 63,
+      "boundary-retained": 0,
+      "correctionCandidates": 626
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "14b5a190ce5db1f537d3bc2f4d8bfd64348bcec264f7aa3895572a53d799ba1f",
+    "sourceVerified": true
+  },
+  {
+    "id": "daikirai",
+    "attacks": 990,
+    "counts": {
+      "aligned": 123,
+      "unresolved": 216,
+      "ambiguous": 29,
+      "outside-bound": 43,
+      "boundary-retained": 0,
+      "correctionCandidates": 579
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 12.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "a7f01c2651fb420f1da065390957aaeb72e3631c90f2aa029a03b81d5b081f7b",
+    "sourceVerified": true
+  },
+  {
+    "id": "rinne",
+    "attacks": 802,
+    "counts": {
+      "aligned": 26,
+      "unresolved": 280,
+      "ambiguous": 15,
+      "outside-bound": 61,
+      "boundary-retained": 0,
+      "correctionCandidates": 420
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 14.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "606dad3915ff0781e48f2de5b743bd42dc9720beefb3c5b790913bd1c7f8b672",
+    "sourceVerified": true
+  },
+  {
+    "id": "mothergoose",
+    "attacks": 1600,
+    "counts": {
+      "aligned": 117,
+      "unresolved": 404,
+      "ambiguous": 50,
+      "outside-bound": 136,
+      "boundary-retained": 0,
+      "correctionCandidates": 893
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 14.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "8eb269d97a50f669a366a7623c08abef96f00f29e30a9b7f06f2bb3d222dd00a",
+    "sourceVerified": true
+  },
+  {
+    "id": "heat",
+    "attacks": 1343,
+    "counts": {
+      "aligned": 130,
+      "unresolved": 177,
+      "ambiguous": 82,
+      "outside-bound": 81,
+      "boundary-retained": 1,
+      "correctionCandidates": 872
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 34,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "8215383eb0f21214caaa6f191be4380934675399f1c6ba8eeb94a60289d9caad",
+    "sourceVerified": true
+  },
+  {
+    "id": "connect",
+    "attacks": 1495,
+    "counts": {
+      "aligned": 147,
+      "unresolved": 295,
+      "ambiguous": 48,
+      "outside-bound": 72,
+      "boundary-retained": 0,
+      "correctionCandidates": 933
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 12.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "4a1701eb3a81fd47c9b175632f540442c8a995a45b8af448ad85e91c108a2187",
+    "sourceVerified": true
+  },
+  {
+    "id": "magia",
+    "attacks": 2109,
+    "counts": {
+      "aligned": 379,
+      "unresolved": 301,
+      "ambiguous": 236,
+      "outside-bound": 198,
+      "boundary-retained": 0,
+      "correctionCandidates": 995
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 9.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "72f7bbfe312cc295fb25e2c55bbbf5453413c24c8216873276252d7228564ea1",
+    "sourceVerified": true
+  },
+  {
+    "id": "luminous",
+    "attacks": 1359,
+    "counts": {
+      "aligned": 125,
+      "unresolved": 411,
+      "ambiguous": 52,
+      "outside-bound": 59,
+      "boundary-retained": 0,
+      "correctionCandidates": 712
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "0a8dbbe5f0c05f2f4292e65c18498aa8e6e0e1ab8baf76318a6b8e2d78b0165a",
+    "sourceVerified": true
+  },
+  {
+    "id": "colorful",
+    "attacks": 1519,
+    "counts": {
+      "aligned": 88,
+      "unresolved": 399,
+      "ambiguous": 44,
+      "outside-bound": 81,
+      "boundary-retained": 0,
+      "correctionCandidates": 907
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "a5b9a314157263d3625909ffa46a1c52957ea05224091b3c41b7e57020500cd4",
+    "sourceVerified": true
+  },
+  {
+    "id": "silvergarden",
+    "attacks": 1581,
+    "counts": {
+      "aligned": 136,
+      "unresolved": 428,
+      "ambiguous": 65,
+      "outside-bound": 117,
+      "boundary-retained": 1,
+      "correctionCandidates": 834
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 12.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "a85d19c2574e4a40dbe155aaeace949008f85c6a426d85e5f1eaf7321734cd36",
+    "sourceVerified": true
+  },
+  {
+    "id": "freedomdive",
+    "attacks": 1980,
+    "counts": {
+      "aligned": 291,
+      "unresolved": 409,
+      "ambiguous": 105,
+      "outside-bound": 382,
+      "boundary-retained": 0,
+      "correctionCandidates": 793
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 9.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "d1b449642da8e9ae528010d4837658a213ac72dc05d628e261241dcd0a563f48",
+    "sourceVerified": true
+  },
+  {
+    "id": "bluezenith",
+    "attacks": 2247,
+    "counts": {
+      "aligned": 541,
+      "unresolved": 527,
+      "ambiguous": 57,
+      "outside-bound": 255,
+      "boundary-retained": 0,
+      "correctionCandidates": 867
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 8.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "78d1ce3256e16eb07d4b7b35b198ce0ddfee60a7ed409b9f0ef0e604f6591df4",
+    "sourceVerified": true
+  },
+  {
+    "id": "ghost",
+    "attacks": 2359,
+    "counts": {
+      "aligned": 312,
+      "unresolved": 866,
+      "ambiguous": 82,
+      "outside-bound": 196,
+      "boundary-retained": 0,
+      "correctionCandidates": 903
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 10.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "b7012a450947cb1edc5d43ceeb16680a6414e542ba8b7462be429f80a8ce8751",
+    "sourceVerified": true
+  },
+  {
+    "id": "crystallized",
+    "attacks": 1702,
+    "counts": {
+      "aligned": 169,
+      "unresolved": 620,
+      "ambiguous": 56,
+      "outside-bound": 131,
+      "boundary-retained": 0,
+      "correctionCandidates": 726
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "21d6e83816ce653f8ee20790dafe446c51085e12bb0e820ebbf6ae4bfedd921c",
+    "sourceVerified": true
+  },
+  {
+    "id": "exit",
+    "attacks": 2421,
+    "counts": {
+      "aligned": 143,
+      "unresolved": 1017,
+      "ambiguous": 74,
+      "outside-bound": 296,
+      "boundary-retained": 0,
+      "correctionCandidates": 891
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 14.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "f78689869571e706298b8d5c32fbaa507c4ed70d238a2345226f926e4cfaf939",
+    "sourceVerified": true
+  },
+  {
+    "id": "kitasaitama",
+    "attacks": 905,
+    "counts": {
+      "aligned": 119,
+      "unresolved": 289,
+      "ambiguous": 24,
+      "outside-bound": 62,
+      "boundary-retained": 0,
+      "correctionCandidates": 411
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 10.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "5d1f300cd92c6d9c25452c33493bdc8ab95a9e1d8440b5391f707438dd124b4b",
+    "sourceVerified": true
+  },
+  {
+    "id": "madasaitama",
+    "attacks": 918,
+    "counts": {
+      "aligned": 154,
+      "unresolved": 189,
+      "ambiguous": 59,
+      "outside-bound": 122,
+      "boundary-retained": 0,
+      "correctionCandidates": 394
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 9.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "edffe61d73ab597ca3439b6b299d20303e097ba129fc296042b48160cc3b49ff",
+    "sourceVerified": true
+  },
+  {
+    "id": "yuugen",
+    "attacks": 830,
+    "counts": {
+      "aligned": 132,
+      "unresolved": 132,
+      "ambiguous": 80,
+      "outside-bound": 92,
+      "boundary-retained": 1,
+      "correctionCandidates": 393
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 10.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "3f12e9ca492bd58a5c06ece327df1dcfded98014a35aaf5adc81017452edd7de",
+    "sourceVerified": true
+  },
+  {
+    "id": "donkama",
+    "attacks": 938,
+    "counts": {
+      "aligned": 122,
+      "unresolved": 66,
+      "ambiguous": 91,
+      "outside-bound": 64,
+      "boundary-retained": 0,
+      "correctionCandidates": 595
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 34,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "878f352abc5d14b1c3b7cadf3dc0559bfb3518e17be568e0c372f93c95143fc9",
+    "sourceVerified": true
+  },
+  {
+    "id": "angeldream",
+    "attacks": 827,
+    "counts": {
+      "aligned": 36,
+      "unresolved": 82,
+      "ambiguous": 14,
+      "outside-bound": 20,
+      "boundary-retained": 0,
+      "correctionCandidates": 675
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 13.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "d850fc45e08abea1e5342e2b8264059bbff54f3399d40bdd548b096c5ee14c35",
+    "sourceVerified": true
+  },
+  {
+    "id": "disappearance",
+    "attacks": 2059,
+    "counts": {
+      "aligned": 153,
+      "unresolved": 468,
+      "ambiguous": 118,
+      "outside-bound": 158,
+      "boundary-retained": 0,
+      "correctionCandidates": 1162
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "1d9f7d99e973c2c1d136ff6f8a58617f2120a99f9f318abc4bc1958d137bef39",
+    "sourceVerified": true
+  },
+  {
+    "id": "intensevoice",
+    "attacks": 1819,
+    "counts": {
+      "aligned": 184,
+      "unresolved": 631,
+      "ambiguous": 59,
+      "outside-bound": 151,
+      "boundary-retained": 0,
+      "correctionCandidates": 794
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "d2abf1cd9179a8fdf1861deeea998a121024b8321efa833dd5787733221630b3",
+    "sourceVerified": true
+  },
+  {
+    "id": "machinegun",
+    "attacks": 987,
+    "counts": {
+      "aligned": 105,
+      "unresolved": 92,
+      "ambiguous": 24,
+      "outside-bound": 42,
+      "boundary-retained": 0,
+      "correctionCandidates": 724
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 12.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "ceb79b41b99bd1e34b45f7d9101187bf2797a1422f3cf357ec74a25100df2aab",
+    "sourceVerified": true
+  },
+  {
+    "id": "jinsei",
+    "attacks": 1188,
+    "counts": {
+      "aligned": 225,
+      "unresolved": 294,
+      "ambiguous": 45,
+      "outside-bound": 93,
+      "boundary-retained": 0,
+      "correctionCandidates": 531
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 9.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "256416259a7f4adbb5f74ca7e3681e39713f2eb192a2aacdc7d0050e0a758dd8",
+    "sourceVerified": true
+  },
+  {
+    "id": "yaminabe",
+    "attacks": 906,
+    "counts": {
+      "aligned": 126,
+      "unresolved": 110,
+      "ambiguous": 31,
+      "outside-bound": 50,
+      "boundary-retained": 0,
+      "correctionCandidates": 589
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "ba8c1acf90a5d1bb64013a8563c42443e5bd772aefad5b301e07bb9af9e609f3",
+    "sourceVerified": true
+  },
+  {
+    "id": "whatsuppop",
+    "attacks": 1264,
+    "counts": {
+      "aligned": 154,
+      "unresolved": 338,
+      "ambiguous": 28,
+      "outside-bound": 84,
+      "boundary-retained": 0,
+      "correctionCandidates": 660
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "d7301928ab01efeac24a250f7321c3448c14da3a24284441146ca539199eac96",
+    "sourceVerified": true
+  },
+  {
+    "id": "ogyarinizer",
+    "attacks": 904,
+    "counts": {
+      "aligned": 90,
+      "unresolved": 263,
+      "ambiguous": 27,
+      "outside-bound": 78,
+      "boundary-retained": 0,
+      "correctionCandidates": 446
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 12.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "56e505004492b85af62730df0dac5bf38ba081972e937334f8202aae86fbd099",
+    "sourceVerified": true
+  },
+  {
+    "id": "daijobu",
+    "attacks": 1030,
+    "counts": {
+      "aligned": 161,
+      "unresolved": 185,
+      "ambiguous": 56,
+      "outside-bound": 101,
+      "boundary-retained": 0,
+      "correctionCandidates": 527
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 10.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "95e80fde412640a398931c231468e1dd2f319f52699109fe565ee0d33e4a8aa4",
+    "sourceVerified": true
+  },
+  {
+    "id": "kusaregedou",
+    "attacks": 1283,
+    "counts": {
+      "aligned": 107,
+      "unresolved": 498,
+      "ambiguous": 18,
+      "outside-bound": 88,
+      "boundary-retained": 0,
+      "correctionCandidates": 572
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 11.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "73ea08940be5330ae5e260402ad03263321610a6295a4ec9c64e003fe37d2cf9",
+    "sourceVerified": true
+  },
+  {
+    "id": "amara",
+    "attacks": 1318,
+    "counts": {
+      "aligned": 219,
+      "unresolved": 200,
+      "ambiguous": 78,
+      "outside-bound": 125,
+      "boundary-retained": 0,
+      "correctionCandidates": 696
+    },
+    "auditoryPlaytest": false,
+    "maximumCandidateMs": 35,
+    "medianCandidateMs": 9.0,
+    "appliedToShippedNotes": false,
+    "sourceSha256": "39f57ba0515d9f0a8f6c5fd73ce43f3d7b145605f0243d85739cdca81e91ed2f",
+    "sourceVerified": true
+  }
+]

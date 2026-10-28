@@ -4,9 +4,9 @@ const SAMPLES=[['C3',48],['Fs3',54],['C4',60],['Fs4',66],['C5',72],['Fs5',78]];
 export function createPianoSound({contextFactory=()=>new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'}),sampleLoader=async(url,ctx)=>{
   const response=await fetch(url,{signal:AbortSignal.timeout(10000)});if(!response.ok)throw Error('Piano sample unavailable');return ctx.decodeAudioData(await response.arrayBuffer());
 }}={}){
-  let context=null,master=null,enabled=true,volume=18,loading=null;
+  let context=null,master=null,enabled=true,volume=18,loading=null,retryAt=0;
   const voices=new Set(),samples=new Map();
-  function mix(){if(master)master.gain.setTargetAtTime(enabled?volume/100/Math.sqrt(Math.max(1,voices.size)):0,context.currentTime,.004);}
+  function mix(){if(master)master.gain.setTargetAtTime(enabled?volume/100/Math.sqrt(Math.max(1,Math.min(4,voices.size))):0,context.currentTime,.004);}
   function warm(){
     if(!enabled||!volume)return false;
     try{
@@ -16,7 +16,9 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
         master.connect(compressor);compressor.connect(context.destination);mix();
       }
       if(context.state==='suspended')context.resume().catch(()=>{});
-      if(!loading)loading=Promise.all(SAMPLES.map(async([name,midi])=>{
+      const missing=SAMPLES.filter(([,midi])=>!samples.has(midi));
+      if(!loading&&missing.length&&context.currentTime>=retryAt)loading=Promise.all(missing.map(async([name,midi])=>{
+        try{
         const buffer=await sampleLoader(new URL('./audio/piano/'+name+'.mp3',import.meta.url),context);
         let offset=0,normalization=1;
         if(buffer.getChannelData){const data=buffer.getChannelData(0),limit=Math.min(data.length,Math.floor(buffer.sampleRate*.15));for(let i=0;i<limit;i++)if(Math.abs(data[i])>.002){offset=Math.max(0,(i-32)/buffer.sampleRate);break;}}
@@ -28,17 +30,19 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
           if(peak>.001)normalization=Math.min(8,.85/peak);
         }
         samples.set(midi,{buffer,offset,normalization});
-      })).then(()=>true).catch(()=>{samples.clear();loading=null;return false;});
+        return true;
+        }catch{return false;}
+      })).then(()=>{loading=null;retryAt=context.currentTime+2;return samples.size>0;});
       return true;
     }catch{return false;}
   }
-  async function prepare(){return warm()?await loading:false;}
+  async function prepare(){if(!warm())return false;return loading?await loading:samples.size>0;}
   function stop(){for(const voice of [...voices])voice.stop();mix();}
   function configure(options){enabled=options.enabled===true;volume=Math.max(0,Math.min(100,Number(options.volume)||0));if(!enabled||!volume)stop();mix();}
   function play({midi=62,hold=0,float=false,percussive=false}={}){
     if(!enabled||!volume||!Number.isFinite(midi)||!warm())return false;
     // Never enqueue a key-down while loading: a late note would feel like key-up sound.
-    if(!float&&samples.size!==SAMPLES.length)return false;
+    if(!float&&!samples.size)return false;
     while(voices.size>=16)voices.values().next().value.stop();
     const now=context.currentTime,nodes=[];let stopped=false,remaining=float?3:1;
     const voice={stop(){if(stopped)return;stopped=true;for(const {source,gain}of nodes){gain.gain.cancelScheduledValues(context.currentTime);gain.gain.setTargetAtTime(.00001,context.currentTime,.005);try{source.stop(context.currentTime+.025);}catch{}}voices.delete(voice);mix();}};
@@ -51,11 +55,11 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
         gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(amplitude,now+.002);gain.gain.exponentialRampToValueAtTime(.00001,now+decay);ended(source,gain);source.start(now);source.stop(now+decay+.015);
       }
     }else{
-      const pitch=percussive?60:Math.max(21,Math.min(108,midi)),root=SAMPLES.reduce((a,b)=>Math.abs(b[1]-pitch)<Math.abs(a[1]-pitch)?b:a)[1];
+      const pitch=percussive?60:Math.max(21,Math.min(108,midi)),root=[...samples.keys()].reduce((a,b)=>Math.abs(b-pitch)<Math.abs(a-pitch)?b:a);
       const {buffer,offset,normalization}=samples.get(root),source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
       source.buffer=buffer;source.playbackRate.setValueAtTime(2**((pitch-root)/12),now);
-      filter.type='highpass';filter.frequency.value=percussive?2300:75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
-      const duration=percussive?.065:hold>0?Math.min(2.4,Math.max(.9,hold)):.5,attack=normalization*(percussive?.5:1),release=percussive?.03:.09;
+      filter.type='highpass';filter.frequency.value=percussive?1600:75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
+      const duration=percussive?.065:hold>0?Math.min(2.4,Math.max(.9,hold)):.5,attack=normalization*(percussive?1.8:1),release=percussive?.03:.09;
       gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(attack,now+.001);gain.gain.setValueAtTime(attack,now+duration-release);gain.gain.exponentialRampToValueAtTime(.00001,now+duration);
       ended(source,gain,filter);source.start(now,offset);source.stop(now+duration+.01);
     }

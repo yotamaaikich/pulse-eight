@@ -12,7 +12,9 @@ import {webcrypto} from 'node:crypto';
 import {difficultyMetrics,orderedSongs} from '../catalog.mjs';
 import * as engine from '../engine.mjs';
 import {projectPoint} from '../geometry.mjs';
-import {PlaybackGate} from '../playback.mjs';
+import {PlaybackGate,inputClock} from '../playback.mjs';
+import {noteTravelSeconds,leadInSeconds,leadInClock} from '../lead-in.mjs';
+import {keySoundRequests} from '../key-sound.mjs';
 import {drawAirRibbons,drawAirHead} from '../air.mjs';
 const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async prepare(){return true;},stop(){},configure(o){Object.assign(this,o);},play(o){if(this.enabled&&this.volume)soundCalls.push(o);}};
 const createPianoSound=()=>soundStub;
@@ -22,7 +24,7 @@ function element(id){if(!elements.has(id)){const classes=new Set();elements.set(
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(){}},hidden:false};
 const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.state=1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;return fakePlayer;}}};
-const scope=vm.createContext({...engine,MONITORING_PIANO_PROFILE,referenceChart,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
+const scope=vm.createContext({...engine,MONITORING_PIANO_PROFILE,referenceChart,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,noteTravelSeconds,leadInSeconds,leadInClock,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
 vm.runInContext(source+`\nglobalThis.qa={quit,start,draw,finish,pause,resume,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get eligible(){return eligible},get referenceRun(){return referenceRun},get notes(){return notes},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
 window.onYouTubeIframeAPIReady();fakePlayer.options.events.onReady();
@@ -102,9 +104,9 @@ fakePlayer.state=1;fakePlayer.time=.05;fakePlayer.options.events.onStateChange({
 scope.qa.setTrial();scope.qa.setPractice([{t:1,lane:0,soundMidi:62},{t:2,lane:1,end:3,soundMidi:65}],1);soundCalls.length=0;
 down('KeyA');assert.equal(soundCalls.length,1);down('KeyA');assert.equal(soundCalls.length,1);up('KeyA');assert.equal(soundCalls.length,1);
 scope.qa.setClock(2);down('KeyS');assert.equal(soundCalls.length,2);scope.qa.setClock(3);up('KeyS');assert.equal(soundCalls.length,2);
-scope.qa.setPractice([{t:1,lane:3,flick:true,soundMidi:69}]);soundCalls.length=0;down('KeyF');assert.equal(soundCalls.length,0);down('Space');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].float,true);up('Space');up('KeyF');assert.equal(soundCalls.length,1);
-elements.get('pianoOn').checked=false;elements.get('pianoOn').onchange();scope.qa.setPractice([{t:1,lane:0,soundMidi:62}],1);down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);
-elements.get('pianoOn').checked=true;elements.get('pianoOn').onchange();elements.get('pianoLevel').value='0';elements.get('pianoLevel').oninput();scope.qa.setPractice([{t:1,lane:0,soundMidi:62}],1);down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);
+scope.qa.setPractice([{t:1,lane:3,flick:true,soundMidi:69}]);soundCalls.length=0;down('KeyF');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].float,false);down('Space');assert.equal(soundCalls.length,2);assert.equal(soundCalls[1].float,true);up('Space');up('KeyF');assert.equal(soundCalls.length,2);
+elements.get('pianoOn').checked=false;elements.get('pianoOn').onchange();scope.qa.setPractice([{t:1,lane:0,soundMidi:62}],1);down('KeyA');up('KeyA');assert.equal(soundCalls.length,2);
+elements.get('pianoOn').checked=true;elements.get('pianoOn').onchange();elements.get('pianoLevel').value='0';elements.get('pianoLevel').oninput();scope.qa.setPractice([{t:1,lane:0,soundMidi:62}],1);down('KeyA');up('KeyA');assert.equal(soundCalls.length,2);
 
 // Every library song can use its own score, including actual key-down audio.
 elements.get('pianoLevel').value='18';elements.get('pianoLevel').oninput();
@@ -124,7 +126,7 @@ elements.get('pianoScoreFile').files=[{size:100,name:'reference.mml',text:async(
 scope.qa.start();assert.equal(scope.qa.referenceRun,false);assert.equal(scope.qa.eligible,true);scope.qa.quit();
 
 // A fresh browser sees why keys are silent and can go straight to the local file chooser.
-scope.qa.selectSong(2);assert.match(elements.get('pianoTrialStatus').textContent,/このブラウザ/);assert.equal(elements.get('pianoImportShortcut').hidden,false);
+scope.qa.selectSong(2);assert.match(elements.get('pianoTrialStatus').textContent,/打鍵音（音程データ未登録）/);assert.equal(elements.get('pianoImportShortcut').hidden,false);
 elements.get('pianoImportShortcut').onclick();assert.equal(elements.get('settingsDialog').open,true);assert.equal(elements.get('pianoScoreDetails').open,true);assert.equal(elements.get('pianoScoreFile').clicked,true);
 elements.get('settingsDialog').close();scope.qa.selectSong(0);assert.equal(elements.get('pianoImportShortcut').hidden,true);assert.match(elements.get('pianoTrialStatus').textContent,/鍵盤音 ON/);
 
@@ -134,3 +136,13 @@ scope.qa.quit();scope.qa.selectSong(0);scope.qa.start();
 const annotated=Array.from(scope.qa.notes);assert.ok(annotated.some(n=>Number.isFinite(n.soundMidi)));assert.ok(annotated.some(n=>!Number.isFinite(n.soundMidi)));
 const voiced=annotated.find(n=>Number.isFinite(n.soundMidi));scope.qa.setPractice([{t:1,lane:0,soundMidi:voiced.soundMidi}],1);soundCalls.length=0;down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].midi,voiced.soundMidi);assert.equal(soundCalls[0].percussive,false);
 scope.qa.setPractice([{t:1,lane:0}],1);soundCalls.length=0;down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].percussive,true);scope.qa.quit();
+
+// A keyboard event uses a fresh player timestamp, rather than the previous frame.
+scope.qa.setPractice([{t:1,lane:0}],1);fakePlayer.time=1.024;fakePlayer.state=1;down('KeyA');
+assert.equal(scope.qa.events[0][0],1024);up('KeyA');scope.qa.quit();
+
+// Every song has feedback even without an imported melodic score. Empty keys
+// produce only the short recorded strike; releasing never retriggers it.
+scope.qa.selectSong(2);scope.qa.setPractice([{t:1,lane:0}],1);fakePlayer.time=.05;soundCalls.length=0;
+down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].percussive,true);
+down('KeyS');up('KeyS');assert.equal(soundCalls.length,2);assert.equal(soundCalls[1].percussive,true);scope.qa.quit();

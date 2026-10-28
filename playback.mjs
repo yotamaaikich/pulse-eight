@@ -1,5 +1,11 @@
 // The public YouTube API has no ad event. Treat a stopped content clock as
 // waiting instead, and require fresh forward progress before resuming play.
+// A key event may arrive between animation frames. Sample its content time
+// without accepting a seek, a rewind, or a paused/buffering clock.
+export function inputClock(frameTime,raw,state,frameAgeMs=0){
+ const advance=Math.max(.12,Math.min(.75,Math.max(0,frameAgeMs)/1000+.04));
+ return state===1&&Number.isFinite(raw)&&raw>=frameTime-.02&&raw<=frameTime+advance?Math.max(frameTime,raw):frameTime;
+}
 export class PlaybackGate {
   constructor(){this.reset(0);}
   reset(now,time=0){this.time=time;this.lastRaw=time;this.lastSample=now;this.lastMoving=now;this.progress=0;this.waiting=true;this.nonPlayingSince=null;}

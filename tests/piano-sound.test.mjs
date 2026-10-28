@@ -4,14 +4,14 @@ import {createPianoSound} from '../piano-sound.mjs';
 import {pianoTrialChart,scoreNoteAt} from '../piano-trial.mjs';
 const TEST_SCORE={offsetMs:0,voices:[[[1000,1500,69,12],[2000,2500,65,12]],[[1000,1500,50,12],[2000,2500,48,12]]]};
 import {SONGS,makeChart,scoreChartReplay} from '../engine.mjs';
-function fixture({fail=false}={}){
+function fixture({fail=false,failSample=null}={}){
  const oscillators=[],sources=[],gains=[],requests=[];let resumes=0;
  const parameter=()=>({value:0,events:[],setValueAtTime(v,t){this.events.push(['set',v,t]);},setTargetAtTime(v,t,c){this.events.push(['target',v,t,c]);},linearRampToValueAtTime(v,t){this.events.push(['linear',v,t]);},exponentialRampToValueAtTime(v,t){this.events.push(['exp',v,t]);},cancelScheduledValues(){}});
  const node=()=>({connect(){},disconnect(){}});
  const playable=()=>({...node(),starts:[],stops:[],start(...args){this.starts.push(args);},stop(t){this.stops.push(t);}});
  const context={state:'suspended',currentTime:12,destination:{},resume(){resumes++;this.state='running';return Promise.resolve();},createGain(){const n={...node(),gain:parameter()};gains.push(n);return n;},createDynamicsCompressor(){return {...node(),...Object.fromEntries(['threshold','knee','ratio','attack','release'].map(k=>[k,parameter()]))};},createBiquadFilter(){return {...node(),frequency:parameter(),Q:parameter()};},createBufferSource(){const n={...playable(),playbackRate:parameter()};sources.push(n);return n;},createOscillator(){const n={...playable(),frequency:parameter()};oscillators.push(n);return n;}};
- const sampleLoader=async(url)=>{requests.push(String(url));if(fail)throw Error('offline');const data=new Float32Array(800);data.fill(.25,64);return {name:String(url).split('/').at(-1),sampleRate:48000,getChannelData:()=>data};};
- const piano=createPianoSound({contextFactory:()=>context,sampleLoader});return {piano,context,oscillators,sources,gains,requests,get resumes(){return resumes;}};
+ const sampleLoader=async(url)=>{requests.push(String(url));if(fail||String(url).endsWith('/'+failSample))throw Error('offline');const data=new Float32Array(800);data.fill(.25,64);return {name:String(url).split('/').at(-1),sampleRate:48000,getChannelData:()=>data};};
+ const piano=createPianoSound({contextFactory:()=>context,sampleLoader});return {piano,context,oscillators,sources,gains,requests,unfail(){failSample=null;},get resumes(){return resumes;}};
 }
 test('recorded piano begins at the exact key-down with leading silence trimmed and a short release',async()=>{
  const f=fixture();f.piano.configure({enabled:true,volume:18});assert.ok(await f.piano.prepare());assert.equal(f.resumes,1);assert.equal(f.requests.length,6);
@@ -51,4 +51,17 @@ test('quiet recorded attacks are normalized before applying the dedicated piano 
 test('unpitched key feedback is a short recorded attack, not a sustained fixed note',async()=>{
  const f=fixture();await f.piano.prepare();f.piano.play({midi:62,hold:3,percussive:true});
  assert.equal(f.sources[0].buffer.name,'C4.mp3');assert.equal(f.sources[0].playbackRate.events[0][1],1);assert.ok(Math.abs(f.sources[0].stops[0]-12.075)<1e-8);assert.equal(f.oscillators.length,0);
+});
+
+test('one failed sample does not mute the ready piano roots, and only that sample is retried',async()=>{
+ const f=fixture({failSample:'C4.mp3'});assert.equal(await f.piano.prepare(),true);
+ assert.equal(f.piano.play({midi:60}),true);assert.notEqual(f.sources[0].buffer.name,'C4.mp3');
+ assert.equal(f.requests.length,6);f.unfail();f.context.currentTime+=2.1;
+ assert.equal(await f.piano.prepare(),true);assert.equal(f.requests.length,7);
+ assert.equal(f.piano.play({midi:60}),true);assert.equal(f.sources.at(-1).buffer.name,'C4.mp3');
+});
+
+test('decaying tails cannot turn dense keyboard passages down below half the configured volume',async()=>{
+ const f=fixture();await f.piano.prepare();for(let i=0;i<12;i++)f.piano.play({midi:60+i});
+ assert.ok(f.gains[0].gain.events.at(-1)[1]>=.09);
 });
