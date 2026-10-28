@@ -8,6 +8,16 @@ import {chartAttacks} from '../audio-chart.mjs';
 import {keySoundRequests} from '../key-sound.mjs';
 import {SONGS,makeChart,RhythmSession} from '../engine.mjs';
 
+test('hand-offs preserve each piano voice even when the main voice moves to the leftmost key',()=>{
+ const song=SONGS[0],profile={offsetMs:0,voices:[[[1000,2000,72]],[[1000,2000,64]]]};
+ for(const score of [null,profile]){
+  const original=pianoTrialChart(song,[{t:1,lane:7},{t:1,lane:0}],score);
+  const swapped=pianoTrialChart(song,[{t:1,lane:0,pianoOrder:0},{t:1,lane:7,pianoOrder:1}],score);
+  assert.deepEqual(swapped.map(n=>n.soundMidi),original.map(n=>n.soundMidi));
+  if(score)assert.deepEqual(swapped.map(n=>n.soundMidi),[72,64]);
+ }
+});
+
 test('estimated bass cannot escape into key feedback; confirmed melodies retain their register',()=>{
  for(const kind of [0,3])for(let midi=48;midi<=88;midi++){
   const voiced=arrangedPianoPitch(midi,kind);assert.ok(voiced>=60);assert.equal(voiced%12,midi%12);

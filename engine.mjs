@@ -1,9 +1,10 @@
 import {makeAudioChart,AUDIO_SOURCES} from './audio-chart.mjs?v=arrangement-12';
-import {applyTrills} from './trills.mjs?v=trills-18';
+import {applyTrills} from './trills.mjs?v=hands-19';
+import {arrangeHands} from './hand-arrangement.mjs?v=hands-19';
 import {EXTRA_SONGS,makeExpansionChart} from './expansion.mjs';
 import {TAIKO_SONGS,makeTaikoChart} from './taiko.mjs';
 import {PROSEKA_SONGS,makeProsekaChart} from './proseka.mjs';
-export const CHART_VERSION = 'piano8-trills-v18';
+export const CHART_VERSION = 'piano8-hands-v19';
 export const WINDOW = 0.17;
 export const HOLD_GRACE = 0.12;
 export const FLICK_WINDOW = 0.22;
@@ -47,14 +48,14 @@ const REFERENCES = {
 };
 for(const song of SONGS){song.pack='vocaloid';song.source=REFERENCES[song.id];song.chartLabel='主旋律の輪郭を使った簡略アレンジ';}
 SONGS.push(...EXTRA_SONGS,...TAIKO_SONGS,...PROSEKA_SONGS);
-for(const s of SONGS)s.chartLabel=AUDIO_SOURCES[s.id]?.phrases?'歌のフレーズと楽器のアタックに沿う8鍵アレンジ':'楽器のアタックと音の強弱に沿う8鍵アレンジ';
+for(const s of SONGS)s.chartLabel='主旋律を左右交代で弾く、片手メロディ＋伴奏の8鍵アレンジ';
 
 // The shipped charts use the source audio's attacks and, where available, caption phrase boundaries.
 function makeRawChart(song,difficulty){return makeAudioChart(song,difficulty);}
 // Reuse the authored rhythm, but place AIR in short phrases with real release gaps.
 export function makeChart(song,difficulty){
   const chart=makeRawChart(song,difficulty);
-  if(difficulty!==2)return applyTrills(song,chart,difficulty);
+  if(difficulty!==2)return applyTrills(song,arrangeHands(song,chart),difficulty);
   const anchors=chart.filter(n=>n.flick&&!n.assist);
   for(const n of chart)delete n.flick;
   const manual=chart.filter(n=>!n.assist),eligible=[],nextAt=Array(8).fill(Infinity);
@@ -72,7 +73,7 @@ export function makeChart(song,difficulty){
     for(const n of phrase)n.flick=true;
     previousEnd=phrase.at(-1).t;
   }
-  return applyTrills(song,chart,difficulty);
+  return applyTrills(song,arrangeHands(song,chart),difficulty);
 }
 export function judgment(delta) {
   const d = Math.round(Math.abs(delta)*1000000)/1000000;

@@ -26,7 +26,7 @@ export function applySourcePiano(song,chart){
   const result=chart.map(n=>({...n})),groups=new Map();
   for(const n of result)if(!n.assist){if(!groups.has(n.t))groups.set(n.t,[]);groups.get(n.t).push(n);}
   for(const group of groups.values()){
-    for(const [index,n] of [...group].sort((a,b)=>b.lane-a.lane).entries()){
+    for(const [index,n] of [...group].sort((a,b)=>(a.pianoOrder??-a.lane)-(b.pianoOrder??-b.lane)).entries()){
       if(Number.isFinite(n.soundMidi))continue;
       const row=sourceAt(song.id,n.sourceMs??Math.round(n.t*1000));if(!row)continue;
       Object.assign(n,{soundMidi:arrangedPianoPitch(row[index?2:1],row[3]),soundOrigin:ORIGINS[row[3]],soundSourceStart:row[0],soundVelocity:row[3]===1?1:row[3]===3?.55:.75});

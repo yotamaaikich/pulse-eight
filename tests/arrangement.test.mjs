@@ -7,48 +7,69 @@ import {SECTION_CONTROLS,SUSTAIN_CANDIDATES} from '../arrangement-data.mjs';
 import {sectionAt,measuredSustain,attackGap} from '../arrangement.mjs';
 import {makeChart,RhythmSession} from '../engine.mjs';
 import {applyTrills} from '../trills.mjs';
-import {TRILL_PHRASES,TRILL_CONTOURS} from '../trill-data.mjs';
 
-test('each authored NORMAL and HARD chart uses all eight fixed input lanes for trills',()=>{
- for(const id of Object.keys(TRILL_PHRASES))for(const d of [1,2]){
-  const notes=makeChart(SONGS.find(s=>s.id===id),d).filter(n=>n.trill);
-  const counts=Array.from({length:8},(_,lane)=>notes.filter(n=>n.lane===lane).length);
-  assert.ok(counts.every(count=>count>0),id+'/'+d+': unused trill lane '+counts);
+test('all 35 songs keep each melody phrase in one hand and alternate the lead between phrases',()=>{
+ for(const song of SONGS)for(const difficulty of [0,1,2]){
+  const chart=makeChart(song,difficulty),phrases=[...Map.groupBy(chart,n=>n.handPhrase).values()];
+  assert.ok(phrases.length>=2,song.id);
+  const hands=new Set();
+  for(const [i,notes]of phrases.entries()){
+   const hand=notes[0].melodyHand;hands.add(hand);
+   if(i)assert.notEqual(hand,phrases[i-1][0].melodyHand,'lead must alternate at the phrase hand-off');
+   for(const n of notes){
+    assert.equal(n.melodyHand,hand);
+    assert.equal(Math.floor(n.lane/4),n.part==='melody'?hand:1-hand,song.id+'/'+difficulty+' split the lead between hands');
+   }
+  }
+  assert.equal(hands.size,2);
+  assert.ok(chart.some(n=>n.part==='support'&&n.end),'opposite hand retains held accompaniment');
+  for(let lane=0;lane<8;lane++)assert.ok(chart.some(n=>n.lane===lane),song.id+'/'+difficulty+' unused input lane');
  }
 });
 
-test('authored trills alternate two keys within each block and move by one lane with the phrase',()=>{
- for(const id of Object.keys(TRILL_PHRASES))for(const d of [1,2]){
-  const song=SONGS.find(s=>s.id===id),chart=makeChart(song,d),phrases=Map.groupBy(chart.filter(n=>n.trill),n=>n.trill);
-  assert.ok(phrases.size>=2,id+'/'+d+' missing trill phrases');
-  for(const notes of phrases.values()){
-   assert.ok(notes.length>=(d===2?8:6));assert.ok(notes.every(n=>!n.end&&!n.flick&&!n.chord));
+test('every HARD song has a recognizable trill with eight uninterrupted alternating hits in one hand',()=>{
+ for(const song of SONGS){
+  const chart=makeChart(song,2),phrases=[...Map.groupBy(chart.filter(n=>n.trill),n=>n.trill).values()];
+  assert.ok(phrases.length,song.id+' lacks an actual trill');
+  for(const notes of phrases){
+   assert.ok(notes.length>=8);
+   assert.equal(new Set(notes.map(n=>n.melodyHand)).size,1);
+   assert.equal(new Set(notes.slice(0,8).map(n=>n.lane)).size,2);
+   for(let i=2;i<8;i++)assert.equal(notes[i].lane,notes[i-2].lane);
+   const start=notes[0].t,end=notes.at(-1).t;
+   const lead=chart.filter(n=>n.part==='melody'&&n.t>=start&&n.t<=end);
+   assert.deepEqual(lead,notes,'an unrelated melody head interrupts the visible trill');
+   for(let i=1;i<notes.length;i++)assert.notEqual(notes[i].lane,notes[i-1].lane);
    const blocks=[...Map.groupBy(notes,n=>n.trillStep).values()];
    for(const block of blocks){assert.equal(new Set(block.map(n=>n.lane)).size,2);for(let i=2;i<block.length;i++)assert.equal(block[i].lane,block[i-2].lane);}
-   for(let i=1;i<notes.length;i++)assert.notEqual(notes[i].lane,notes[i-1].lane,'moving boundary introduced a jack');
-   for(let i=1;i<blocks.length;i++){const a=[...new Set(blocks[i-1].map(n=>n.lane))].sort(),b=[...new Set(blocks[i].map(n=>n.lane))].sort();assert.ok(Math.abs(b[0]-a[0])<=1);assert.equal(b[0]-a[0],b[1]-a[1]);}
+   for(let i=1;i<blocks.length;i++){
+    const a=[...new Set(blocks[i-1].map(n=>n.lane))].sort(),b=[...new Set(blocks[i].map(n=>n.lane))].sort();
+    assert.ok(Math.abs(b[0]-a[0])<=1);assert.equal(b[0]-a[0],b[1]-a[1]);
+   }
    const session=new RhythmSession(notes,song.duration);for(const n of notes){session.press(n.t,n.lane);session.release(n.t+.025,n.lane);}session.finish();assert.equal(session.stats.miss,0);
   }
  }
 });
 
-test('Disappearance includes actual rising moving trills, falling trills, and a stable alternating run',()=>{
+test('Disappearance has extended alternating and moving phrases with the other hand playing a simpler line',()=>{
  const chart=makeChart(SONGS.find(s=>s.id==='disappearance'),2);
- const rising=chart.filter(n=>n.trill==='disappearance-2-2');assert.ok(rising.length>=8);
- const blocks=[...Map.groupBy(rising,n=>n.trillStep).values()].map(b=>Math.min(...b.map(n=>n.lane)));
- assert.ok(blocks.some((n,i)=>i&&n>blocks[i-1]));assert.ok(blocks.every((n,i)=>!i||n>=blocks[i-1]));
- const falling=chart.filter(n=>n.trill==='disappearance-2-3');assert.ok(falling.length>=8);assert.ok(Math.min(...falling.slice(4).map(n=>n.lane))<Math.min(...falling.slice(0,4).map(n=>n.lane)));
- const stable=chart.filter(n=>n.trill==='disappearance-2-1');assert.ok(stable.length>=12);assert.equal(new Set(stable.map(n=>n.lane)).size,2);
+ const phrases=[...Map.groupBy(chart.filter(n=>n.trill),n=>n.trill).values()];
+ assert.ok(phrases.some(notes=>notes.length>=16&&notes[0].trillKind==='trill'));
+ const moving=phrases.find(notes=>notes.length>=12&&notes[0].trillKind==='moving');assert.ok(moving);
+ assert.ok(new Set(moving.map(n=>n.lane)).size>=3);
+ assert.ok(phrases.some(notes=>chart.some(n=>n.part==='support'&&n.t>=notes[0].t&&n.t<=notes.at(-1).t)));
 });
 
-test('moving trills avoid held lanes and retain exact source attacks without changing the input chart',()=>{
- const song=SONGS.find(s=>s.id==='disappearance');
- const source=TRILL_CONTOURS.disappearance.filter(r=>r[0]>=43607&&r[0]<=44485).slice(0,8);
- const chart=[{t:43,end:45,lane:4},{t:43,end:45,lane:5},...source.map(r=>({t:r[0]/1000,sourceMs:r[0],lane:0,degree:0}))];
- const before=structuredClone(chart),arranged=applyTrills(song,chart,2);assert.deepEqual(chart,before);
- const trills=arranged.filter(n=>n.trill);assert.ok(trills.length>=8);assert.ok(trills.every(n=>n.lane!==4&&n.lane!==5));assert.ok(new Set(trills.map(n=>n.lane)).size>2);
+test('trill placement avoids a held key, retains the accompaniment and never changes source attack times',()=>{
+ const song={id:'fixture',bpm:120,duration:10};
+ const taps=Array.from({length:16},(_,i)=>({t:1+i*.125,sourceMs:1000+i*125,lane:7,degree:7,part:'melody',melodyHand:1,handPhrase:0}));
+ const chart=[{t:.8,end:3,lane:4,part:'support'},{t:.8,end:3,lane:0,part:'support'},...taps],before=structuredClone(chart);
+ const arranged=applyTrills(song,chart,2);assert.deepEqual(chart,before);
+ const trills=arranged.filter(n=>n.trill);assert.equal(trills.length,16);assert.ok(trills.every(n=>n.lane>=5&&n.lane<=7));
  assert.deepEqual(arranged.map(n=>[n.t,n.sourceMs,n.end]),chart.map(n=>[n.t,n.sourceMs,n.end]));
+ assert.deepEqual(arranged.filter(n=>n.end),chart.filter(n=>n.end).toSorted((a,b)=>a.t-b.t||a.lane-b.lane));
 });
+
 
 test('every full song has its own contiguous, bounded arrangement controls',()=>{
  assert.equal(Object.keys(SECTION_CONTROLS).length,35);

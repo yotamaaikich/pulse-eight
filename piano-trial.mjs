@@ -1,4 +1,4 @@
-import {applySourcePiano} from './source-piano.mjs?v=piano-register-16';
+import {applySourcePiano} from './source-piano.mjs?v=hands-19';
 export const PIANO_TRIAL_SONG='monitoring';
 // Follow actual pitched notes in the reference score, never a generated chord cycle.
 // Longer score rests do not borrow distant imported notes; source harmony stays available.
@@ -21,8 +21,8 @@ export function pianoTrialChart(song,chart,profile=null){
   for(const [time,group]of groups){
     const at=Math.round(time*1000)-(profile.offsetMs||0),used=new Set();
     const candidates=profile.voices.map((voice,index)=>({note:scoreNoteAt(voice,at),index})).filter(x=>x.note&&(!builtIn||Math.abs(x.note[0]-at)<=10));
-    // Rightmost key takes the main melodic voice; other keys use available score voices.
-    for(const n of [...group].sort((a,b)=>b.lane-a.lane)){
+    // Preserve each source voice when its playable hand changes at a phrase.
+    for(const n of [...group].sort((a,b)=>(a.pianoOrder??-a.lane)-(b.pianoOrder??-b.lane))){
       const candidate=candidates.find(x=>!used.has(pitchFor(x.note[2])));if(!candidate)continue;
       const [start,end,midi]=candidate.note,soundMidi=pitchFor(midi);used.add(soundMidi);
       Object.assign(n,{soundMidi,soundOriginalMidi:midi,soundSourceStart:start,soundSourceEnd:end,soundVoice:candidate.index,soundOrigin:builtIn?'confirmed-vocal':'imported-score',soundVelocity:1});

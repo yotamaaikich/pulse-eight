@@ -1,0 +1,4233 @@
+{
+  "chartVersion": "piano8-hands-v19",
+  "songs": 35,
+  "charts": 105,
+  "heads": 95730,
+  "changedLanes": 79167,
+  "melodyTransitionsWithinPhrases": 73533,
+  "previousHandSwitches": 44070,
+  "currentHandSwitches": 0,
+  "timingAndHoldsChordsFloatsUnchanged": true,
+  "pianoPitchesAndVoicesUnchanged": true,
+  "auditoryPlaytest": false,
+  "chartsReviewed": [
+    {
+      "id": "monitoring",
+      "title": "モニタリング",
+      "difficulty": 0,
+      "heads": 344,
+      "leadHeads": 315,
+      "supportHeads": 29,
+      "supportHolds": 29,
+      "handPhrases": 35,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "monitoring",
+      "title": "モニタリング",
+      "difficulty": 1,
+      "heads": 674,
+      "leadHeads": 599,
+      "supportHeads": 75,
+      "supportHolds": 29,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 56.099,
+          "end": 59.451,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 90.182,
+          "end": 93.604,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 166.319,
+          "end": 169.731,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "monitoring",
+      "title": "モニタリング",
+      "difficulty": 2,
+      "heads": 1128,
+      "leadHeads": 1028,
+      "supportHeads": 100,
+      "supportHolds": 29,
+      "handPhrases": 29,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 19.273,
+          "end": 22.904,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 92.227,
+          "end": 93.953,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 161.998,
+          "end": 163.265,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tetoris",
+      "title": "テトリス",
+      "difficulty": 0,
+      "heads": 332,
+      "leadHeads": 300,
+      "supportHeads": 32,
+      "supportHolds": 32,
+      "handPhrases": 33,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "tetoris",
+      "title": "テトリス",
+      "difficulty": 1,
+      "heads": 842,
+      "leadHeads": 689,
+      "supportHeads": 153,
+      "supportHolds": 32,
+      "handPhrases": 30,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 29.899,
+          "end": 31.814,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            3,
+            1,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 51.22,
+          "end": 53.874,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            2
+          ]
+        },
+        {
+          "start": 81.042,
+          "end": 82.29,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 107.333,
+          "end": 109.987,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tetoris",
+      "title": "テトリス",
+      "difficulty": 2,
+      "heads": 990,
+      "leadHeads": 764,
+      "supportHeads": 226,
+      "supportHolds": 32,
+      "handPhrases": 30,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 1.802,
+          "end": 5.165,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 26.167,
+          "end": 28.083,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "start": 51.22,
+          "end": 53.176,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 78.219,
+          "end": 80.873,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "start": 101.685,
+          "end": 105.058,
+          "heads": 20,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mesmerizer",
+      "title": "メズマライザー",
+      "difficulty": 0,
+      "heads": 380,
+      "leadHeads": 345,
+      "supportHeads": 35,
+      "supportHolds": 35,
+      "handPhrases": 41,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "mesmerizer",
+      "title": "メズマライザー",
+      "difficulty": 1,
+      "heads": 856,
+      "leadHeads": 681,
+      "supportHeads": 175,
+      "supportHolds": 35,
+      "handPhrases": 35,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 9.944,
+          "end": 12.378,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            3,
+            2
+          ]
+        },
+        {
+          "start": 71.085,
+          "end": 72.861,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 116.322,
+          "end": 118.108,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mesmerizer",
+      "title": "メズマライザー",
+      "difficulty": 2,
+      "heads": 1128,
+      "leadHeads": 871,
+      "supportHeads": 257,
+      "supportHolds": 35,
+      "handPhrases": 33,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 9.774,
+          "end": 13.516,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 70.107,
+          "end": 72.542,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            4,
+            6,
+            5,
+            7
+          ]
+        },
+        {
+          "start": 91.997,
+          "end": 94.432,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 116.322,
+          "end": 118.108,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 129.782,
+          "end": 131.737,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "override",
+      "title": "オーバーライド",
+      "difficulty": 0,
+      "heads": 308,
+      "leadHeads": 291,
+      "supportHeads": 17,
+      "supportHolds": 17,
+      "handPhrases": 29,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "override",
+      "title": "オーバーライド",
+      "difficulty": 1,
+      "heads": 503,
+      "leadHeads": 412,
+      "supportHeads": 91,
+      "supportHolds": 17,
+      "handPhrases": 27,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 14.773,
+          "end": 18.006,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 53.605,
+          "end": 56.837,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 104.19,
+          "end": 108.61,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "override",
+      "title": "オーバーライド",
+      "difficulty": 2,
+      "heads": 1039,
+      "leadHeads": 894,
+      "supportHeads": 145,
+      "supportHolds": 17,
+      "handPhrases": 26,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 23.014,
+          "end": 26.397,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 50.661,
+          "end": 54.054,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 58.314,
+          "end": 61.696,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 94.482,
+          "end": 97.874,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            7,
+            6,
+            5
+          ]
+        },
+        {
+          "start": 133.453,
+          "end": 136.846,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "telepathy",
+      "title": "テレパシ",
+      "difficulty": 0,
+      "heads": 347,
+      "leadHeads": 319,
+      "supportHeads": 28,
+      "supportHolds": 28,
+      "handPhrases": 40,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "telepathy",
+      "title": "テレパシ",
+      "difficulty": 1,
+      "heads": 579,
+      "leadHeads": 445,
+      "supportHeads": 134,
+      "supportHolds": 28,
+      "handPhrases": 36,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "telepathy",
+      "title": "テレパシ",
+      "difficulty": 2,
+      "heads": 995,
+      "leadHeads": 812,
+      "supportHeads": 183,
+      "supportHolds": 28,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 16.419,
+          "end": 18.036,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 42.33,
+          "end": 45.693,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "start": 83.597,
+          "end": 85.792,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 93.404,
+          "end": 95.609,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 117.11,
+          "end": 118.737,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mimukauwa",
+      "title": "みむかｩわナイストライ",
+      "difficulty": 0,
+      "heads": 353,
+      "leadHeads": 327,
+      "supportHeads": 26,
+      "supportHolds": 26,
+      "handPhrases": 42,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "mimukauwa",
+      "title": "みむかｩわナイストライ",
+      "difficulty": 1,
+      "heads": 771,
+      "leadHeads": 609,
+      "supportHeads": 162,
+      "supportHolds": 26,
+      "handPhrases": 36,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 37.9,
+          "end": 41.722,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 110.785,
+          "end": 114.327,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            0,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 181.943,
+          "end": 184.567,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mimukauwa",
+      "title": "みむかｩわナイストライ",
+      "difficulty": 2,
+      "heads": 1070,
+      "leadHeads": 850,
+      "supportHeads": 220,
+      "supportHolds": 26,
+      "handPhrases": 35,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 173.851,
+          "end": 175.518,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daikirai",
+      "title": "ダイダイダイダイダイキライ",
+      "difficulty": 0,
+      "heads": 319,
+      "leadHeads": 292,
+      "supportHeads": 27,
+      "supportHolds": 27,
+      "handPhrases": 32,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "daikirai",
+      "title": "ダイダイダイダイダイキライ",
+      "difficulty": 1,
+      "heads": 664,
+      "leadHeads": 533,
+      "supportHeads": 131,
+      "supportHolds": 27,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 38.958,
+          "end": 42.879,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 87.757,
+          "end": 91.449,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            7,
+            5
+          ]
+        },
+        {
+          "start": 148.449,
+          "end": 152.191,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daikirai",
+      "title": "ダイダイダイダイダイキライ",
+      "difficulty": 2,
+      "heads": 1086,
+      "leadHeads": 894,
+      "supportHeads": 192,
+      "supportHolds": 27,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 12.418,
+          "end": 14.154,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 81.062,
+          "end": 82.349,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            6
+          ]
+        },
+        {
+          "start": 98.962,
+          "end": 100.219,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 150.524,
+          "end": 151.951,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rinne",
+      "title": "いますぐ輪廻",
+      "difficulty": 0,
+      "heads": 251,
+      "leadHeads": 228,
+      "supportHeads": 23,
+      "supportHolds": 23,
+      "handPhrases": 29,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "rinne",
+      "title": "いますぐ輪廻",
+      "difficulty": 1,
+      "heads": 610,
+      "leadHeads": 501,
+      "supportHeads": 109,
+      "supportHolds": 23,
+      "handPhrases": 28,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 2.112,
+          "end": 5.225,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 66.456,
+          "end": 69.558,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 101.217,
+          "end": 104.319,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rinne",
+      "title": "いますぐ輪廻",
+      "difficulty": 2,
+      "heads": 798,
+      "leadHeads": 640,
+      "supportHeads": 158,
+      "supportHolds": 23,
+      "handPhrases": 28,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 1.294,
+          "end": 4.397,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 28.592,
+          "end": 31.704,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 115.285,
+          "end": 117.569,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mothergoose",
+      "title": "アンノウン・マザーグース",
+      "difficulty": 0,
+      "heads": 533,
+      "leadHeads": 482,
+      "supportHeads": 51,
+      "supportHolds": 51,
+      "handPhrases": 78,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "mothergoose",
+      "title": "アンノウン・マザーグース",
+      "difficulty": 1,
+      "heads": 1091,
+      "leadHeads": 866,
+      "supportHeads": 225,
+      "supportHolds": 51,
+      "handPhrases": 64,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "mothergoose",
+      "title": "アンノウン・マザーグース",
+      "difficulty": 2,
+      "heads": 1780,
+      "leadHeads": 1455,
+      "supportHeads": 325,
+      "supportHolds": 51,
+      "handPhrases": 61,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 15.94,
+          "end": 17.427,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 59.771,
+          "end": 62.285,
+          "heads": 20,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            7,
+            5,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 162.597,
+          "end": 165.69,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            3,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "heat",
+      "title": "熱異常",
+      "difficulty": 0,
+      "heads": 619,
+      "leadHeads": 582,
+      "supportHeads": 37,
+      "supportHolds": 37,
+      "handPhrases": 52,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "heat",
+      "title": "熱異常",
+      "difficulty": 1,
+      "heads": 1146,
+      "leadHeads": 939,
+      "supportHeads": 207,
+      "supportHolds": 37,
+      "handPhrases": 44,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 31.335,
+          "end": 33.77,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 112.631,
+          "end": 115.095,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            3,
+            2,
+            1
+          ]
+        },
+        {
+          "start": 222.96,
+          "end": 224.746,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "heat",
+      "title": "熱異常",
+      "difficulty": 2,
+      "heads": 1549,
+      "leadHeads": 1222,
+      "supportHeads": 327,
+      "supportHolds": 37,
+      "handPhrases": 43,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 23.952,
+          "end": 27.714,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 50.173,
+          "end": 52.637,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 116.901,
+          "end": 119.355,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            3
+          ]
+        },
+        {
+          "start": 158.037,
+          "end": 161.819,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            4,
+            7
+          ]
+        },
+        {
+          "start": 207.555,
+          "end": 211.306,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connect",
+      "title": "コネクト -season 03-",
+      "difficulty": 0,
+      "heads": 604,
+      "leadHeads": 554,
+      "supportHeads": 50,
+      "supportHolds": 50,
+      "handPhrases": 60,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "connect",
+      "title": "コネクト -season 03-",
+      "difficulty": 1,
+      "heads": 1396,
+      "leadHeads": 1141,
+      "supportHeads": 255,
+      "supportHolds": 50,
+      "handPhrases": 46,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 41.472,
+          "end": 44.046,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 120.513,
+          "end": 122.388,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            6
+          ]
+        },
+        {
+          "start": 218.739,
+          "end": 220.625,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connect",
+      "title": "コネクト -season 03-",
+      "difficulty": 2,
+      "heads": 1714,
+      "leadHeads": 1346,
+      "supportHeads": 368,
+      "supportHolds": 50,
+      "handPhrases": 46,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 40.953,
+          "end": 44.206,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 102.683,
+          "end": 106.624,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 135.08,
+          "end": 139.021,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            6
+          ]
+        },
+        {
+          "start": 205.36,
+          "end": 208.622,
+          "heads": 20,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "start": 218.739,
+          "end": 220.625,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "magia",
+      "title": "Magia",
+      "difficulty": 0,
+      "heads": 595,
+      "leadHeads": 527,
+      "supportHeads": 68,
+      "supportHolds": 68,
+      "handPhrases": 48,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "magia",
+      "title": "Magia",
+      "difficulty": 1,
+      "heads": 1424,
+      "leadHeads": 1126,
+      "supportHeads": 298,
+      "supportHolds": 68,
+      "handPhrases": 34,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 30.078,
+          "end": 33.67,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 182.482,
+          "end": 186.074,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 278.733,
+          "end": 282.325,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "magia",
+      "title": "Magia",
+      "difficulty": 2,
+      "heads": 2216,
+      "leadHeads": 1777,
+      "supportHeads": 439,
+      "supportHolds": 68,
+      "handPhrases": 26,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 189.306,
+          "end": 190.643,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 249.689,
+          "end": 252.303,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 300.803,
+          "end": 302.11,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "luminous",
+      "title": "ルミナス -season 03-",
+      "difficulty": 0,
+      "heads": 521,
+      "leadHeads": 476,
+      "supportHeads": 45,
+      "supportHolds": 45,
+      "handPhrases": 54,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "luminous",
+      "title": "ルミナス -season 03-",
+      "difficulty": 1,
+      "heads": 1207,
+      "leadHeads": 976,
+      "supportHeads": 231,
+      "supportHolds": 45,
+      "handPhrases": 44,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 41.303,
+          "end": 43.218,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 90.73,
+          "end": 93.324,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "start": 219.747,
+          "end": 221.653,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "luminous",
+      "title": "ルミナス -season 03-",
+      "difficulty": 2,
+      "heads": 1542,
+      "leadHeads": 1210,
+      "supportHeads": 332,
+      "supportHolds": 45,
+      "handPhrases": 41,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 8.358,
+          "end": 12.348,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            2
+          ]
+        },
+        {
+          "start": 72.352,
+          "end": 74.966,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            3,
+            1,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 116.921,
+          "end": 119.515,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 161.998,
+          "end": 163.914,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 214.2,
+          "end": 216.744,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colorful",
+      "title": "カラフル -season 03-",
+      "difficulty": 0,
+      "heads": 608,
+      "leadHeads": 549,
+      "supportHeads": 59,
+      "supportHolds": 59,
+      "handPhrases": 63,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "colorful",
+      "title": "カラフル -season 03-",
+      "difficulty": 1,
+      "heads": 1340,
+      "leadHeads": 1070,
+      "supportHeads": 270,
+      "supportHolds": 59,
+      "handPhrases": 52,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 31.216,
+          "end": 33.071,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 109.258,
+          "end": 111.114,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            0,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 200.431,
+          "end": 202.965,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colorful",
+      "title": "カラフル -season 03-",
+      "difficulty": 2,
+      "heads": 1735,
+      "leadHeads": 1348,
+      "supportHeads": 387,
+      "supportHolds": 59,
+      "handPhrases": 52,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 44.366,
+          "end": 46.86,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 60.2,
+          "end": 62.744,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            7,
+            5,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 110.944,
+          "end": 114.816,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            3,
+            2
+          ]
+        },
+        {
+          "start": 198.924,
+          "end": 202.626,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            5,
+            7,
+            4
+          ]
+        },
+        {
+          "start": 219.488,
+          "end": 223.349,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "silvergarden",
+      "title": "君の銀の庭",
+      "difficulty": 0,
+      "heads": 634,
+      "leadHeads": 579,
+      "supportHeads": 55,
+      "supportHolds": 55,
+      "handPhrases": 55,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "silvergarden",
+      "title": "君の銀の庭",
+      "difficulty": 1,
+      "heads": 1404,
+      "leadHeads": 1116,
+      "supportHeads": 288,
+      "supportHolds": 55,
+      "handPhrases": 42,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 60.339,
+          "end": 62.564,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 147.89,
+          "end": 150.924,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            7,
+            5
+          ]
+        },
+        {
+          "start": 228.188,
+          "end": 231.241,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "silvergarden",
+      "title": "君の銀の庭",
+      "difficulty": 2,
+      "heads": 1792,
+      "leadHeads": 1353,
+      "supportHeads": 439,
+      "supportHolds": 55,
+      "handPhrases": 42,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 72.512,
+          "end": 75.545,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            7,
+            5,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 147.89,
+          "end": 150.924,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            6
+          ]
+        },
+        {
+          "start": 206.677,
+          "end": 208.932,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 252.313,
+          "end": 254.528,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "freedomdive",
+      "title": "FREEDOM DiVE",
+      "difficulty": 0,
+      "heads": 448,
+      "leadHeads": 409,
+      "supportHeads": 39,
+      "supportHolds": 39,
+      "handPhrases": 74,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "freedomdive",
+      "title": "FREEDOM DiVE",
+      "difficulty": 1,
+      "heads": 1093,
+      "leadHeads": 852,
+      "supportHeads": 241,
+      "supportHolds": 39,
+      "handPhrases": 63,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "freedomdive",
+      "title": "FREEDOM DiVE",
+      "difficulty": 2,
+      "heads": 2101,
+      "leadHeads": 1749,
+      "supportHeads": 352,
+      "supportHolds": 39,
+      "handPhrases": 53,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 49.724,
+          "end": 52.836,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 60.389,
+          "end": 63.502,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            5,
+            7
+          ]
+        },
+        {
+          "start": 120.463,
+          "end": 123.576,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 167.306,
+          "end": 170.419,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 226.582,
+          "end": 229.685,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bluezenith",
+      "title": "Blue Zenith",
+      "difficulty": 0,
+      "heads": 618,
+      "leadHeads": 565,
+      "supportHeads": 53,
+      "supportHolds": 53,
+      "handPhrases": 58,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "bluezenith",
+      "title": "Blue Zenith",
+      "difficulty": 1,
+      "heads": 1057,
+      "leadHeads": 798,
+      "supportHeads": 259,
+      "supportHolds": 53,
+      "handPhrases": 54,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 58.444,
+          "end": 60.09,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bluezenith",
+      "title": "Blue Zenith",
+      "difficulty": 2,
+      "heads": 1871,
+      "leadHeads": 1456,
+      "supportHeads": 415,
+      "supportHolds": 53,
+      "handPhrases": 37,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 31.884,
+          "end": 35.346,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 62.046,
+          "end": 65.488,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            3,
+            1,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 130.29,
+          "end": 133.743,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 194.943,
+          "end": 198.396,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 209.051,
+          "end": 211.296,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ghost",
+      "title": "GHOST",
+      "difficulty": 0,
+      "heads": 605,
+      "leadHeads": 562,
+      "supportHeads": 43,
+      "supportHolds": 43,
+      "handPhrases": 88,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "ghost",
+      "title": "GHOST",
+      "difficulty": 1,
+      "heads": 1266,
+      "leadHeads": 992,
+      "supportHeads": 274,
+      "supportHolds": 43,
+      "handPhrases": 74,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "ghost",
+      "title": "GHOST",
+      "difficulty": 2,
+      "heads": 2354,
+      "leadHeads": 1912,
+      "supportHeads": 442,
+      "supportHolds": 43,
+      "handPhrases": 72,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 46.281,
+          "end": 48.327,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 94.691,
+          "end": 97.844,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "start": 184.707,
+          "end": 187.84,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 264.326,
+          "end": 267.469,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 284.929,
+          "end": 286.964,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crystallized",
+      "title": "crystallized",
+      "difficulty": 0,
+      "heads": 486,
+      "leadHeads": 444,
+      "supportHeads": 42,
+      "supportHolds": 42,
+      "handPhrases": 59,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "crystallized",
+      "title": "crystallized",
+      "difficulty": 1,
+      "heads": 1199,
+      "leadHeads": 967,
+      "supportHeads": 232,
+      "supportHolds": 42,
+      "handPhrases": 46,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 42.29,
+          "end": 44.875,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 92.816,
+          "end": 95.4,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            3,
+            1
+          ]
+        },
+        {
+          "start": 203.504,
+          "end": 206.078,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crystallized",
+      "title": "crystallized",
+      "difficulty": 2,
+      "heads": 1546,
+      "leadHeads": 1226,
+      "supportHeads": 320,
+      "supportHolds": 42,
+      "handPhrases": 42,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 22.645,
+          "end": 26.596,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 96.258,
+          "end": 99.53,
+          "heads": 20,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 131.428,
+          "end": 134.71,
+          "heads": 20,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            3
+          ]
+        },
+        {
+          "start": 197.298,
+          "end": 201.249,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            0
+          ]
+        },
+        {
+          "start": 238.834,
+          "end": 242.276,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exit",
+      "title": "Exit This Earth's Atomosphere",
+      "difficulty": 0,
+      "heads": 754,
+      "leadHeads": 702,
+      "supportHeads": 52,
+      "supportHolds": 52,
+      "handPhrases": 75,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "exit",
+      "title": "Exit This Earth's Atomosphere",
+      "difficulty": 1,
+      "heads": 1669,
+      "leadHeads": 1368,
+      "supportHeads": 301,
+      "supportHolds": 52,
+      "handPhrases": 67,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 43.707,
+          "end": 46.371,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 149.706,
+          "end": 152.949,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "start": 231.131,
+          "end": 233.785,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exit",
+      "title": "Exit This Earth's Atomosphere",
+      "difficulty": 2,
+      "heads": 2339,
+      "leadHeads": 1874,
+      "supportHeads": 465,
+      "supportHolds": 52,
+      "handPhrases": 66,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 42.48,
+          "end": 46.551,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 67.174,
+          "end": 71.235,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            3,
+            1,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 192.639,
+          "end": 196.7,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            6
+          ]
+        },
+        {
+          "start": 231.84,
+          "end": 235.9,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            7,
+            6,
+            5
+          ]
+        },
+        {
+          "start": 306.999,
+          "end": 310.351,
+          "heads": 20,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kitasaitama",
+      "title": "きたさいたま2000",
+      "difficulty": 0,
+      "heads": 230,
+      "leadHeads": 204,
+      "supportHeads": 26,
+      "supportHolds": 26,
+      "handPhrases": 33,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "kitasaitama",
+      "title": "きたさいたま2000",
+      "difficulty": 1,
+      "heads": 503,
+      "leadHeads": 384,
+      "supportHeads": 119,
+      "supportHolds": 26,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "kitasaitama",
+      "title": "きたさいたま2000",
+      "difficulty": 2,
+      "heads": 928,
+      "leadHeads": 759,
+      "supportHeads": 169,
+      "supportHolds": 26,
+      "handPhrases": 26,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 11.171,
+          "end": 14.424,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 28.891,
+          "end": 31.984,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 58.603,
+          "end": 61.187,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 92.247,
+          "end": 93.883,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 111.723,
+          "end": 113.888,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "madasaitama",
+      "title": "まださいたま2000",
+      "difficulty": 0,
+      "heads": 270,
+      "leadHeads": 253,
+      "supportHeads": 17,
+      "supportHolds": 17,
+      "handPhrases": 36,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "madasaitama",
+      "title": "まださいたま2000",
+      "difficulty": 1,
+      "heads": 569,
+      "leadHeads": 438,
+      "supportHeads": 131,
+      "supportHolds": 17,
+      "handPhrases": 36,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "madasaitama",
+      "title": "まださいたま2000",
+      "difficulty": 2,
+      "heads": 981,
+      "leadHeads": 801,
+      "supportHeads": 180,
+      "supportHolds": 17,
+      "handPhrases": 35,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 1.044,
+          "end": 2.66,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 85.971,
+          "end": 88.475,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            5,
+            7,
+            4
+          ]
+        },
+        {
+          "start": 106.904,
+          "end": 108.101,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yuugen",
+      "title": "幽玄ノ乱",
+      "difficulty": 0,
+      "heads": 243,
+      "leadHeads": 217,
+      "supportHeads": 26,
+      "supportHolds": 26,
+      "handPhrases": 36,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "yuugen",
+      "title": "幽玄ノ乱",
+      "difficulty": 1,
+      "heads": 591,
+      "leadHeads": 461,
+      "supportHeads": 130,
+      "supportHolds": 26,
+      "handPhrases": 37,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "yuugen",
+      "title": "幽玄ノ乱",
+      "difficulty": 2,
+      "heads": 834,
+      "leadHeads": 650,
+      "supportHeads": 184,
+      "supportHolds": 26,
+      "handPhrases": 37,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 13.536,
+          "end": 14.903,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 86.67,
+          "end": 87.767,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "donkama",
+      "title": "ドンカマ2000",
+      "difficulty": 0,
+      "heads": 274,
+      "leadHeads": 257,
+      "supportHeads": 17,
+      "supportHolds": 17,
+      "handPhrases": 18,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "donkama",
+      "title": "ドンカマ2000",
+      "difficulty": 1,
+      "heads": 553,
+      "leadHeads": 450,
+      "supportHeads": 103,
+      "supportHolds": 17,
+      "handPhrases": 15,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 35.197,
+          "end": 38.649,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 69.828,
+          "end": 71.883,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "start": 124.194,
+          "end": 127.197,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "donkama",
+      "title": "ドンカマ2000",
+      "difficulty": 2,
+      "heads": 943,
+      "leadHeads": 792,
+      "supportHeads": 151,
+      "supportHolds": 17,
+      "handPhrases": 8,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 4.566,
+          "end": 7.45,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 37.531,
+          "end": 41.083,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "start": 69.828,
+          "end": 73.948,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            6
+          ]
+        },
+        {
+          "start": 89.543,
+          "end": 93.464,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 114.576,
+          "end": 115.953,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "angeldream",
+      "title": "エンジェル ドリーム",
+      "difficulty": 0,
+      "heads": 349,
+      "leadHeads": 317,
+      "supportHeads": 32,
+      "supportHolds": 32,
+      "handPhrases": 30,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "angeldream",
+      "title": "エンジェル ドリーム",
+      "difficulty": 1,
+      "heads": 806,
+      "leadHeads": 661,
+      "supportHeads": 145,
+      "supportHolds": 32,
+      "handPhrases": 23,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 27.664,
+          "end": 30.168,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 67.503,
+          "end": 70.007,
+          "heads": 16,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 98.333,
+          "end": 100.837,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "angeldream",
+      "title": "エンジェル ドリーム",
+      "difficulty": 2,
+      "heads": 991,
+      "leadHeads": 788,
+      "supportHeads": 203,
+      "supportHolds": 32,
+      "handPhrases": 13,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 16.499,
+          "end": 20.33,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 31.994,
+          "end": 35.825,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 68.341,
+          "end": 72.163,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 95.34,
+          "end": 99.171,
+          "heads": 24,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            5,
+            7,
+            4
+          ]
+        },
+        {
+          "start": 132.675,
+          "end": 136.496,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disappearance",
+      "title": "初音ミクの消失",
+      "difficulty": 0,
+      "heads": 539,
+      "leadHeads": 481,
+      "supportHeads": 58,
+      "supportHolds": 58,
+      "handPhrases": 85,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "disappearance",
+      "title": "初音ミクの消失",
+      "difficulty": 1,
+      "heads": 1286,
+      "leadHeads": 993,
+      "supportHeads": 293,
+      "supportHolds": 58,
+      "handPhrases": 77,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 134.611,
+          "end": 135.778,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disappearance",
+      "title": "初音ミクの消失",
+      "difficulty": 2,
+      "heads": 2293,
+      "leadHeads": 1836,
+      "supportHeads": 457,
+      "supportHolds": 58,
+      "handPhrases": 73,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 31.615,
+          "end": 34.488,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 40.744,
+          "end": 43.238,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 96.238,
+          "end": 98.612,
+          "heads": 20,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            0,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 107.851,
+          "end": 109.228,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 185.984,
+          "end": 187.361,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intensevoice",
+      "title": "初音ミクの激唱",
+      "difficulty": 0,
+      "heads": 679,
+      "leadHeads": 611,
+      "supportHeads": 68,
+      "supportHolds": 68,
+      "handPhrases": 82,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "intensevoice",
+      "title": "初音ミクの激唱",
+      "difficulty": 1,
+      "heads": 1332,
+      "leadHeads": 1010,
+      "supportHeads": 322,
+      "supportHolds": 68,
+      "handPhrases": 70,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 139.569,
+          "end": 140.617,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 242.166,
+          "end": 243.832,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 254.169,
+          "end": 255.226,
+          "heads": 8,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 266.77,
+          "end": 269.025,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intensevoice",
+      "title": "初音ミクの激唱",
+      "difficulty": 2,
+      "heads": 2025,
+      "leadHeads": 1582,
+      "supportHeads": 443,
+      "supportHolds": 68,
+      "handPhrases": 68,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 26.466,
+          "end": 28.282,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            0,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 94.432,
+          "end": 96.068,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 179.329,
+          "end": 180.975,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 186.672,
+          "end": 188.339,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 239.163,
+          "end": 240.859,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 245.928,
+          "end": 248.173,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machinegun",
+      "title": "マシンガンポエムドール",
+      "difficulty": 0,
+      "heads": 248,
+      "leadHeads": 224,
+      "supportHeads": 24,
+      "supportHolds": 24,
+      "handPhrases": 40,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "machinegun",
+      "title": "マシンガンポエムドール",
+      "difficulty": 1,
+      "heads": 600,
+      "leadHeads": 458,
+      "supportHeads": 142,
+      "supportHolds": 24,
+      "handPhrases": 32,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "machinegun",
+      "title": "マシンガンポエムドール",
+      "difficulty": 2,
+      "heads": 1029,
+      "leadHeads": 833,
+      "supportHeads": 196,
+      "supportHolds": 24,
+      "handPhrases": 29,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 11.74,
+          "end": 15.342,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            5
+          ]
+        },
+        {
+          "start": 29.929,
+          "end": 32.114,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            4,
+            6,
+            5,
+            7
+          ]
+        },
+        {
+          "start": 41.253,
+          "end": 42.759,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            4
+          ]
+        },
+        {
+          "start": 55.979,
+          "end": 57.616,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            0
+          ]
+        },
+        {
+          "start": 93.065,
+          "end": 94.572,
+          "heads": 12,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jinsei",
+      "title": "人生",
+      "difficulty": 0,
+      "heads": 329,
+      "leadHeads": 298,
+      "supportHeads": 31,
+      "supportHolds": 31,
+      "handPhrases": 38,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "jinsei",
+      "title": "人生",
+      "difficulty": 1,
+      "heads": 771,
+      "leadHeads": 605,
+      "supportHeads": 166,
+      "supportHolds": 31,
+      "handPhrases": 32,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 15.591,
+          "end": 17.068,
+          "heads": 8,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 65.568,
+          "end": 68.002,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 129.143,
+          "end": 131.568,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jinsei",
+      "title": "人生",
+      "difficulty": 2,
+      "heads": 1055,
+      "leadHeads": 816,
+      "supportHeads": 239,
+      "supportHolds": 31,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 11.88,
+          "end": 14.214,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 34.608,
+          "end": 36.723,
+          "heads": 20,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            3,
+            0,
+            2
+          ]
+        },
+        {
+          "start": 61.676,
+          "end": 64.919,
+          "heads": 20,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            0
+          ]
+        },
+        {
+          "start": 98.163,
+          "end": 101.895,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            2,
+            3,
+            1
+          ]
+        },
+        {
+          "start": 139.031,
+          "end": 142.602,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yaminabe",
+      "title": "ヤミナベ!!!!",
+      "difficulty": 0,
+      "heads": 268,
+      "leadHeads": 243,
+      "supportHeads": 25,
+      "supportHolds": 25,
+      "handPhrases": 38,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "yaminabe",
+      "title": "ヤミナベ!!!!",
+      "difficulty": 1,
+      "heads": 629,
+      "leadHeads": 488,
+      "supportHeads": 141,
+      "supportHolds": 25,
+      "handPhrases": 35,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 27.654,
+          "end": 28.701,
+          "heads": 8,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 45.383,
+          "end": 47.279,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 104.729,
+          "end": 106.195,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yaminabe",
+      "title": "ヤミナベ!!!!",
+      "difficulty": 2,
+      "heads": 875,
+      "leadHeads": 687,
+      "supportHeads": 188,
+      "supportHolds": 25,
+      "handPhrases": 35,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 22.855,
+          "end": 24.441,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            7
+          ]
+        },
+        {
+          "start": 60.13,
+          "end": 62.594,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            4
+          ]
+        },
+        {
+          "start": 74.866,
+          "end": 76.313,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 111.862,
+          "end": 113.319,
+          "heads": 12,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            6
+          ]
+        },
+        {
+          "start": 121.201,
+          "end": 122.987,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsuppop",
+      "title": "What's up? Pop!",
+      "difficulty": 0,
+      "heads": 370,
+      "leadHeads": 342,
+      "supportHeads": 28,
+      "supportHolds": 28,
+      "handPhrases": 45,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "whatsuppop",
+      "title": "What's up? Pop!",
+      "difficulty": 1,
+      "heads": 792,
+      "leadHeads": 617,
+      "supportHeads": 175,
+      "supportHolds": 28,
+      "handPhrases": 40,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 57.336,
+          "end": 60.03,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            7,
+            5
+          ]
+        },
+        {
+          "start": 130.799,
+          "end": 132.456,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            7,
+            5,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 147.461,
+          "end": 148.509,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsuppop",
+      "title": "What's up? Pop!",
+      "difficulty": 2,
+      "heads": 1153,
+      "leadHeads": 903,
+      "supportHeads": 250,
+      "supportHolds": 28,
+      "handPhrases": 39,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 11.381,
+          "end": 14.553,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 61.128,
+          "end": 63.812,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 90.241,
+          "end": 91.678,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            4,
+            6,
+            5,
+            7
+          ]
+        },
+        {
+          "start": 120.453,
+          "end": 122.698,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            6,
+            7
+          ]
+        },
+        {
+          "start": 129.602,
+          "end": 132.456,
+          "heads": 20,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ogyarinizer",
+      "title": "おぎゃりないざー",
+      "difficulty": 0,
+      "heads": 252,
+      "leadHeads": 227,
+      "supportHeads": 25,
+      "supportHolds": 25,
+      "handPhrases": 37,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "ogyarinizer",
+      "title": "おぎゃりないざー",
+      "difficulty": 1,
+      "heads": 568,
+      "leadHeads": 443,
+      "supportHeads": 125,
+      "supportHolds": 25,
+      "handPhrases": 33,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "ogyarinizer",
+      "title": "おぎゃりないざー",
+      "difficulty": 2,
+      "heads": 967,
+      "leadHeads": 785,
+      "supportHeads": 182,
+      "supportHolds": 25,
+      "handPhrases": 31,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 14.494,
+          "end": 16.329,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 65.029,
+          "end": 67.852,
+          "heads": 24,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 101.705,
+          "end": 103.421,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 120.114,
+          "end": 121.431,
+          "heads": 12,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daijobu",
+      "title": "ダイジョブですか？",
+      "difficulty": 0,
+      "heads": 285,
+      "leadHeads": 259,
+      "supportHeads": 26,
+      "supportHolds": 26,
+      "handPhrases": 42,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "daijobu",
+      "title": "ダイジョブですか？",
+      "difficulty": 1,
+      "heads": 632,
+      "leadHeads": 496,
+      "supportHeads": 136,
+      "supportHolds": 26,
+      "handPhrases": 34,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 10.503,
+          "end": 11.85,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 87.448,
+          "end": 90.99,
+          "heads": 16,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            6,
+            7,
+            5
+          ]
+        },
+        {
+          "start": 131.607,
+          "end": 135.159,
+          "heads": 16,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daijobu",
+      "title": "ダイジョブですか？",
+      "difficulty": 2,
+      "heads": 1119,
+      "leadHeads": 915,
+      "supportHeads": 204,
+      "supportHolds": 26,
+      "handPhrases": 29,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 15.531,
+          "end": 18.554,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        },
+        {
+          "start": 56.618,
+          "end": 59.691,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "start": 78.039,
+          "end": 80.593,
+          "heads": 20,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            2,
+            3
+          ]
+        },
+        {
+          "start": 116.033,
+          "end": 118.747,
+          "heads": 24,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 129.841,
+          "end": 132.565,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            1,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kusaregedou",
+      "title": "腐れ外道とチョコレゐト",
+      "difficulty": 0,
+      "heads": 384,
+      "leadHeads": 341,
+      "supportHeads": 43,
+      "supportHolds": 43,
+      "handPhrases": 58,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "kusaregedou",
+      "title": "腐れ外道とチョコレゐト",
+      "difficulty": 1,
+      "heads": 888,
+      "leadHeads": 684,
+      "supportHeads": 204,
+      "supportHolds": 43,
+      "handPhrases": 53,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "kusaregedou",
+      "title": "腐れ外道とチョコレゐト",
+      "difficulty": 2,
+      "heads": 1417,
+      "leadHeads": 1126,
+      "supportHeads": 291,
+      "supportHolds": 43,
+      "handPhrases": 52,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 74.727,
+          "end": 76.014,
+          "heads": 12,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            7,
+            4,
+            6
+          ]
+        },
+        {
+          "start": 111.094,
+          "end": 113.389,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "amara",
+      "title": "ÅMARA(大未来電脳)",
+      "difficulty": 0,
+      "heads": 368,
+      "leadHeads": 338,
+      "supportHeads": 30,
+      "supportHolds": 30,
+      "handPhrases": 55,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": []
+    },
+    {
+      "id": "amara",
+      "title": "ÅMARA(大未来電脳)",
+      "difficulty": 1,
+      "heads": 829,
+      "leadHeads": 625,
+      "supportHeads": 204,
+      "supportHolds": 30,
+      "handPhrases": 46,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 40.504,
+          "end": 42.111,
+          "heads": 8,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            5,
+            4
+          ]
+        },
+        {
+          "start": 85.263,
+          "end": 88.785,
+          "heads": 16,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "amara",
+      "title": "ÅMARA(大未来電脳)",
+      "difficulty": 2,
+      "heads": 1460,
+      "leadHeads": 1194,
+      "supportHeads": 266,
+      "supportHolds": 30,
+      "handPhrases": 43,
+      "leadHands": [
+        1,
+        0
+      ],
+      "trills": [
+        {
+          "start": 36.813,
+          "end": 38.998,
+          "heads": 20,
+          "hand": 1,
+          "kind": "trill",
+          "keys": [
+            4,
+            5
+          ]
+        },
+        {
+          "start": 59.94,
+          "end": 62.814,
+          "heads": 20,
+          "hand": 0,
+          "kind": "moving",
+          "keys": [
+            0,
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "start": 102.025,
+          "end": 105.487,
+          "heads": 24,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            0,
+            2
+          ]
+        },
+        {
+          "start": 134.192,
+          "end": 137.135,
+          "heads": 20,
+          "hand": 1,
+          "kind": "moving",
+          "keys": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "start": 176.017,
+          "end": 178.551,
+          "heads": 20,
+          "hand": 0,
+          "kind": "trill",
+          "keys": [
+            3,
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}
