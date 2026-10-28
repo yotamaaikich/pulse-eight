@@ -9,7 +9,7 @@ import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
 import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=hands-19';
-import {difficultyMetrics,orderedSongs} from './catalog.mjs?v=hands-19';
+import {chartMetrics,difficultyMetrics,orderedSongs} from './catalog.mjs?v=levels-20';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=unlabeled-1';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hands-19';
 import {API_URL,PUBLIC_KEY} from './config.js';
@@ -117,10 +117,10 @@ async function loadLeaders(){
 }
 function updateChartControls(){
   const ref=referenceEnabled()?referenceChart(song(),difficulty,currentPianoProfile()):null;
-  const metric=ref?{count:ref.length,level:Math.max(1,Math.ceil(ref.length/100))}:difficultyMetrics(song(),difficulty);
+  const metric=ref?chartMetrics(ref):difficultyMetrics(song(),difficulty);
   $('leaderDifficulty').textContent=DIFFICULTIES[difficulty]+(ref?' 参照試験':' LV.'+metric.level);
   $('difficultySummary').textContent=DIFFICULTIES[difficulty]+(ref?'（参照試験）':'')+' · '+metric.count+' NOTES · LV.'+metric.level;
-  document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),c=ref?referenceChart(song(),d,currentPianoProfile()):null,info=c?{count:c.length,level:Math.max(1,Math.ceil(c.length/100))}:difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+1）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
+  document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),c=ref?referenceChart(song(),d,currentPianoProfile()):null,info=c?chartMetrics(c):difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+2）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
 }
 function stateText(text){$('playState').textContent=text;}
 function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil)));$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil);updateChartControls();}

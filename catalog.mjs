@@ -2,7 +2,7 @@ import {makeChart} from './engine.mjs?v=hands-19';
 
 export function chartMetrics(chart){
   const count=chart.filter(n=>!n.assist).length;
-  return {count,level:Math.max(1,Math.ceil(count/100))};
+  return {count,level:Math.max(1,Math.ceil(count/100))*2};
 }
 const cache=new WeakMap();
 export function difficultyMetrics(song,difficulty){
