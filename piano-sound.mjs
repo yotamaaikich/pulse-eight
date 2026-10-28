@@ -1,10 +1,11 @@
 // Recorded Salamander Grand Piano / Alexander Holm / CC BY 3.0.
 // See audio/piano/CREDITS.txt. FLOAT retains a separate short chime.
+import {createInlinePiano,createKeyStrike} from './piano-fallback.mjs?v=audible-14';
 const SAMPLES=[['C3',48],['Fs3',54],['C4',60],['Fs4',66],['C5',72],['Fs5',78]];
 export function createPianoSound({contextFactory=()=>new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'}),sampleLoader=async(url,ctx)=>{
   const response=await fetch(url,{signal:AbortSignal.timeout(10000)});if(!response.ok)throw Error('Piano sample unavailable');return ctx.decodeAudioData(await response.arrayBuffer());
 }}={}){
-  let context=null,master=null,enabled=true,volume=18,loading=null,retryAt=0;
+  let context=null,master=null,enabled=true,volume=18,loading=null,retryAt=0,fallback=null,strike=null;
   const voices=new Set(),samples=new Map();
   function mix(){if(master)master.gain.setTargetAtTime(enabled?volume/100/Math.sqrt(Math.max(1,Math.min(4,voices.size))):0,context.currentTime,.004);}
   function warm(){
@@ -12,10 +13,12 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
     try{
       if(!context){
         context=contextFactory();master=context.createGain();master.gain.value=0;
+        // Available synchronously, including while all six MP3 requests are pending.
+        fallback=createInlinePiano(context);strike=createKeyStrike(context);
         const compressor=context.createDynamicsCompressor();compressor.threshold.value=-14;compressor.knee.value=10;compressor.ratio.value=3;compressor.attack.value=.001;compressor.release.value=.06;
         master.connect(compressor);compressor.connect(context.destination);mix();
       }
-      if(context.state==='suspended')context.resume().catch(()=>{});
+      if(context.state==='suspended'||context.state==='interrupted')context.resume().catch(()=>{});
       const missing=SAMPLES.filter(([,midi])=>!samples.has(midi));
       if(!loading&&missing.length&&context.currentTime>=retryAt)loading=Promise.all(missing.map(async([name,midi])=>{
         try{
@@ -32,17 +35,17 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
         samples.set(midi,{buffer,offset,normalization});
         return true;
         }catch{return false;}
-      })).then(()=>{loading=null;retryAt=context.currentTime+2;return samples.size>0;});
+      })).then(()=>{loading=null;retryAt=context.currentTime+2;return !!fallback||samples.size>0;});
       return true;
     }catch{return false;}
   }
-  async function prepare(){if(!warm())return false;return loading?await loading:samples.size>0;}
+  async function prepare(){if(!warm())return false;return loading?await loading:!!fallback||samples.size>0;}
   function stop(){for(const voice of [...voices])voice.stop();mix();}
   function configure(options){enabled=options.enabled===true;volume=Math.max(0,Math.min(100,Number(options.volume)||0));if(!enabled||!volume)stop();mix();}
   function play({midi=62,hold=0,float=false,percussive=false}={}){
     if(!enabled||!volume||!Number.isFinite(midi)||!warm())return false;
     // Never enqueue a key-down while loading: a late note would feel like key-up sound.
-    if(!float&&!samples.size)return false;
+    if(!float&&!fallback&&!samples.size)return false;
     while(voices.size>=16)voices.values().next().value.stop();
     const now=context.currentTime,nodes=[];let stopped=false,remaining=float?3:1;
     const voice={stop(){if(stopped)return;stopped=true;for(const {source,gain}of nodes){gain.gain.cancelScheduledValues(context.currentTime);gain.gain.setTargetAtTime(.00001,context.currentTime,.005);try{source.stop(context.currentTime+.025);}catch{}}voices.delete(voice);mix();}};
@@ -55,11 +58,13 @@ export function createPianoSound({contextFactory=()=>new (window.AudioContext||w
         gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(amplitude,now+.002);gain.gain.exponentialRampToValueAtTime(.00001,now+decay);ended(source,gain);source.start(now);source.stop(now+decay+.015);
       }
     }else{
-      const pitch=percussive?60:Math.max(21,Math.min(108,midi)),root=[...samples.keys()].reduce((a,b)=>Math.abs(b-pitch)<Math.abs(a-pitch)?b:a);
-      const {buffer,offset,normalization}=samples.get(root),source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
+      const pitch=percussive?60:Math.max(21,Math.min(108,midi));
+      const root=percussive||!samples.size?60:[...samples.keys()].reduce((a,b)=>Math.abs(b-pitch)<Math.abs(a-pitch)?b:a);
+      const sample=percussive?strike:samples.get(root)||fallback;
+      const {buffer,offset,normalization}=sample,source=context.createBufferSource(),gain=context.createGain(),filter=context.createBiquadFilter();
       source.buffer=buffer;source.playbackRate.setValueAtTime(2**((pitch-root)/12),now);
-      filter.type='highpass';filter.frequency.value=percussive?1600:75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
-      const duration=percussive?.065:hold>0?Math.min(2.4,Math.max(.9,hold)):.5,attack=normalization*(percussive?1.8:1),release=percussive?.03:.09;
+      filter.type='highpass';filter.frequency.value=75;filter.Q.value=.55;source.connect(filter);filter.connect(gain);gain.connect(master);
+      const duration=percussive?.11:hold>0?Math.min(2.4,Math.max(.9,hold)):.5,attack=normalization,release=percussive?.025:.09;
       gain.gain.setValueAtTime(.00001,now);gain.gain.linearRampToValueAtTime(attack,now+.001);gain.gain.setValueAtTime(attack,now+duration-release);gain.gain.exponentialRampToValueAtTime(.00001,now+duration);
       ended(source,gain,filter);source.start(now,offset);source.stop(now+duration+.01);
     }

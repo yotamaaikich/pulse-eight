@@ -1,0 +1,163 @@
+[
+  {
+    "name": "音程付きピアノ",
+    "before": {
+      "started": [
+        true
+      ],
+      "rms": 0.05890765414644039,
+      "peak": 0.15595026314258575,
+      "firstMs": 9.546485260770975,
+      "sha256": "19ee26ab861918ddfa8cd50f187e5f15de5ecfab6fda610ffc0c076d1ae060ff"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "rms": 0.05890765414644039,
+      "peak": 0.15595026314258575,
+      "firstMs": 9.546485260770975,
+      "sha256": "19ee26ab861918ddfa8cd50f187e5f15de5ecfab6fda610ffc0c076d1ae060ff"
+    }
+  },
+  {
+    "name": "音程なしの打鍵",
+    "before": {
+      "started": [
+        true
+      ],
+      "rms": 0.010015717112397836,
+      "peak": 0.048136867582798004,
+      "firstMs": 11.791383219954648,
+      "sha256": "dad20f8bcc0d6a132b23e98f6cd3286064257272655c80a79592f4ad2e7fc59b"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "rms": 0.044358515860372365,
+      "peak": 0.15950967371463776,
+      "firstMs": 10.589569160997732,
+      "sha256": "8edd724a0d6db9283a179b890ad8948efcb42c7fc6e147aef110b35159becdf7"
+    }
+  },
+  {
+    "name": "読み込み待ち・ピアノ",
+    "before": {
+      "started": [
+        false
+      ],
+      "rms": 0,
+      "peak": 0,
+      "firstMs": null,
+      "sha256": "fd6f479534cdd14635e88dfedf25c3859c01062b645f2a85570f20451b4a95bc"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "rms": 0.06146681004905211,
+      "peak": 0.15590903162956238,
+      "firstMs": 10.770975056689341,
+      "sha256": "e50bb5a761b5e296d693371e837b99454d37b533f6d520c41a496fd1c2984c83"
+    }
+  },
+  {
+    "name": "読み込み待ち・打鍵",
+    "before": {
+      "started": [
+        false
+      ],
+      "rms": 0,
+      "peak": 0,
+      "firstMs": null,
+      "sha256": "fd6f479534cdd14635e88dfedf25c3859c01062b645f2a85570f20451b4a95bc"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "rms": 0.044358515860372365,
+      "peak": 0.15950967371463776,
+      "firstMs": 10.589569160997732,
+      "sha256": "8d63996d1904ac63eed598d3d906481fe4211b39f206e91c5b49471b72692c7b"
+    }
+  },
+  {
+    "name": "全MP3失敗・ピアノ",
+    "before": {
+      "started": [
+        false
+      ],
+      "rms": 0,
+      "peak": 0,
+      "firstMs": null,
+      "sha256": "fd6f479534cdd14635e88dfedf25c3859c01062b645f2a85570f20451b4a95bc"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "rms": 0.06146681004905211,
+      "peak": 0.15590903162956238,
+      "firstMs": 10.770975056689341,
+      "sha256": "c14a5231ed4433268acf2526401c661d757bd3169bd4b3d3801b533bf2a7d4f3"
+    }
+  },
+  {
+    "name": "全MP3失敗・打鍵",
+    "before": {
+      "started": [
+        false
+      ],
+      "rms": 0,
+      "peak": 0,
+      "firstMs": null,
+      "sha256": "fd6f479534cdd14635e88dfedf25c3859c01062b645f2a85570f20451b4a95bc"
+    },
+    "after": {
+      "started": [
+        true
+      ],
+      "rms": 0.044358515860372365,
+      "peak": 0.15950967371463776,
+      "firstMs": 10.589569160997732,
+      "sha256": "8d63996d1904ac63eed598d3d906481fe4211b39f206e91c5b49471b72692c7b"
+    }
+  },
+  {
+    "name": "同時打鍵8個",
+    "before": {
+      "started": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "rms": 0.040062868313007156,
+      "peak": 0.1925474852323532,
+      "firstMs": 7.8684807256235825,
+      "sha256": "60e108247aad342a898cb175afc623eacfd02c1437fb1c2e6364178025cc9646"
+    },
+    "after": {
+      "started": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "rms": 0.166293534460966,
+      "peak": 0.5827130079269409,
+      "firstMs": 8.75283446712018,
+      "sha256": "9fd3c0d0ebbf7e0af52b1b37e64a75991a3a0e164d38255b75fe89a46f54f91c"
+    }
+  }
+]

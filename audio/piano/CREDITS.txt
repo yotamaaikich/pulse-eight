@@ -13,3 +13,7 @@ The MP3 files are distributed unchanged from Tonejs/audio.
 PIANO PULSE applies runtime transposition, leading-silence trimming,
 high-pass filtering, gain normalization and a short release envelope.
 The original author does not endorse this game.
+
+The derived inline recordings in piano-fallback.mjs use the C4 sample:
+0.42-second trimmed/resampled piano and 0.12-second high-pass-filtered,
+RMS-normalized hammer transient (22050 Hz, mono PCM16). Same CC BY 3.0 license.

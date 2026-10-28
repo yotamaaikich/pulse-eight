@@ -16,7 +16,7 @@ import {PlaybackGate,inputClock} from '../playback.mjs';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from '../lead-in.mjs';
 import {keySoundRequests} from '../key-sound.mjs';
 import {drawAirRibbons,drawAirHead} from '../air.mjs';
-const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async prepare(){return true;},stop(){},configure(o){Object.assign(this,o);},play(o){if(this.enabled&&this.volume)soundCalls.push(o);}};
+const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async prepare(){return true;},stop(){},configure(o){Object.assign(this,o);},play(o){if(!this.enabled||!this.volume)return false;soundCalls.push(o);return true;}};
 const createPianoSound=()=>soundStub;
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map();
 const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:()=>{}});
@@ -146,3 +146,16 @@ assert.equal(scope.qa.events[0][0],1024);up('KeyA');scope.qa.quit();
 scope.qa.selectSong(2);scope.qa.setPractice([{t:1,lane:0}],1);fakePlayer.time=.05;soundCalls.length=0;
 down('KeyA');up('KeyA');assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].percussive,true);
 down('KeyS');up('KeyS');assert.equal(soundCalls.length,2);assert.equal(soundCalls[1].percussive,true);scope.qa.quit();
+
+// Calibration can make a timestamp negative at the start. Such a press is not
+// added to the replay, but must still provide immediate physical key feedback.
+elements.get('offset').value='500';elements.get('offset').oninput();scope.qa.setPractice([{t:1,lane:0}],1);scope.qa.setClock(.1);fakePlayer.time=.1;soundCalls.length=0;
+down('KeyA');up('KeyA');assert.equal(scope.qa.events.length,0);assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].percussive,true);scope.qa.quit();
+elements.get('offset').value='0';elements.get('offset').oninput();
+
+// The settings previews cover both actual melodic piano and the unpitched
+// strike used by unregistered notes, without waiting for external samples.
+elements.get('settingsDialog').showModal();soundCalls.length=0;
+elements.get('testStrike').onclick();assert.equal(soundCalls.length,1);assert.equal(soundCalls[0].percussive,true);
+elements.get('testPiano').onclick();assert.equal(soundCalls.length,4);assert.ok(soundCalls.slice(1).every(n=>Number.isFinite(n.midi)&&!n.percussive));
+elements.get('settingsDialog').close();

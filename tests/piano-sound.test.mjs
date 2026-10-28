@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPianoSound} from '../piano-sound.mjs';
 import {pianoTrialChart,scoreNoteAt} from '../piano-trial.mjs';
+import {createKeyStrike} from '../piano-fallback.mjs';
 const TEST_SCORE={offsetMs:0,voices:[[[1000,1500,69,12],[2000,2500,65,12]],[[1000,1500,50,12],[2000,2500,48,12]]]};
 import {SONGS,makeChart,scoreChartReplay} from '../engine.mjs';
 function fixture({fail=false,failSample=null}={}){
@@ -9,7 +10,7 @@ function fixture({fail=false,failSample=null}={}){
  const parameter=()=>({value:0,events:[],setValueAtTime(v,t){this.events.push(['set',v,t]);},setTargetAtTime(v,t,c){this.events.push(['target',v,t,c]);},linearRampToValueAtTime(v,t){this.events.push(['linear',v,t]);},exponentialRampToValueAtTime(v,t){this.events.push(['exp',v,t]);},cancelScheduledValues(){}});
  const node=()=>({connect(){},disconnect(){}});
  const playable=()=>({...node(),starts:[],stops:[],start(...args){this.starts.push(args);},stop(t){this.stops.push(t);}});
- const context={state:'suspended',currentTime:12,destination:{},resume(){resumes++;this.state='running';return Promise.resolve();},createGain(){const n={...node(),gain:parameter()};gains.push(n);return n;},createDynamicsCompressor(){return {...node(),...Object.fromEntries(['threshold','knee','ratio','attack','release'].map(k=>[k,parameter()]))};},createBiquadFilter(){return {...node(),frequency:parameter(),Q:parameter()};},createBufferSource(){const n={...playable(),playbackRate:parameter()};sources.push(n);return n;},createOscillator(){const n={...playable(),frequency:parameter()};oscillators.push(n);return n;}};
+ const context={state:'suspended',currentTime:12,destination:{},resume(){resumes++;this.state='running';return Promise.resolve();},createBuffer(channels,length,sampleRate){const data=new Float32Array(length);return {length,sampleRate,duration:length/sampleRate,getChannelData:()=>data};},createGain(){const n={...node(),gain:parameter()};gains.push(n);return n;},createDynamicsCompressor(){return {...node(),...Object.fromEntries(['threshold','knee','ratio','attack','release'].map(k=>[k,parameter()]))};},createBiquadFilter(){return {...node(),frequency:parameter(),Q:parameter()};},createBufferSource(){const n={...playable(),playbackRate:parameter()};sources.push(n);return n;},createOscillator(){const n={...playable(),frequency:parameter()};oscillators.push(n);return n;}};
  const sampleLoader=async(url)=>{requests.push(String(url));if(fail||String(url).endsWith('/'+failSample))throw Error('offline');const data=new Float32Array(800);data.fill(.25,64);return {name:String(url).split('/').at(-1),sampleRate:48000,getChannelData:()=>data};};
  const piano=createPianoSound({contextFactory:()=>context,sampleLoader});return {piano,context,oscillators,sources,gains,requests,unfail(){failSample=null;},get resumes(){return resumes;}};
 }
@@ -24,9 +25,10 @@ test('chords attenuate the combined bus and OFF/zero volume prevent new sampled 
  assert.ok(master.at(-1)[1]<master.find(e=>e[0]==='target'&&e[1]>0)[1]);f.piano.configure({enabled:false,volume:18});const count=f.sources.length;assert.equal(f.piano.play({midi:62}),false);assert.equal(f.sources.length,count);
  f.piano.configure({enabled:true,volume:0});assert.equal(f.piano.play({midi:62}),false);assert.equal(f.gains[0].gain.events.at(-1)[1],0);
 });
-test('loading or failed samples never queue a late key-down or fall back to the rubber-like oscillator',async()=>{
- const f=fixture();assert.equal(f.piano.play({midi:62}),false);assert.equal(f.sources.length,0);await f.piano.prepare();assert.equal(f.sources.length,0);assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources[0].starts[0][0],12);
- const broken=fixture({fail:true});assert.equal(await broken.piano.prepare(),false);assert.equal(broken.piano.play({midi:62}),false);assert.equal(broken.sources.length,0);assert.equal(broken.oscillators.length,0);
+test('loading or failed MP3s use the inline recorded piano immediately without queuing a late key-down',async()=>{
+ const f=fixture();assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources.length,1);assert.equal(f.sources[0].starts[0][0],12);assert.equal(f.sources[0].buffer.duration,.42);
+ await f.piano.prepare();assert.equal(f.sources.length,1);assert.equal(f.piano.play({midi:62}),true);assert.equal(f.sources[1].buffer.name,'C4.mp3');
+ const broken=fixture({fail:true});assert.equal(await broken.piano.prepare(),true);assert.equal(broken.piano.play({midi:62}),true);assert.equal(broken.sources[0].buffer.duration,.42);assert.equal(broken.oscillators.length,0);
 });
 test('score pitches and octaves come from the imported timed notes, independently of key lane',()=>{
  const raw=[{t:1,lane:0},{t:2,lane:0},{t:1,lane:4}],chart=pianoTrialChart(SONGS[0],raw,TEST_SCORE);
@@ -50,7 +52,7 @@ test('quiet recorded attacks are normalized before applying the dedicated piano 
 
 test('unpitched key feedback is a short recorded attack, not a sustained fixed note',async()=>{
  const f=fixture();await f.piano.prepare();f.piano.play({midi:62,hold:3,percussive:true});
- assert.equal(f.sources[0].buffer.name,'C4.mp3');assert.equal(f.sources[0].playbackRate.events[0][1],1);assert.ok(Math.abs(f.sources[0].stops[0]-12.075)<1e-8);assert.equal(f.oscillators.length,0);
+ assert.equal(f.sources[0].buffer.duration,.12);assert.equal(f.sources[0].playbackRate.events[0][1],1);assert.ok(Math.abs(f.sources[0].stops[0]-12.12)<1e-8);assert.equal(f.oscillators.length,0);
 });
 
 test('one failed sample does not mute the ready piano roots, and only that sample is retried',async()=>{
@@ -64,4 +66,16 @@ test('one failed sample does not mute the ready piano roots, and only that sampl
 test('decaying tails cannot turn dense keyboard passages down below half the configured volume',async()=>{
  const f=fixture();await f.piano.prepare();for(let i=0;i<12;i++)f.piano.play({midi:60+i});
  assert.ok(f.gains[0].gain.events.at(-1)[1]>=.09);
+});
+
+test('unpitched attacks are normalized after filtering and have audible body without clipping',()=>{
+ const f=fixture(),{buffer}=createKeyStrike(f.context),data=buffer.getChannelData(0);let peak=0,sum=0;
+ for(let i=0;i<data.length;i++){peak=Math.max(peak,Math.abs(data[i]));if(i<buffer.sampleRate*.08)sum+=data[i]*data[i];}
+ const rms=Math.sqrt(sum/Math.round(buffer.sampleRate*.08));
+ assert.ok(rms>=.19&&rms<=.21);assert.ok(peak<=.85);assert.ok(buffer.duration<=.12);
+});
+
+test('an interrupted context is resumed before the inline fallback is scheduled',()=>{
+ const f=fixture();f.context.state='interrupted';assert.equal(f.piano.play({percussive:true}),true);
+ assert.equal(f.context.state,'running');assert.equal(f.resumes,1);assert.equal(f.sources.length,1);
 });
