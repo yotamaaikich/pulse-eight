@@ -1,0 +1,48 @@
+name: Windows app
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag
+        required: true
+        default: v1.5.0
+permissions:
+  contents: write
+concurrency:
+  group: desktop-release-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: node node_modules/esbuild/install.js
+      - run: npm test
+      - run: npm run desktop:build
+      - name: Checksums
+        shell: pwsh
+        run: |
+          $pianoFiles = Get-ChildItem -LiteralPath dist -File | Where-Object { $_.Extension -in '.exe','.zip' }
+          $pianoLines = $pianoFiles | ForEach-Object { '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name }
+          $pianoLines | Set-Content -LiteralPath dist/SHA256SUMS.txt -Encoding utf8NoBOM
+      - name: Upload installers to the release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $pianoAssets = (Get-ChildItem -LiteralPath dist -File | Where-Object { $_.Extension -in '.exe','.zip' -or $_.Name -eq 'SHA256SUMS.txt' }).FullName
+          gh release upload $env:RELEASE_TAG @pianoAssets --clobber

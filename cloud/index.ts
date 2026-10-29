@@ -1,4 +1,5 @@
 import {createService,ApiError} from './service.mjs';
+import {verifiedActor} from './identity.mjs';
 const baseUrl=Deno.env.get('SUPABASE_URL')!;
 const legacyService=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const secretKeys=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}');
@@ -15,7 +16,7 @@ async function db(path:string,method='GET',body?:unknown,prefer?:string){
 const route=createService({db,hash});
 Deno.serve(async(req:Request)=>{
   const origin=req.headers.get('Origin')||'',local=/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-  const cors={'Access-Control-Allow-Origin':origin===allowedOrigin||local?origin:allowedOrigin,'Access-Control-Allow-Headers':'apikey,content-type','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
+  const cors={'Access-Control-Allow-Origin':origin===allowedOrigin||local?origin:allowedOrigin,'Access-Control-Allow-Headers':'apikey,content-type,authorization','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
   const reply=(body:unknown,status=200)=>Response.json(body,{status,headers:cors});
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers:cors});
   try{
@@ -23,6 +24,7 @@ Deno.serve(async(req:Request)=>{
     if(req.headers.get('apikey')!==clientKey)throw new ApiError('アプリ情報を確認できませんでした。',401);
     let data={};
     if(req.method==='POST'){const raw=await req.text();if(raw.length>512000)throw new ApiError('プレイデータが大きすぎます。',413);try{data=JSON.parse(raw);}catch{throw new ApiError('データを読み取れませんでした。');}if(!data||typeof data!=='object'||Array.isArray(data))throw new ApiError('データが正しくありません。');}
-    return reply(await route(req.method,new URL(req.url),data));
+    const actor=await verifiedActor(req.headers.get('Authorization'),{baseUrl,clientKey});
+    return reply(await route(req.method,new URL(req.url),data,actor));
   }catch(error){if(error instanceof ApiError)return reply({error:error.message},error.status);console.error('Score API error',error instanceof Error?error.name:'unknown');return reply({error:'通信に失敗しました。時間を置いてお試しください。'},500);}
 });

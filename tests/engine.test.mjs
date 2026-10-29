@@ -2,7 +2,7 @@ import {AUDIO_ATTACKS} from '../audio-attacks.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,airWindows,HOLD_TICK,customChart,validateCustomNotes,isFullCombo,scoreChartReplay} from '../engine.mjs';
+import {SONGS,makeChart,scoreReplay,judgment,newStats,addResult,summary,RhythmSession,airWindows,HOLD_TICK,isFullCombo,scoreChartReplay} from '../engine.mjs';
 function spaceFlick(session,t,lane){session.pressSpace(t);return session.pressFlick(t,lane);}
 function holdTicks(notes){return notes.filter(n=>n.end).reduce((sum,n)=>sum+Math.max(0,Math.ceil((n.end-n.t)/HOLD_TICK-1e-8)-1),0);}
 function perfectEvents(notes){return notes.flatMap(n=>[[Math.round(n.t*1000),n.lane,1],[Math.round((n.end??n.t+.025)*1000),n.lane,0],...(n.flick?[[Math.round(n.t*1000),0,4],[Math.round((n.t+.08)*1000),n.lane,2],[Math.round((n.t+.1)*1000),n.lane,3],[Math.round((n.t+.12)*1000),0,5]]:[])]).sort((a,b)=>a[0]-b[0]||a[2]-b[2]);}
@@ -75,16 +75,9 @@ test('flicks exist only on HARD and require the base key followed by a fresh upp
   const late=new RhythmSession(chart);late.press(1,0);spaceFlick(late,1.221,0);assert.equal(late.stats.miss,1);
   const fresh=new RhythmSession(chart);spaceFlick(fresh,.8,0);fresh.press(1,0);fresh.releaseFlick(1.05,0);spaceFlick(fresh,1.1,0);assert.equal(fresh.stats.perfect,1);
 });
-test('custom charts validate bounds, overlapping holds, and HARD-only flicks',()=>{
-  const song=SONGS[0];assert.throws(()=>validateCustomNotes(song,[]));assert.throws(()=>validateCustomNotes(song,[[999,0,0]]));assert.throws(()=>validateCustomNotes(song,[[2000,8,0]]));assert.throws(()=>validateCustomNotes(song,[[2000,0,50]]));
-  assert.throws(()=>validateCustomNotes(song,[[2000,0,1000],[2500,0,0]]));assert.throws(()=>validateCustomNotes(song,[[2000,0,0,1]],1));assert.throws(()=>validateCustomNotes(song,[[2000,0,500,1]],2));assert.throws(()=>validateCustomNotes(song,[[2000,0,0,1],[2300,0,0]],2));
-  const raw=[[3000,4,0],[2000,0,500],[3000,0,0],[4000,7,0,1]],copy=structuredClone(raw),chart=customChart(song,raw,2);assert.deepEqual(raw,copy);assert.equal(chart.filter(n=>n.chord).length,2);assert.equal(chart.at(-1).flick,true);
-  const result=scoreChartReplay(chart,song.duration,perfectEvents(chart));assert.equal(isFullCombo(result.stats,chart.length),true);
-  const fail=scoreChartReplay(chart,song.duration,[]);assert.equal(isFullCombo(fail.stats,chart.length),false);
-});
 test('full combo accepts every successful note and rejects BAD, missed tails, or an empty chart',()=>{
   const s=newStats();for(const r of ['perfect','great','good'])addResult(s,r);assert.equal(isFullCombo(s,3),true);addResult(s,'bad');assert.equal(isFullCombo(s,4),false);assert.equal(isFullCombo(newStats(),0),false);
-  const chart=customChart(SONGS[0],[[2000,0,1000]],1),result=scoreChartReplay(chart,SONGS[0].duration,[[2000,0,1],[2200,0,0]]);assert.equal(isFullCombo(result.stats,1),false);
+  const chart=[{t:2,lane:0,end:3}],result=scoreChartReplay(chart,SONGS[0].duration,[[2000,0,1],[2200,0,0]]);assert.equal(isFullCombo(result.stats,1),false);
 });
 
 

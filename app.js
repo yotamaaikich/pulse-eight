@@ -1,5 +1,7 @@
+import {createAccount} from './auth.mjs?v=desktop-30';
+import {initDesktop} from './desktop-ui.mjs?v=desktop-30';
+import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-30';
 import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-11';
-import {referenceChart} from './reference-chart.mjs?v=score-attacks-1';
 import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
 import {NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment} from './note-style.mjs?v=combo-27';
@@ -9,16 +11,16 @@ import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
 import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=hands-19';
-import {chartMetrics,chartForSong,difficultyMetrics,orderedSongs} from './catalog.mjs?v=startup-28';
+import {chartForSong,difficultyMetrics,orderedSongs} from './catalog.mjs?v=desktop-30';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=compact-22';
-import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hands-19';
+import {SONGS,DIFFICULTIES,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=desktop-30';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from './playback.mjs?v=startup-29';
 
 const $=id=>document.getElementById(id);
 const DEFAULT_KEYS=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
-const DEFAULTS={speed:1,volume:50,mixVersion:1,pianoOn:true,pianoLevel:18,offset:0,keys:DEFAULT_KEYS};
+const DEFAULTS={speed:1,volume:50,mixVersion:1,pianoOn:true,pianoLevel:18,offset:0,touchControls:!!(window.matchMedia?.('(any-pointer: coarse)')?.matches||window.navigator?.maxTouchPoints),keys:DEFAULT_KEYS};
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
 const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));}catch{/* Storage is optional. */}};
 const savedPrefs=read('pulse-prefs',{});
@@ -41,9 +43,9 @@ let token=read('pulse-device',null);
 if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)){token=Array.from(crypto.getRandomValues(new Uint8Array(32)),n=>n.toString(16).padStart(2,'0')).join('');write('pulse-device',token);}
 let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
 if(typeof name!=='string')name='PLAYER';
-const bests=read('pulse-bests',{});
+let bestStorage='pulse-bests',bests=read(bestStorage,{}),accountUser=null,accountPending=undefined,runOwner=null;
+let account=null,accountRequest=0;
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
-let referenceRun=false;
 let life=MAX_LIFE;
 let libraryPack='all',librarySearch='',spaceHeld=false;
 let librarySort=read('pulse-sort','library');
@@ -52,28 +54,34 @@ let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],
 const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(-Infinity),blackFlashes=Array(5).fill(-Infinity),particles=[],perfectHits=Array(8).fill(null);
 const comboPulse={value:0,at:-Infinity};
 const canvas=$('game'),ctx=canvas.getContext('2d');
+const inputMixer=createInputMixer({
+  down(lane){pressed.add(lane);hit(lane);if(difficulty===2&&spaceHeld){upperPressed.add(lane);hitUpper(lane);}},
+  up(lane){pressed.delete(lane);releaseLane(lane,mode==='buffering');if(upperPressed.delete(lane))releaseUpper(lane,mode==='buffering');},
+  pedal(on){spaceHeld=on;$('touchPedal').classList.toggle('pressed',on);$('touchPedal').setAttribute('aria-pressed',String(on));if(difficulty===2)spaceInput(on,mode==='buffering');if(on){if(difficulty===2)for(const lane of pressed){upperPressed.add(lane);hitUpper(lane);}}else{for(const lane of upperPressed)releaseUpper(lane,mode==='buffering');upperPressed.clear();}}
+});
+const touchInput=bindTouchInput({canvas,pedal:$('touchPedal'),mixer:inputMixer,enabled:()=>['running','buffering','countdown'].includes(mode),window});
+function clearControls(){inputMixer.reset(true);touchInput.reset();pressed.clear();upperPressed.clear();spaceHeld=false;$('touchPedal').classList.remove('pressed');$('touchPedal').setAttribute('aria-pressed','false');}
+
 const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownSettledAt=null,countdownStarting=false,countdownProbeRaw=null,countdownPlayAt=0,countdownRepaired=false,bufferingSince=null,hasCountedIn=false;
 let countdownWaiting=false,countdownRecoveryRequested=false,countdownPreparedAt=0,countdownRecoveries=0,chartVisible=false;
 let W=600,H=535,dpr=1;
 const label=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]|| (code.startsWith('Key')?code.slice(3):code.startsWith('Digit')?code.slice(5):code));
 const song=()=>SONGS[selected];
-const referenceEnabled=()=>false;
 const formatTime=seconds=>String(Math.floor(Math.max(0,seconds)/60)).padStart(2,'0')+':'+String(Math.floor(Math.max(0,seconds))%60).padStart(2,'0');
 const resetTimer=()=>{$('timer').textContent='00:00 / '+formatTime(song().duration);};
 const scoreKey=()=>`${CHART_VERSION}:${song().id}:${difficulty}`;
 const fmt=n=>n.toLocaleString('en-US');
 function toast(text){$('toast').textContent=text;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3500);}
-function savePrefs(){configurePiano();write('pulse-prefs',prefs);$('speedLabel').textContent=`SPEED ${prefs.speed.toFixed(1)}×`;syncSettings();renderKeyGuide();}
+function savePrefs(){document.body.classList.toggle('touch-controls-on',prefs.touchControls===true);configurePiano();write('pulse-prefs',prefs);$('speedLabel').textContent=`SPEED ${prefs.speed.toFixed(1)}×`;syncSettings();renderKeyGuide();}
 async function toggleFullscreen(){if(document.body.classList.contains('chart-expanded')){document.body.classList.remove('chart-expanded');syncExpandedControls();return;}try{if(document.fullscreenElement)await document.exitFullscreen();else await $('stage').requestFullscreen({navigationUI:'hide'});}catch{document.body.classList.add('chart-expanded');}syncExpandedControls();}
 function syncExpandedControls(){const on=!!document.fullscreenElement||document.body.classList.contains('chart-expanded');$('fullscreenButton').setAttribute('aria-pressed',String(on));$('fullscreenButton').setAttribute('aria-label',on?'譜面の全画面を終了':'譜面を全画面にする');$('fullscreenButton').innerHTML=(on?'⛶ 戻す':'⛶ 譜面全画面')+' <kbd>V</kbd>';$('playFullscreen').textContent=(on?'⛶ 戻す':'⛶ 譜面全画面')+' [V]';}
 document.addEventListener('fullscreenchange',syncExpandedControls);
 function renderKeyGuide(){for(let hand=0;hand<2;hand++){$(hand?'rightKeys':'leftKeys').innerHTML=prefs.keys.slice(hand*4,hand*4+4).map(code=>`<span class="guide-key"><kbd data-key="${code}">${label(code)}</kbd></span>`).join('');}$('mappingKeys').innerHTML=prefs.keys.map((code,i)=>`<kbd class="${remapping&&i===remapKeys.length?'current':''}">${remapping?(remapKeys[i]?label(remapKeys[i]):'·'):label(code)}</kbd>`).join('');}
 function renderPianoStatus(){
   const profile=currentPianoProfile(),on=prefs.pianoOn&&prefs.pianoLevel>0;
-  $('pianoImportShortcut').hidden=true;
   $('pianoTrialStatus').textContent=(on?'鍵盤音 ON · '+prefs.pianoLevel+'%':'鍵盤音 OFF')+(profile?' · '+profile.title:' · 曲別ピアノ（音声からの推定）');
 }
-function syncSettings(){renderPianoStatus();const pianoProfile=currentPianoProfile();$('referencePractice').checked=prefs.referencePractice!==false;$('referencePracticeSetting').hidden=true;$('pianoScoreDetails').hidden=song().id==='monitoring';for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('testSongPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'曲別ピアノ読込済み · 公式音声からの音高推定';}
+function syncSettings(){$('touchControls').checked=prefs.touchControls===true;renderPianoStatus();const pianoProfile=currentPianoProfile();$('pianoScoreDetails').hidden=song().id==='monitoring';for(const key of ['speed','volume','pianoLevel','offset']){$(key).value=prefs[key];$(key+'Output').textContent=key==='speed'?prefs[key].toFixed(1)+'×':key==='volume'?prefs[key]+'%':prefs[key]+' ms';}$('pianoOn').checked=prefs.pianoOn;$('pianoLevelOutput').textContent=prefs.pianoLevel+'%';$('testPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('testSongPiano').disabled=!prefs.pianoOn||!prefs.pianoLevel;$('pianoScoreStatus').textContent=pianoProfile?pianoProfile.title+' · '+pianoProfile.voices.reduce((sum,v)=>sum+v.length,0)+'音 読込済み':'曲別ピアノ読込済み · 公式音声からの音高推定';}
 function setName(){ $('playerName').textContent=name;$('nameInput').value=name; }
 function visibleSongs(){const query=librarySearch.trim().toLocaleLowerCase('ja');return orderedSongs(SONGS,libraryPack,difficulty,librarySort).filter(({s})=>!query||[s.title,s.artist,s.vocal].some(value=>String(value??'').toLocaleLowerCase('ja').includes(query)));}
 function renderSongs(){
@@ -106,9 +114,8 @@ function requestSelection(nextSong=selected,nextDifficulty=difficulty){
 function updateSelectionWarning(){const changed=Number($('changeSong').value)!==selected||Number($('changeDifficulty').value)!==difficulty;$('confirmTrackChange').disabled=!changed;}
 function confirmSelection(){if(!['paused','results'].includes(mode)||$('confirmTrackChange').disabled)return;const nextSong=Number($('changeSong').value),nextDifficulty=Number($('changeDifficulty').value);$('changeTrackDialog').close();quit();selectSong(nextSong);selectDifficulty(nextDifficulty);toast('プレイをリセットして変更しました。Enterでスタート');}
 function updateBest(){const b=bests[scoreKey()];$('personalBest').textContent=b?fmt(b.score):'—';}
-async function api(path,body){const response=await fetch(API_URL+path,{method:body?'POST':'GET',headers:{apikey:PUBLIC_KEY,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'クラウドへ接続できませんでした');return data;}
+async function api(path,body,owner=null){const authHeaders=await account?.headers(owner)??{};const response=await fetch(API_URL+path,{method:body?'POST':'GET',headers:{apikey:PUBLIC_KEY,...authHeaders,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'クラウドへ接続できませんでした');return data;}
 async function loadLeaders(){
-  if(referenceEnabled()){leaderRequest++;$('leaders').innerHTML='<li class="empty-state">参照譜面の試験プレイはランキング対象外です。設定で通常譜面へ戻せます。</li>';return;}
   const request=++leaderRequest;$('leaders').innerHTML='<li class="empty-state">ランキングを読み込み中…</li>';
   try{
     const data=await api(`/leaderboard?song=${song().id}&difficulty=${difficulty}`);if(request!==leaderRequest)return;
@@ -117,15 +124,14 @@ async function loadLeaders(){
     data.scores.forEach((row,i)=>{const li=document.createElement('li'),num=document.createElement('span'),person=document.createElement('span'),strong=document.createElement('strong'),small=document.createElement('small'),score=document.createElement('span');num.className='leader-num';num.textContent=String(i+1).padStart(2,'0');person.className='leader-person';strong.textContent=row.name;small.textContent=row.accuracy.toFixed(2)+'% · '+row.max_combo+' COMBO';person.append(strong,small);score.className='leader-score';score.textContent=fmt(row.score);li.append(num,person,score);$('leaders').append(li);});
   }catch{if(request!==leaderRequest)return;$('cloudStatus').textContent='OFFLINE';$('leaders').innerHTML='<li class="empty-state">接続できませんでした。↻ で再読み込みできます。</li>';}
 }
-function updateChartControls(){
-  const ref=referenceEnabled()?referenceChart(song(),difficulty,currentPianoProfile()):null;
-  const metric=ref?chartMetrics(ref):difficultyMetrics(song(),difficulty);
-  $('leaderDifficulty').textContent=DIFFICULTIES[difficulty]+(ref?' 参照試験':' LV.'+metric.level);
-  $('difficultySummary').textContent=DIFFICULTIES[difficulty]+(ref?'（参照試験）':'')+' · '+metric.count+' NOTES · LV.'+metric.level;
-  document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),c=ref?referenceChart(song(),d,currentPianoProfile()):null,info=c?chartMetrics(c):difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+2）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
+function updateChartControls(){document.body.classList.toggle('touch-hard',difficulty===2);
+  const metric=difficultyMetrics(song(),difficulty);
+  $('leaderDifficulty').textContent=DIFFICULTIES[difficulty]+' LV.'+metric.level;
+  $('difficultySummary').textContent=DIFFICULTIES[difficulty]+' · '+metric.count+' NOTES · LV.'+metric.level;
+  document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),info=difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+2）';button.disabled=false;button.classList.toggle('active',d===difficulty);button.setAttribute('aria-pressed',String(d===difficulty));});
 }
 function setText(id,text){if($(id).textContent!==text)$(id).textContent=text;}
-function stateText(text){setText('playState',text);}
+function stateText(text){setText('playState',text);$('googleSignIn').disabled=mode!=='idle';$('googleSignOut').disabled=mode!=='idle';}
 function bufferingGrace(now=performance.now()){return mode==='buffering'&&bufferingSince!==null&&now-bufferingSince<300;}
 function playbackOverlays(now=performance.now()){
   const waiting=mode==='loading'||mode==='buffering'&&!bufferingGrace(now)||mode==='countdown'&&(!countdownUntil||countdownWaiting);
@@ -218,16 +224,16 @@ function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
   if(prefs.pianoOn&&prefs.pianoLevel){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
-  let chart;try{referenceRun=referenceEnabled();chart=referenceRun?referenceChart(song(),difficulty,currentPianoProfile()):pianoTrialChart(song(),chartForSong(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
-  upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;life=MAX_LIFE;events=[];eligible=!referenceRun;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;perfectHits.fill(null);
+  let chart;try{chart=pianoTrialChart(song(),chartForSong(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
+  clearControls();sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;life=MAX_LIFE;events=[];eligible=true;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;perfectHits.fill(null);
   countdownWaiting=false;countdownRecoveries=0;chartVisible=false;flashes.fill(-Infinity);blackFlashes.fill(-Infinity);
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
-  runPromise=referenceRun?Promise.resolve():api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
+  runOwner=accountUser?.id??null;runPromise=api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION},runOwner).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
 }
 function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';pianoSound.stop();countdownUntil=0;countdownStarting=false;player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
 function resume(){if(mode!=='paused')return;pianoSound.warm();syncHeldKeys();mode='loading';countdownStarting=false;countdownWaiting=false;countdownRecoveries=0;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
-function quit(){pianoSound.stop();upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();life=MAX_LIFE;events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
+function quit(){pianoSound.stop();clearControls();sequence++;mode='idle';session=null;notes=[];stats=newStats();life=MAX_LIFE;events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');applyAccountPending();resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
 function updateStats(){
   if(stats.combo<comboPulse.value)comboPulse.at=-Infinity;
   else if(Math.floor(stats.combo/100)>Math.floor(comboPulse.value/100))comboPulse.at=performance.now();
@@ -244,16 +250,16 @@ function finish(){
   if(mode==='results'||mode==='idle')return;mode='results';pianoSound.stop();document.body.classList.remove('focus-play');upperPressed.clear();spaceHeld=false;player.pauseVideo();pressed.clear();applyNotifications(session.finish());updateStats();const count=notes.filter(n=>!n.assist).length,result=summary(stats,count),fullCombo=isFullCombo(stats,count);
   $('resultRank').textContent=result.rank;$('resultScore').textContent=String(result.score).padStart(7,'0');$('resultDetail').textContent=`${result.accuracy.toFixed(2)}% ACCURACY / ${result.maxCombo} MAX COMBO`;
   $('resultCounts').innerHTML=['perfect','great','good','bad','miss'].map(key=>`<span>${key.toUpperCase()}<b>${stats[key]}</b></span>`).join('');$('fullComboBadge').hidden=!fullCombo;
-  const previous=bests[scoreKey()],isBest=!referenceRun&&(!previous||result.score>previous.score);if(isBest){bests[scoreKey()]=result;write('pulse-bests',bests);}$('bestBadge').style.display=isBest?'':'none';
+  const previous=bests[scoreKey()],isBest=!previous||result.score>previous.score;if(isBest){bests[scoreKey()]=result;write(bestStorage,bests);}$('bestBadge').style.display=isBest?'':'none';
   $('saveScore').disabled=!eligible;
-  $('saveScore').textContent=referenceRun?'参照譜面の試験プレイ':!eligible?'練習プレイ（シーク・速度変更あり）':'ランキングに登録 [S]';
-  $('saveStatus').textContent=referenceRun?'端末内の参照譜面のためランキング登録・通常譜面の自己ベスト更新は行いません。':'名前とスコアが公開されます';show('resultMessage');$('pauseButton').disabled=true;stateText('TRACK COMPLETE');$('progress').style.width='100%';updateBest();
+  $('saveScore').textContent=!eligible?'練習プレイ（シーク・速度変更あり）':'ランキングに登録 [S]';
+  $('saveStatus').textContent='名前とスコアが公開されます';show('resultMessage');$('pauseButton').disabled=true;stateText('TRACK COMPLETE');$('progress').style.width='100%';updateBest();
 }
 async function saveScore(){
   if(mode!=='results'||submitted||!eligible)return;
   const seq=sequence,recorded=events.map(e=>[...e]);$('saveScore').disabled=true;$('saveStatus').textContent='クラウドへ登録中…';
   try{await runPromise;if(seq!==sequence)return;if(!runId)throw new Error('接続できませんでした。次のプレイで再度お試しください。');
-    const result=await api('/submit',{runId,playerToken:token,name,events:recorded});if(seq!==sequence)return;submitted=true;
+    const result=await api('/submit',{runId,playerToken:token,name,events:recorded},runOwner);if(seq!==sequence)return;submitted=true;
     {$('saveScore').textContent=result.improved?'ランキング登録完了':'自己ベストをキープ';$('saveStatus').textContent='保存しました。ランキングを更新しました。';toast('クラウドにスコアを保存しました');}loadLeaders();
   }catch(error){if(seq!==sequence)return;$('saveScore').disabled=false;$('saveStatus').textContent=error.message;}
 }
@@ -400,29 +406,28 @@ document.addEventListener('keydown',event=>{
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.code)){event.preventDefault();if(event.repeat)return;if(event.code==='ArrowUp')moveSong(-1);if(event.code==='ArrowDown')moveSong(1);if(event.code==='ArrowLeft')selectDifficulty(difficulty-1);if(event.code==='ArrowRight')selectDifficulty(difficulty+1);return;}
   }
   if(event.code==='Escape'&&!event.repeat){event.preventDefault();if(mode==='paused'||mode==='results')requestSelection();else pause();return;}
-  if(event.code==='Space'){event.preventDefault();if(event.repeat||spaceHeld)return;spaceHeld=true;if(difficulty===2)spaceInput(true);if(difficulty===2)for(const lane of pressed){upperPressed.add(lane);hitUpper(lane);}return;}
+  if(event.code==='Space'){event.preventDefault();if(!event.repeat)inputMixer.pedal('keyboard',true);return;}
   if(event.code==='Enter'){
     const button=event.target.closest?.('button');if(button&&!button.dataset.song)return;
     event.preventDefault();if(event.repeat)return;if(mode==='paused')resume();else if(['idle','results'].includes(mode))start();return;
   }
   if(event.code==='KeyR'&&!event.repeat&&mode!=='idle'&&(event.shiftKey||difficulty!==2||!['running','buffering','loading','countdown'].includes(mode))){event.preventDefault();mode='retrying';start();return;}
-  const lane=prefs.keys.indexOf(event.code);if(lane!==-1){event.preventDefault();if(event.repeat||pressed.has(lane))return;pressed.add(lane);hit(lane);if(difficulty===2&&spaceHeld){upperPressed.add(lane);hitUpper(lane);}}
+  const lane=prefs.keys.indexOf(event.code);if(lane!==-1){event.preventDefault();if(!event.repeat)inputMixer.down(lane,'keyboard');}
 });
-document.addEventListener('keyup',event=>{if(event.code==='Space'){spaceHeld=false;if(difficulty===2)spaceInput(false,mode==='buffering');for(const lane of upperPressed)releaseUpper(lane,mode==='buffering');upperPressed.clear();return;}const lane=prefs.keys.indexOf(event.code);if(lane!==-1){pressed.delete(lane);releaseLane(lane,mode==='buffering');if(upperPressed.delete(lane))releaseUpper(lane,mode==='buffering');}});
-window.addEventListener('blur',()=>{upperPressed.clear();spaceHeld=false;pressed.clear();if(['running','buffering','loading','countdown'].includes(mode))pause();});
+document.addEventListener('keyup',event=>{if(event.code==='Space'){inputMixer.pedal('keyboard',false);return;}const lane=prefs.keys.indexOf(event.code);if(lane!==-1)inputMixer.up(lane,'keyboard');});
+window.addEventListener('blur',()=>{clearControls();if(['running','buffering','loading','countdown'].includes(mode))pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&['running','buffering','loading','countdown'].includes(mode))pause();});
 $('startButton').onclick=start;$('resumeButton').onclick=resume;$('pauseButton').onclick=pause;$('retryButton').onclick=()=>{mode='retrying';start();};$('quitButton').onclick=()=>requestSelection();$('resultRetry').onclick=start;$('resultBack').onclick=()=>requestSelection();$('saveScore').onclick=saveScore;
-$('pianoImportShortcut').onclick=()=>{syncSettings();$('settingsDialog').showModal();$('pianoScoreDetails').open=true;$('pianoScoreFile').click();};
 $('settingsButton').onclick=() =>openDialog('settingsDialog');$('remapShortcut').onclick=()=>openDialog('settingsDialog');$('helpButton').onclick=()=>openDialog('helpDialog');$('profileButton').onclick=()=>{setName();openDialog('profileDialog');};
 document.querySelectorAll('.close-dialog').forEach(button=>button.onclick=()=>button.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(dialog=>{dialog.addEventListener('close',()=>{remapping=false;remapKeys=[];renderKeyGuide();});dialog.addEventListener('click',e=>{if(e.target===dialog){const rect=dialog.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)dialog.close();}});});
 document.querySelectorAll('[data-difficulty]').forEach(button=>button.onclick=()=>selectDifficulty(Number(button.dataset.difficulty)));
 for(const key of ['speed','volume','pianoLevel','offset'])$(key).oninput=()=>{prefs[key]=Number($(key).value);if(key==='offset'&&mode!=='idle'&&mode!=='results'){eligible=false;toast('この回は練習プレイになります。次のプレイから新しい判定設定を使います。');}savePrefs();if(key==='pianoLevel')pianoSound.warm();if(key==='volume')applyVolume();};
 $('pianoScoreFile').onchange=async()=>{const file=$('pianoScoreFile').files?.[0];if(!file)return;const trackId=song().id;try{if(file.size>500000)throw Error('ファイルは500KB以内で指定してください。');const profile=importPianoScore(await file.text(),file.name);localStorage.setItem('pulse-piano-score:'+trackId,JSON.stringify(profile));pianoProfiles[trackId]=profile;syncSettings();if(mode==='idle')selectSong(selected);toast('音程データをこのブラウザに保存しました。次のプレイから反映します。');}catch(error){toast(error.message);}finally{$('pianoScoreFile').value='';}};
-$('referencePractice').onchange=()=>{if(mode!=='idle'&&mode!=='results'){syncSettings();toast('曲を終了してから切り替えてください。');return;}prefs.referencePractice=$('referencePractice').checked;savePrefs();selectSong(selected);};
 $('pianoOn').onchange=()=>{prefs.pianoOn=$('pianoOn').checked;savePrefs();pianoSound.warm();};
 $('testPiano').onclick=()=>{configurePiano();for(const midi of [62,65,69])pianoSound.play({midi});};
 $('testSongPiano').onclick=()=>{configurePiano();const feedback=pianoFeedbackAt(song(),Math.max(1,clock));if(feedback)pianoSound.play(feedback);};
+$('touchControls').onchange=()=>{prefs.touchControls=$('touchControls').checked;savePrefs();};
 $('resetSettings').onclick=()=>{prefs={...DEFAULTS,keys:[...DEFAULT_KEYS]};savePrefs();applyVolume();toast('設定を初期値に戻しました');};
 $('remapButton').onclick=()=>{remapping=true;remapKeys=[];renderKeyGuide();$('remapHint').textContent='左から順に8つのキーを押してください。Escでキャンセル。';};
 $('profileForm').onsubmit=event=>{event.preventDefault();name=$('nameInput').value.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,16)||'PLAYER';write('pulse-name',name);setName();$('profileDialog').close();toast('プレイヤー名を保存しました');};
@@ -436,5 +441,22 @@ $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mo
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
 let tutorial=null;
-async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=float-21');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
+async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=desktop-30');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
 $('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
+
+function renderAccount(){
+  $('accountStatus').textContent=accountUser?'Googleログイン中 · 自己ベストを共有':'ゲストでプレイ中 · ログインは任意です';
+  $('googleSignIn').hidden=!!accountUser;$('googleSignOut').hidden=!accountUser;
+  $('accountHint').textContent=accountUser?'同じGoogleアカウントでブラウザ・アプリの登録済み自己ベストを表示できます。':'ログインしなくても全曲プレイ・ランキング登録ができます。ゲストの記録はこの端末に保存します。';
+}
+function applyAccountPending(){
+  if(mode!=='idle'||accountPending===undefined)return;const user=accountPending;accountPending=undefined;
+  if((accountUser?.id??null)===(user?.id??null)){accountUser=user;renderAccount();return;}
+  accountUser=user;bestStorage=user?'pulse-bests:'+user.id:'pulse-bests';bests=read(bestStorage,{});updateBest();renderAccount();
+  const request=++accountRequest;if(user)api('/profile',{},user.id).then(data=>{if(request!==accountRequest||accountUser?.id!==user.id)return;for(const row of data.scores??[]){const key=row.chart_version+':'+row.song+':'+row.difficulty;if(!bests[key]||row.score>bests[key].score)bests[key]={score:row.score,accuracy:row.accuracy,maxCombo:row.max_combo};}write(bestStorage,bests);updateBest();}).catch(()=>toast('アカウントの記録を取得できませんでした。再ログインで読み直せます。'));
+}
+account=createAccount({bridge:window.pianoPulse,onChange:user=>{accountPending=user;applyAccountPending();},onError:message=>{$('accountStatus').textContent=message;}});
+$('googleSignIn').onclick=async()=>{if(mode!=='idle'){toast('選曲に戻ってからログインしてください。');return;}$('googleSignIn').disabled=true;try{await account.signIn();$('accountStatus').textContent='ブラウザでGoogleログインを完了してください';}catch(error){$('accountStatus').textContent=error.message;}finally{$('googleSignIn').disabled=mode!=='idle';}};
+$('googleSignOut').onclick=async()=>{if(mode!=='idle')return;$('googleSignOut').disabled=true;try{await account.signOut();}catch(error){$('accountStatus').textContent=error.message;}finally{$('googleSignOut').disabled=mode!=='idle';}};
+renderAccount();
+initDesktop({bridge:window.pianoPulse,button:$('desktopSettings'),snapshot:()=>({songId:song().id,difficulty,phase:mode,position:clock})});

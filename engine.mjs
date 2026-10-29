@@ -157,24 +157,3 @@ export function scoreChartReplay(chart,duration,events){
 export function scoreReplay(song,difficulty,events){return scoreChartReplay(makeChart(song,difficulty),song.duration,events);}
 export function isFullCombo(stats,count){return count>0&&stats.miss===0&&stats.bad===0&&stats.airBreaks===0&&stats.maxCombo===count+stats.holdTicks&&stats.perfect+stats.great+stats.good===count;}
 
-// [time in ms, lane 0–7, hold length in ms, optional 1 = HARD flick].
-export function validateCustomNotes(song,raw,difficulty=2){
-  if(!Number.isInteger(difficulty)||difficulty<0||difficulty>2)throw Error('難易度が正しくありません。');
-  if(!Array.isArray(raw)||raw.length<1||raw.length>4096)throw Error('ノーツは1〜4096個で作成してください。');
-  const notes=raw.map(note=>{
-    if(!Array.isArray(note)||![3,4].includes(note.length)||!note.every(Number.isInteger))throw Error('ノーツの形式が正しくありません。');
-    const [t,lane,length,flick=0]=note;
-    if((note.length===4&&flick!==1)||(flick&&(difficulty!==2||length!==0)))throw Error('フリックはHARDの単押しだけに配置できます。');
-    if(t<1000||t>song.duration*1000-170||lane<0||lane>7||length<0||(length>0&&length<100)||t+length>song.duration*1000-100)throw Error('ノーツは冒頭1秒より後、曲の終了前に配置してください。');
-    if(flick&&t+(WINDOW+FLICK_WINDOW)*1000>song.duration*1000-100)throw Error('フリックは曲の終了より前に配置してください。');
-    return flick?[t,lane,length,1]:[t,lane,length];
-  }).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
-  const ends=Array(8).fill(-Infinity);
-  for(const [t,lane,length,flick]of notes){if(t<ends[lane]+40)throw Error('同じレーンのノーツや長押しが重なっています。');ends[lane]=t+(flick?(WINDOW+FLICK_WINDOW)*1000:length);}
-  return notes;
-}
-export function customChart(song,raw,difficulty=2){
-  const triples=validateCustomNotes(song,raw,difficulty),counts=new Map();for(const [t]of triples)counts.set(t,(counts.get(t)||0)+1);
-  return triples.map(([ms,lane,length,flick])=>({t:ms/1000,lane,degree:lane,assist:false,chord:counts.get(ms)>1,...(length?{end:(ms+length)/1000}:{}),...(flick?{flick:true}:{})}));
-}
-export function draftKey(raw){let hash=2166136261;for(const char of JSON.stringify(raw)){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return (hash>>>0).toString(16);}

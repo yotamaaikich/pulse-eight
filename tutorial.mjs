@@ -1,13 +1,14 @@
+import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-30';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=float-21';
-import {RhythmSession,isFullCombo} from './engine.mjs?v=hands-19';
+import {RhythmSession,isFullCombo} from './engine.mjs?v=desktop-30';
 import {projectPoint} from './geometry.mjs';
 
 export const LESSONS=[
-  {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、操作ガイドで対応するキーを確認して、1回押そう。'},
+  {title:'単押し',lanes:[0],text:'ノーツが下の判定ラインに重なったら、操作ガイドで対応するキーを確認して、1回押そう。タッチでは鍵盤をタップ。'},
   {title:'長押し',lanes:[2],hold:1.2,text:'帯の先頭で押し、帯がなくなるまで押し続けよう。途中で離すと失敗。押し続ける間は0.25秒ごとにコンボが増えます。'},
   {title:'同時押し',lanes:[3,4],text:'白い横線でつながった2つのノーツを、左右の手で同時に押そう。'},
-  {title:'FLOAT（フロート）：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace。Spaceだけでは成功しません。'},
-  {title:'FLOAT：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'光のレールに沿ってSpaceを押し続け、上向きマークに合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。帯が終わったらSpaceを離そう。区間外で押すとコンボが切れます。'},
+  {title:'FLOAT（フロート）：キー＋Space',lanes:[3],flick:true,text:'HARD限定。ラインでレーンキーを押したまま、0.22秒以内にSpace、または画面下のペダル。Spaceやペダルだけでは成功しません。'},
+  {title:'FLOAT：帯に沿ってレーン移動',lanes:[4,5,6],flick:true,sweep:true,text:'光のレールに沿ってSpaceかペダルを押し続け、上向きマークに合わせて右手の3キーを順に押そう。Spaceは途中で離さず、レーンキーだけを移動します。帯が終わったらSpaceを離そう。区間外で押すとコンボが切れます。'},
 ];
 export function lessonsFor(difficulty,includeFlick=true){return LESSONS.slice(0,difficulty===0?2:difficulty===1||!includeFlick?3:5);}
 export class TutorialAttempt{
@@ -23,11 +24,15 @@ export class TutorialAttempt{
 export function createTutorial({dialog,getKeys,getDifficulty}){
   const $=id=>dialog.querySelector('#'+id),canvas=$('tutorialCanvas'),ctx=canvas.getContext('2d');
   let lessons=LESSONS,step=0,attempt=null,started=0,frame=0,retryAt=0,held=new Set();
+  const eventFor=code=>({code,repeat:false,target:{closest:()=>null},preventDefault(){},stopImmediatePropagation(){}});
+  const inputMixer=createInputMixer({down:lane=>input(eventFor(getKeys()[lane]),true),up:lane=>input(eventFor(getKeys()[lane]),false),pedal:on=>{input(eventFor('Space'),on);$('tutorialPedal').classList.toggle('pressed',on);$('tutorialPedal').setAttribute('aria-pressed',String(on));}});
+  const touch=bindTouchInput({canvas,pedal:$('tutorialPedal'),mixer:inputMixer,enabled:()=>dialog.open,window});
   const keyLabel=code=>code==='Semicolon'?';':code.replace(/^Key|^Digit/,'');
-  function release(){held.clear();}
+  function release(){inputMixer.reset(true);touch.reset();held.clear();$('tutorialPedal').classList.remove('pressed');$('tutorialPedal').setAttribute('aria-pressed','false');}
   function showLesson(){
     attempt=null;retryAt=0;release();const lesson=lessons[step],keys=getKeys();
     $('tutorialProgress').textContent=`${step+1} / ${lessons.length}`;
+    $('tutorialPedal').disabled=!lesson.flick;$('tutorialPedal').closest('.tutorial-pedal-dock').hidden=!lesson.flick;
     $('tutorialTitle').textContent=lesson.title;$('tutorialText').textContent=lesson.text;
     $('tutorialKeys').textContent=lesson.lanes.map(lane=>keyLabel(keys[lane])+(lesson.flick?' + SPACE':'')).join(lesson.sweep?' → ':' ＋ ');
     $('tutorialStatus').textContent='Enter または「練習開始」でスタート';
@@ -82,7 +87,13 @@ export function createTutorial({dialog,getKeys,getDifficulty}){
       else{update(t,down?'press':'release',lane);if(down&&held.has('Space'))update(t,'pressFlick',lane);if(!down)update(t,'releaseFlick',lane);}
     }
   }
-  document.addEventListener('keydown',e=>input(e,true),true);document.addEventListener('keyup',e=>input(e,false),true);
+  function keyboardInput(e,on){
+    if(!dialog.open||e.ctrlKey||e.metaKey||e.altKey||e.isComposing)return;
+    const lane=getKeys().indexOf(e.code);if(lane<0&&e.code!=='Space'){input(e,on);return;}
+    e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;
+    if(e.code==='Space')inputMixer.pedal('keyboard',on);else inputMixer[on?'down':'up'](lane,'keyboard');
+  }
+  document.addEventListener('keydown',e=>keyboardInput(e,true),true);document.addEventListener('keyup',e=>keyboardInput(e,false),true);
   window.addEventListener('blur',()=>{if(dialog.open){release();showLesson();}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&dialog.open)showLesson();});
   dialog.addEventListener('close',()=>{cancelAnimationFrame(frame);release();attempt=null;});

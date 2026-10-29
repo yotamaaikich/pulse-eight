@@ -1,0 +1,71 @@
+[hidden]{display:none!important}
+.focus-play .stage{height:max(360px,calc(100dvh - 230px))}
+.change-track-dialog label{display:block;font-size:11px;margin-top:16px}
+.change-track-dialog select{display:block;width:100%;font:inherit;padding:10px;margin-top:7px;background:#fff;border:1px solid #ccd5c3;border-radius:5px;color:#34472e}
+.change-track-dialog .reset-warning{font-size:12px;color:#a34f3b;background:#f4e4dc;border:1px solid #e5c7b9;border-radius:6px;padding:12px;margin:20px 0;line-height:1.9}
+.change-actions{display:flex;justify-content:flex-end;gap:12px}
+.change-actions .close-dialog{font-size:11px;align-self:auto}
+.change-actions .coral-button{font-size:11px}
+.pack-filters{display:flex;gap:4px;margin:0 0 12px;flex-wrap:wrap}
+.pack-filters button{font-size:9px;padding:7px 9px;border-radius:4px;background:#e7e9df;color:#788372}
+.pack-filters button.active{background:#34483e;color:#fff}
+.pack-filters button:hover{box-shadow:0 0 0 1px #a5b5a0}
+.focus-play .pack-filters{margin-bottom:8px}
+.song-art::before,.mini-art::before{content:"";position:static;transform:none;border-radius:0;display:block;width:22px;height:24px;background:linear-gradient(currentColor,currentColor) left center/5px 12px no-repeat,linear-gradient(currentColor,currentColor) center/5px 24px no-repeat,linear-gradient(currentColor,currentColor) right center/5px 17px no-repeat;opacity:.55}
+.song-art::after{display:none}
+.tutorial-launch{background:#344e43;color:#fff;font-size:12px;font-weight:700;border-radius:6px;padding:10px 13px}
+.tutorial-launch:hover{background:#243e33}
+.tutorial-launch:focus-visible{outline:3px solid #e76550;outline-offset:3px}
+.tutorial-dialog{width:850px;max-width:calc(100% - 28px);max-height:calc(100dvh - 28px);overflow:auto;padding:24px}
+.tutorial-dialog .dialog-title{margin-bottom:12px}
+.tutorial-dialog h2{font-size:27px}
+.tutorial-description{font-size:13px;line-height:1.8;min-height:46px}
+.tutorial-key-prompt{font-size:24px;font-weight:800;margin:12px 0;color:#344e43;letter-spacing:3px}
+#tutorialCanvas{display:block;width:100%;height:auto;border-radius:9px;background:#18282a}
+.tutorial-feedback{font-size:14px;font-weight:700;min-height:24px;margin:16px 0;color:#344e43}
+.tutorial-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tutorial-actions .coral-button{margin-left:auto;font-size:13px;padding:12px 18px}
+.tutorial-actions .small-button{font-size:12px;padding:10px 14px}
+.tutorial-note{font-size:10px;color:#6a796b;line-height:1.8;margin:14px 0 0}
+#helpTutorial{font-size:13px;margin:8px 0 16px}
+@media(max-width:750px){.tutorial-dialog{padding:18px}
+.tutorial-description{font-size:12px}
+.tutorial-launch{padding:8px;font-size:10px}
+.tutorial-actions{gap:6px}
+.tutorial-actions .small-button{padding:9px}
+.tutorial-actions .coral-button{padding:10px}
+.tutorial-feedback{font-size:12px}
+}
+.tutorial-options{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:16px 0}
+.tutorial-options label{display:flex;align-items:center;gap:8px;font-size:12px}
+.tutorial-options select{padding:8px 12px;font:inherit;background:#fff;border:1px solid #9cad9f;border-radius:5px}
+.tutorial-options input{width:17px;height:17px;accent-color:#344e43}
+.tutorial-options label:has(input:disabled){opacity:.55}
+.tutorial-dialog #tutorialCanvas{height:min(34dvh,360px);object-fit:contain}
+.tutorial-description{min-height:0;margin:8px 0}
+.tutorial-key-prompt{margin:8px 0;font-size:22px}
+.play-countdown{position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:transparent;color:#eef5eb;pointer-events:none;text-shadow:0 2px 12px #05070a,0 0 6px #05070a}
+.play-countdown>span{font-size:16px;font-weight:700;letter-spacing:2px}
+.play-countdown>strong{font-size:clamp(74px,13vh,140px);font-weight:800;color:#c1e7ce;line-height:1.1}
+.play-countdown>small{font-size:12px;color:#bdd0c3}
+.play-countdown.hidden{display:none}
+
+/* A 32px rail; the 44px hit area overlaps only the keyboard's front lip. */
+#game,#tutorialCanvas,.touch-pedal{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.pedal-dock{display:none;position:absolute;bottom:0;left:0;right:0;height:44px;z-index:4;align-items:center;justify-content:center;pointer-events:none}
+.touch-controls-on.touch-hard #stage #game{height:calc(100% - 32px)}
+.touch-controls-on.touch-hard .pedal-dock{display:flex}
+.touch-controls-on .keyboard-guide,.touch-controls-on .space-guide{display:none}
+.touch-pedal{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:176px;height:44px;padding:0 12px;border:0;background:transparent;color:#a9b6b4;pointer-events:auto;border-radius:8px;cursor:pointer}
+.pedal-metal{display:block;width:84px;height:23px;border:1px solid #d3c38f;border-radius:8px 8px 12px 12px;background:linear-gradient(100deg,#665b3d,#c4b27a 13%,#efe2b0 35%,#a38f58 66%,#d4c38d 88%,#79683f);box-shadow:inset 0 2px 1px #fff8,inset 0 -3px 2px #4a3f29,0 4px 0 #06090b;transform:perspective(90px) rotateX(12deg);transition:transform 60ms,box-shadow 60ms}
+.pedal-label{font-size:9px;font-weight:800;letter-spacing:1px}.pedal-light{width:4px;height:4px;background:#3e4f44;border-radius:50%}
+.touch-pedal.pressed .pedal-metal{transform:translateY(3px) perspective(90px) rotateX(24deg);box-shadow:inset 0 1px 2px #463b29,0 1px 0 #05070a,0 0 12px #baff5a44}
+.touch-pedal.pressed .pedal-light{background:#baff5a;box-shadow:0 0 8px #baff5a}.touch-pedal.pressed{color:#d7ff9c}
+.touch-pedal:focus-visible{outline:2px solid #b6e7cc;outline-offset:-3px}
+.tutorial-pedal-dock{display:none;justify-content:center;height:44px}.touch-controls-on .tutorial-pedal-dock{display:flex}.tutorial-pedal-inner{display:flex;justify-content:center}
+.space-guide{display:flex;gap:10px;align-items:center;margin:10px 0;padding:10px 12px;border:1px solid #c3d1bc;border-radius:6px;background:#e4e9df;color:#405b48;font-size:11px}
+.space-guide kbd{padding:6px 15px;border:1px solid #a5baa3;border-radius:4px;background:#f8faf5;font-weight:800}
+.space-guide.pressed{background:#b4d6bd}
+.space-guide.pressed kbd{background:#344e43;color:#fff}
+.account-section{border-bottom:1px solid #35433c;margin-bottom:22px;padding-bottom:22px}.account-section p{font-size:12px}.account-section a{font-size:11px}.google-sign-in{display:flex;align-items:center;gap:14px;background:#fff;color:#303633;border:1px solid #b9c5be;border-radius:6px;padding:11px 18px;font-size:14px;font-weight:600;min-height:44px}.google-sign-in b{font-size:20px;color:#4285f4}.google-sign-in:disabled{opacity:.5}.account-section .small-button{min-height:44px}.app-download{color:#b6eacf;font-weight:700}
+.focus-play .space-guide{margin:7px 0;padding:7px 10px}

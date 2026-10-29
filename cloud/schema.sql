@@ -5,6 +5,7 @@ create table public.pulse_keys_runs (
   song text not null,
   difficulty smallint not null check(difficulty between 0 and 2),
   chart_version text not null,
+  duration_seconds integer not null check(duration_seconds between 2 and 600),
   created_at timestamptz not null default now(),
   used boolean not null default false
 );
