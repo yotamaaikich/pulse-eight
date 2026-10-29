@@ -5,7 +5,7 @@ const {DiscordPresence}=require('./discord.cjs');
 const root=path.resolve(__dirname,'..'),preload=path.join(__dirname,'preload.cjs');
 let mainWindow,settingsWindow,rpc,saveTimer,awake=null,pendingAuth=null;
 const smoke=process.argv.includes('--smoke-test');let smokeTimer;
-if(smoke){app.setPath('userData',path.join(app.getPath('temp'),'piano-pulse-smoke-'+process.pid));smokeTimer=setTimeout(()=>{console.error('PIANO PULSE renderer startup timed out');app.exit(1);},20000);}
+if(smoke){const smokeData=path.join(app.getPath('temp'),'piano-pulse-smoke-'+process.pid);fs.mkdirSync(smokeData,{recursive:true});app.setPath('userData',smokeData);smokeTimer=setTimeout(()=>{console.error('PIANO PULSE renderer startup timed out');app.exit(1);},20000);}
 app.setName('PIANO PULSE');app.setAppUserModelId('io.github.yotamaaikich.pianopulse');
 if(!app.requestSingleInstanceLock()){app.quit();process.exit(0);}
 const settingsPath=()=>path.join(app.getPath('userData'),'desktop-settings.json');
@@ -53,3 +53,4 @@ app.whenReady().then(async()=>{
 });
 app.on('before-quit',()=>{clearTimeout(saveTimer);rpc?.stop();if(awake!==null)powerSaveBlocker.stop(awake);save();});
 app.on('window-all-closed',()=>app.quit());
+
