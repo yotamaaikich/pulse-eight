@@ -37,7 +37,7 @@ app.whenReady().then(async()=>{
   rpc=new DiscordPresence({applicationId:config.applicationId,catalog,onStatus:publishStatus});rpc.enabled=smoke?false:prefs.discordEnabled;
   mainWindow=new BrowserWindow({width:prefs.width,height:prefs.height,minWidth:880,minHeight:620,show:false,backgroundColor:'#0c0e12',title:'PIANO PULSE',icon:path.join(__dirname,'assets','icon.ico'),autoHideMenuBar:true,webPreferences:{preload,partition:'persist:piano-pulse',nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,webviewTag:false}});
   secureWindow(mainWindow);
-  Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'ゲーム',submenu:[{label:'アプリ設定',click:openSettings},{label:'全画面',role:'togglefullscreen'},{type:'separator'},{label:'終了',role:'quit'}]},{label:'表示',submenu:[{role:'reload',label:'再読み込み'},{role:'resetZoom',label:'標準サイズ'},{role:'zoomIn',label:'拡大'},{role:'zoomOut',label:'縮小'}]}]));
+  Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'ゲーム',submenu:[{label:'アプリ設定',click:openSettings},{type:'separator'},{label:'終了',role:'quit'}]},{label:'表示',submenu:[{role:'reload',label:'再読み込み'},{role:'resetZoom',label:'標準サイズ'},{role:'zoomIn',label:'拡大'},{role:'zoomOut',label:'縮小'}]}]));
   mainWindow.once('ready-to-show',()=>{if(!smoke)mainWindow.show();});
   mainWindow.webContents.on('did-finish-load',()=>{publishStatus();if(pendingAuth){mainWindow.webContents.send('pulse:auth-callback',pendingAuth);pendingAuth=null;}});
   mainWindow.on('resize',()=>{clearTimeout(saveTimer);saveTimer=setTimeout(()=>{if(!mainWindow.isDestroyed()&&!mainWindow.isFullScreen()&&!mainWindow.isMaximized()){const size=mainWindow.getSize();prefs.width=size[0];prefs.height=size[1];save();}},400);});
@@ -53,4 +53,3 @@ app.whenReady().then(async()=>{
 });
 app.on('before-quit',()=>{clearTimeout(saveTimer);rpc?.stop();if(awake!==null)powerSaveBlocker.stop(awake);save();});
 app.on('window-all-closed',()=>app.quit());
-
