@@ -2,7 +2,7 @@ import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-
 import {referenceChart} from './reference-chart.mjs?v=score-attacks-1';
 import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
-import {NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment} from './note-style.mjs?v=judge-25';
+import {NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment} from './note-style.mjs?v=glow-26';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=source-piano-15';
 import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
@@ -49,7 +49,7 @@ let libraryPack='all',librarySearch='',spaceHeld=false;
 let librarySort=read('pulse-sort','library');
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
-const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[];
+const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[],perfectHits=Array(8).fill(null);
 const canvas=$('game'),ctx=canvas.getContext('2d');
 const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownSettledAt=null,countdownStarting=false,countdownProbeRaw=null,countdownPlayAt=0,countdownRepaired=false,bufferingSince=null,hasCountedIn=false;
 let W=600,H=535,dpr=1;
@@ -177,7 +177,7 @@ function start(){
   if(mode==='loading')return;
   if(prefs.pianoOn&&prefs.pianoLevel){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
   let chart;try{referenceRun=referenceEnabled();chart=referenceRun?referenceChart(song(),difficulty,currentPianoProfile()):pianoTrialChart(song(),makeChart(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
-  upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;life=MAX_LIFE;events=[];eligible=!referenceRun;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;
+  upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;life=MAX_LIFE;events=[];eligible=!referenceRun;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;perfectHits.fill(null);
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
   runPromise=referenceRun?Promise.resolve():api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
@@ -217,13 +217,18 @@ function applyNotifications(list){
   const now=performance.now();let changed=false;
   for(const event of list){
     life=nextLife(life,event);
+    if(event.result==='perfect'&&['judge','holdstart','flickstart'].includes(event.kind))perfectHits[event.note.lane]={at:now,float:!!event.note.flick};
     if(event.kind==='assist'){blackFlashes[event.note.blackIndex]=now;continue;}
     if(event.kind==='holdstart'||event.kind==='flickstart'){lastJudge=event.result;judgeDelta=Math.round(event.delta*1000);judgeAt=now;continue;}
     if(event.kind==='holdtick'){changed=true;continue;}
     if(event.kind==='airbreak'){changed=true;lastJudge='airbreak';judgeAt=now;toast('FLOATの帯がないところではSpaceを離してください');continue;}
     if(event.kind!=='judge')continue;
     changed=true;lastJudge=event.result;judgeDelta=Math.round(event.delta*1000);judgeAt=now;
-    if(event.result!=='miss'){const x=(event.note.lane+.5)*W/8;for(let i=0;i<9;i++)particles.push({x,y:keyboardStrikeY(W,H)+2,vx:(Math.random()-.5)*2.5,vy:-Math.random()*4-1,life:1,color:event.note.lane<4?NOTE_COLORS.left:NOTE_COLORS.right});}
+    if(event.result!=='miss'){
+      const x=(event.note.lane+.5)*W/8,perfect=event.result==='perfect',color=perfect&&event.note.flick?NOTE_COLORS.float:event.note.lane<4?NOTE_COLORS.left:NOTE_COLORS.right;
+      for(let i=0;i<(perfect?18:9);i++)particles.push({x,y:keyboardStrikeY(W,H)+2,vx:(Math.random()-.5)*(perfect?4:2.5),vy:-Math.random()*(perfect?6:4)-1,life:1,color:perfect&&i%3===0?'#f5ffff':color,size:perfect?1.5+Math.random()*1.5:2,spark:perfect});
+      if(particles.length>256)particles.splice(0,particles.length-256);
+    }
   }
   if(changed)updateStats();
 }
@@ -326,9 +331,10 @@ function draw(now){
   }
   ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.fillRect(0,hitY-1,W,2);ctx.globalAlpha=1;ctx.shadowColor=NOTE_COLORS.right;ctx.shadowBlur=12;ctx.fillStyle=NOTE_COLORS.right;ctx.fillRect(0,hitY,W,1);ctx.shadowBlur=0;
   drawKeyboard(ctx,{width:W,height:H,time:now,pressed,flashes,blackFlashes});
+  if(active)for(let lane=0;lane<8;lane++){const hit=perfectHits[lane];if(!hit)continue;const age=now-hit.at;if(age>320){perfectHits[lane]=null;continue;}drawPerfectHit(ctx,{lane,width:W,hitY,age,heightScale,float:hit.float,top});}
   if(active)drawCombo(ctx,stats.combo,W,hitY);
   if(active)drawJudgment(ctx,{result:lastJudge,delta:judgeDelta,width:W,hitY,age:now-judgeAt});
-  for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=.035*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,2,3);if(p.life<=0)particles.splice(i,1);}ctx.globalAlpha=1;
+  for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=.035*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=p.spark?9*heightScale:0;ctx.fillRect(p.x,p.y,p.size??2,p.spark?p.size:3);if(p.life<=0)particles.splice(i,1);}ctx.globalAlpha=1;ctx.shadowBlur=0;
   $('spaceGuide').classList.toggle('pressed',spaceHeld);$('spaceGuide').classList.toggle('air-invalid',!!session?.spaceInvalid);$('spaceGuide').querySelector('span').textContent=session?.spaceInvalid?'Spaceを離して！ FLOAT区間の外ではコンボが切れます':'黄緑のFLOATの帯だけSpaceを押し、帯が終わったら離す';document.querySelectorAll('[data-key]').forEach(k=>k.classList.toggle('pressed',pressed.has(prefs.keys.indexOf(k.dataset.key))));requestAnimationFrame(draw);
 }
 function openDialog(id){if(['running','buffering','loading','countdown'].includes(mode))pause();$(id).showModal();}

@@ -1,3 +1,4 @@
+import {projectPoint} from './geometry.mjs';
 export const NOTE_COLORS={left:'#ff365e',right:'#318cff',float:'#baff5a'};
 export function timingFeedback(delta){
   if(!Number.isFinite(delta)||Math.abs(delta)<.0005)return null;
@@ -17,6 +18,26 @@ export function drawNoteHead(ctx,{x,y,width,height,lane,time=0,heightScale=1}){
   // A small four-point glint stays inside each note's silhouette.
   const sx=x+width*.29,sy=y-height*.18,r=Math.min(height*.32,5*heightScale)*( .8+.2*Math.sin(time/260+lane));
   ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(sx,sy-r);ctx.lineTo(sx+r*.3,sy-r*.3);ctx.lineTo(sx+r,sy);ctx.lineTo(sx+r*.3,sy+r*.3);ctx.lineTo(sx,sy+r);ctx.lineTo(sx-r*.3,sy+r*.3);ctx.lineTo(sx-r,sy);ctx.lineTo(sx-r*.3,sy-r*.3);ctx.closePath();ctx.fill();ctx.restore();
+}
+export function drawPerfectHit(ctx,{lane,width,hitY,age,heightScale=1,float=false,top=40}){
+  if(age<0||age>320)return;
+  const t=age/320,fade=(1-t)**2,laneW=width/8,x=(lane+.5)*laneW,y=hitY-2;
+  const color=float?NOTE_COLORS.float:lane<4?NOTE_COLORS.left:NOTE_COLORS.right;
+  const rise=Math.min(150,Math.max(70,(hitY-top)*.25)),depth=Math.sqrt(Math.max(0,1-rise/Math.max(1,hitY-top)));
+  const tip=projectPoint((lane+.5)*laneW,width,depth,top,hitY),half=laneW*.34,farHalf=half*tip.scale*.6;
+  ctx.save();ctx.globalAlpha=fade;ctx.globalCompositeOperation='lighter';
+  // The column follows the same perspective as the struck lane.
+  const beam=ctx.createLinearGradient(0,y-rise,0,y);beam.addColorStop(0,color+'00');beam.addColorStop(.55,color+'18');beam.addColorStop(.9,color+'70');beam.addColorStop(1,'#ffffffc9');
+  ctx.fillStyle=beam;ctx.beginPath();ctx.moveTo(tip.x-farHalf,tip.y);ctx.lineTo(tip.x+farHalf,tip.y);ctx.lineTo(x+half,y);ctx.lineTo(x-half,y);ctx.closePath();ctx.fill();
+  // An elliptical bloom is local to the hit; no screen-wide white flash.
+  ctx.save();ctx.translate(x,y);ctx.scale(1,.38);const r=laneW*.64;
+  const bloom=ctx.createRadialGradient(0,0,0,0,0,r);bloom.addColorStop(0,'#ffffffdb');bloom.addColorStop(.22,'#f7ffff8c');bloom.addColorStop(.5,color+'70');bloom.addColorStop(1,color+'00');
+  ctx.fillStyle=bloom;ctx.fillRect(-r,-r,r*2,r*2);ctx.restore();
+  const ringW=laneW*(.32+t*.27),ringH=(3+t*12)*heightScale;
+  ctx.strokeStyle='#f4ffff';ctx.lineWidth=Math.max(1,2.3*heightScale)*(1-t);ctx.shadowColor=color;ctx.shadowBlur=28*heightScale;
+  ctx.beginPath();ctx.ellipse(x,y,ringW,ringH,0,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=fade*Math.max(0,1-age/150);ctx.fillStyle='#ffffff';ctx.shadowBlur=36*heightScale;
+  const h=Math.max(3,8*heightScale);ctx.beginPath();ctx.roundRect(x-laneW*.38,y-h/2,laneW*.76,h,Math.min(2,h/2));ctx.fill();ctx.restore();
 }
 export function drawCombo(ctx,combo,width,hitY){
   if(combo<2)return;
