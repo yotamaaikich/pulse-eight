@@ -1,5 +1,8 @@
 name: Windows app
 on:
+  push:
+    branches: [main]
+    paths: [package.json, .github/workflows/desktop-release.yml]
   release:
     types: [published]
   workflow_dispatch:
@@ -15,7 +18,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: desktop-release-${{ github.event.release.tag_name || inputs.tag }}
+  group: desktop-release-${{ github.event.release.tag_name || inputs.tag || github.ref }}
   cancel-in-progress: false
 jobs:
   build:
@@ -27,8 +30,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ github.event.release.tag_name || inputs.tag || github.sha }}
           persist-credentials: false
+      - name: Select version for a new release
+        if: github.event_name == 'push'
+        shell: pwsh
+        run: |
+          $pianoVersion = (Get-Content -LiteralPath package.json -Raw | ConvertFrom-Json).version
+          if ($pianoVersion -notmatch '^\d+\.\d+\.\d+$') { throw 'Invalid release version' }
+          "RELEASE_TAG=v$pianoVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
@@ -49,12 +59,20 @@ jobs:
           $pianoFiles = Get-ChildItem -LiteralPath dist -File | Where-Object { $_.Extension -in '.exe','.zip' }
           $pianoLines = $pianoFiles | ForEach-Object { '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name }
           $pianoLines | Set-Content -LiteralPath dist/SHA256SUMS.txt -Encoding utf8NoBOM
+      - name: Publish a new version after validation
+        if: github.event_name == 'push'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $pianoVersion = (Get-Content -LiteralPath package.json -Raw | ConvertFrom-Json).version
+          gh release create $env:RELEASE_TAG --target $env:GITHUB_SHA --title "PIANO PULSE $pianoVersion · Windows版" --notes-file docs/release-notes.md --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Release creation failed; existing tags and downloads will not be overwritten' }
       - name: Upload installers to the release
-        if: github.event_name == 'release' || inputs.publish
+        if: github.event_name == 'push' || github.event_name == 'release' || inputs.publish
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           $pianoAssets = (Get-ChildItem -LiteralPath dist -File | Where-Object { $_.Extension -in '.exe','.zip' -or $_.Name -eq 'SHA256SUMS.txt' }).FullName
           gh release upload $env:RELEASE_TAG @pianoAssets --clobber
-
