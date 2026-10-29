@@ -1,4 +1,4 @@
-import {createAccount} from './auth.mjs?v=desktop-31';
+import {createAccount} from './auth.mjs?v=desktop-32';
 import {initDesktop} from './desktop-ui.mjs?v=desktop-31';
 import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-31';
 import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-11';
