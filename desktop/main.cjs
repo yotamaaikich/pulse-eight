@@ -2,6 +2,7 @@ const {app,BrowserWindow,Menu,session,ipcMain,shell,powerSaveBlocker}=require('e
 const fs=require('node:fs'),path=require('node:path');
 const {APP_URL,trustedGame,bundledPath,externalURL,oauthURL,authCallback}=require('./security.cjs');
 const {DiscordPresence}=require('./discord.cjs');
+const {forwardingOptions}=require('./network.cjs');
 const root=path.resolve(__dirname,'..'),preload=path.join(__dirname,'preload.cjs');
 let mainWindow,settingsWindow,rpc,saveTimer,awake=null,pendingAuth=null;
 const smoke=process.argv.includes('--smoke-test');let smokeTimer;
@@ -29,7 +30,7 @@ app.whenReady().then(async()=>{
   const types={'.html':'text/html; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.ico':'image/x-icon','.mp3':'audio/mpeg','.txt':'text/plain; charset=utf-8'};
   // Bundled game assets retain the published app origin, including YouTube's
   // required Referer identity. Other HTTPS requests use normal Chromium TLS.
-  ses.protocol.handle('https',async request=>{const file=bundledPath(request.url,root);if(file===null)return ses.fetch(request,{bypassCustomProtocolHandlers:true});if(!file||request.method!=='GET')return new Response('Not found',{status:404});try{return new Response(await fs.promises.readFile(file),{headers:{'Content-Type':types[path.extname(file)]||'application/octet-stream','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin'}});}catch{return new Response('Not found',{status:404});}});
+  ses.protocol.handle('https',async request=>{const file=bundledPath(request.url,root);if(file===null)return ses.fetch(request,forwardingOptions(request));if(!file||request.method!=='GET')return new Response('Not found',{status:404});try{return new Response(await fs.promises.readFile(file),{headers:{'Content-Type':types[path.extname(file)]||'application/octet-stream','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin'}});}catch{return new Response('Not found',{status:404});}});
   ses.setPermissionRequestHandler((_contents,permission,callback)=>callback(permission==='fullscreen'));
   ses.setPermissionCheckHandler((_contents,permission)=>permission==='fullscreen');
   const catalog=JSON.parse(fs.readFileSync(path.join(__dirname,'catalog.json'),'utf8'));
