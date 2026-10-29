@@ -33,7 +33,7 @@ export function drawJudgment(ctx,{result,delta,width,hitY,age}){
   const ink=ctx.createLinearGradient(0,y-size,0,y);ink.addColorStop(0,'#ff9fdf');ink.addColorStop(.5,'#fff');ink.addColorStop(1,'#7ae1ff');
   ctx.fillStyle=result==='miss'?'#ff537b':ink;ctx.strokeStyle='#171c46';ctx.lineWidth=4;ctx.font='800 '+size+'px sans-serif';
   const label=result==='airbreak'?'RELEASE SPACE':result==='flick'?'FLOAT':result.toUpperCase();ctx.strokeText(label,x,y);ctx.fillText(label,x,y);
-  const feedback=!['miss','airbreak','flick','hold'].includes(result)&&timingFeedback(delta/1000);
+  const feedback=!['perfect','miss','airbreak','flick','hold'].includes(result)&&timingFeedback(delta/1000);
   if(feedback){ctx.font='800 19px sans-serif';ctx.fillStyle=feedback.color;ctx.strokeText(feedback.label,x,y+27);ctx.fillText(feedback.label,x,y+27);ctx.font='12px sans-serif';ctx.fillText(feedback.ms+' ms',x,y+44);}
   ctx.restore();
 }
