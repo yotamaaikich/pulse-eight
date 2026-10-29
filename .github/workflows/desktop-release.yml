@@ -5,9 +5,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing release tag
+        description: Branch or release tag to build
         required: true
-        default: v1.5.0
+        default: main
+      publish:
+        description: Upload to an existing release with this tag
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -46,9 +50,11 @@ jobs:
           $pianoLines = $pianoFiles | ForEach-Object { '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name }
           $pianoLines | Set-Content -LiteralPath dist/SHA256SUMS.txt -Encoding utf8NoBOM
       - name: Upload installers to the release
+        if: github.event_name == 'release' || inputs.publish
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           $pianoAssets = (Get-ChildItem -LiteralPath dist -File | Where-Object { $_.Extension -in '.exe','.zip' -or $_.Name -eq 'SHA256SUMS.txt' }).FullName
           gh release upload $env:RELEASE_TAG @pianoAssets --clobber
+
