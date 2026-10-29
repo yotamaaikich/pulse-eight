@@ -13,7 +13,7 @@
     <nav><span class="status-dot"></span><span id="cloudStatus">CONNECTING</span><button id="fullscreenButton" class="fullscreen-button" aria-label="全画面にする" aria-pressed="false">⛶ 全画面 <kbd>V</kbd></button><button id="tutorialButton" class="tutorial-launch">チュートリアル</button><button id="helpButton" class="text-button">遊び方 <kbd>?</kbd></button><button id="settingsButton" class="icon-button" aria-label="設定">⚙</button></nav>
   </header>
   <main>
-    <section class="intro"><div><div class="eyebrow">MUSIC SELECT</div><h1>曲を選ぶ</h1><p>ボカロから音ゲーの定番まで。8つのキーでプレイ。</p></div><button id="tutorialHero" class="tutorial-hero"><span><strong>はじめての方へ</strong><small>操作チュートリアル</small></span><span aria-hidden="true">↗</span></button></section>
+    <section class="intro"><div><div class="eyebrow">MUSIC SELECT</div><h1>曲を選ぶ</h1></div></section>
     <div class="workspace">
       <aside class="library">
         <div class="panel-heading"><h2>楽曲ライブラリ</h2><span id="trackCount">35 TRACKS</span></div>
@@ -42,7 +42,7 @@
           <canvas id="game" tabindex="-1" aria-label="8レーンのノーツ。A S D F J K L セミコロンで演奏"></canvas>
           <div id="videoLoading" class="video-loading hidden" role="status"><span class="loading-ring" aria-hidden="true"></span><strong>動画読み込み中</strong></div>
           <div id="playCountdown" class="play-countdown hidden" role="status" aria-live="polite"><span>まもなくスタート</span><strong id="countdownNumber">3</strong><small>ノーツを見ながら準備しよう</small></div>
-          <div class="stage-message" id="stageMessage"><span class="pill">READY TO PLAY</span><p>A S D F <span aria-hidden="true">／</span> J K L ;</p><button class="start-button" id="startButton"><span>プレイ開始 <span aria-hidden="true">▶</span></span><kbd>ENTER ↵</kbd></button><small id="startHint">音声は公式YouTubeプレイヤーから再生</small></div>
+          <div class="stage-message" id="stageMessage"><button class="start-button" id="startButton"><span>プレイ開始 <span aria-hidden="true">▶</span></span><kbd>ENTER ↵</kbd></button><small id="startHint">音声は公式YouTubeプレイヤーから再生</small></div>
           <div class="stage-message hidden" id="pauseMessage"><span class="eyebrow">TAKE A BREATH</span><h2>PAUSED<span>.</span></h2><button id="resumeButton" class="start-button">つづける <kbd>ENTER ↵</kbd></button><small>長押し中は対応キーを押したまま再開</small><button id="pauseChange" class="plain-light">曲・難易度を変更</button><div class="pause-actions"><button id="retryButton">リトライ <kbd>R</kbd></button><button id="quitButton">選曲へ <kbd>ESC</kbd></button></div></div>
           <div class="stage-message hidden" id="resultMessage"><span class="eyebrow">SESSION COMPLETE</span><div class="result-rank" id="resultRank">A</div><div class="result-score" id="resultScore">0000000</div><p id="resultDetail"></p><div id="resultCounts" class="result-counts"></div><span id="bestBadge" class="pill">NEW PERSONAL BEST</span><span id="fullComboBadge" class="pill" hidden>FULL COMBO</span><button id="saveScore" class="save-score">ランキングに登録 [S]</button><small id="saveStatus">名前とスコアが公開されます</small><button id="resultRetry" class="start-button">もう一度プレイ <kbd>ENTER ↵</kbd></button><button id="resultBack" class="plain-light">曲・難易度を変更 <kbd>↑ ↓ / ← →</kbd></button></div>
           <div class="progress-track"><div id="progress"></div></div>
@@ -74,7 +74,7 @@
     <p class="tutorial-note">現在のキー設定を使用 · 失敗しても自動で再挑戦 · Escで終了 · スコアは記録されません</p>
   </dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./app.js?v=startup-23"></script>
+  <script type="module" src="./app.js?v=cleanup-24"></script>
 </body>
 </html>
 

@@ -383,4 +383,4 @@ savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer
 
 let tutorial=null;
 async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=float-21');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
-$('tutorialHero').onclick=openTutorial;$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
+$('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
