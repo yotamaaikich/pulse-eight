@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-29",
+  "sourceCommit": "0c895c856c8e2e8c207022744135957878a54a08",
+  "browser": "Codex in-app Chromium browser",
+  "publicUrl": "https://yotamaaikich.github.io/pulse-eight/",
+  "appVersion": "startup-29",
+  "actualYouTubeAdObserved": true,
+  "heatHardStart": {
+    "samples": 437,
+    "durationMs": 22672,
+    "changes": [
+      {
+        "ms": 0,
+        "state": "動画読み込み中",
+        "timer": "00:00 / 04:01",
+        "countVisible": false,
+        "loadingVisible": true
+      },
+      {
+        "ms": 16425,
+        "state": "GET READY · 3",
+        "timer": "00:00 / 04:01",
+        "countVisible": true,
+        "loadingVisible": false
+      },
+      {
+        "ms": 17422,
+        "state": "GET READY · 2",
+        "timer": "00:00 / 04:01",
+        "countVisible": true,
+        "loadingVisible": false
+      },
+      {
+        "ms": 18423,
+        "state": "GET READY · 1",
+        "timer": "00:00 / 04:01",
+        "countVisible": true,
+        "loadingVisible": false
+      },
+      {
+        "ms": 19601,
+        "state": "NOW PLAYING",
+        "timer": "00:00 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 20673,
+        "state": "NOW PLAYING",
+        "timer": "00:01 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 21670,
+        "state": "NOW PLAYING",
+        "timer": "00:02 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 22672,
+        "state": "NOW PLAYING",
+        "timer": "00:03 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      }
+    ],
+    "loadingAfterStart": 0
+  },
+  "heatHardFullscreenResume": {
+    "samples": 150,
+    "durationMs": 11260,
+    "changes": [
+      {
+        "ms": 0,
+        "state": "動画読み込み中",
+        "timer": "01:22 / 04:01",
+        "countVisible": false,
+        "loadingVisible": true
+      },
+      {
+        "ms": 570,
+        "state": "GET READY · 3",
+        "timer": "01:22 / 04:01",
+        "countVisible": true,
+        "loadingVisible": false
+      },
+      {
+        "ms": 1578,
+        "state": "GET READY · 2",
+        "timer": "01:22 / 04:01",
+        "countVisible": true,
+        "loadingVisible": false
+      },
+      {
+        "ms": 2556,
+        "state": "GET READY · 1",
+        "timer": "01:22 / 04:01",
+        "countVisible": true,
+        "loadingVisible": false
+      },
+      {
+        "ms": 4020,
+        "state": "NOW PLAYING",
+        "timer": "01:22 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 5290,
+        "state": "NOW PLAYING",
+        "timer": "01:23 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 6264,
+        "state": "NOW PLAYING",
+        "timer": "01:24 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 7317,
+        "state": "NOW PLAYING",
+        "timer": "01:25 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 8283,
+        "state": "NOW PLAYING",
+        "timer": "01:26 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 9317,
+        "state": "NOW PLAYING",
+        "timer": "01:27 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      },
+      {
+        "ms": 10292,
+        "state": "NOW PLAYING",
+        "timer": "01:28 / 04:01",
+        "countVisible": false,
+        "loadingVisible": false
+      }
+    ],
+    "loadingAfterStart": 0
+  },
+  "sync": {
+    "gameDisplayedSeconds": 80,
+    "videoSeconds": 80.917604,
+    "videoPaused": false,
+    "sameWholeSecond": true
+  },
+  "consoleErrorsOrWarnings": 0,
+  "automaticTestsPassed": 88,
+  "scoreSubmitted": false
+}
