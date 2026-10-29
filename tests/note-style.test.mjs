@@ -14,5 +14,5 @@ test('judgments show timing only for judged hits, and expire without leaving sta
   drawJudgment(ctx,input);assert.deepEqual(words.map(x=>x[0]),['GREAT','FAST','30 ms']);
   words.length=0;drawJudgment(ctx,{...input,result:'miss'});assert.deepEqual(words.map(x=>x[0]),['MISS']);
   words.length=0;drawJudgment(ctx,{...input,age:700});assert.equal(words.length,0);
-  drawCombo(ctx,50,780,435);assert.deepEqual(words.map(x=>x[0]),['COMBO','50']);assert.ok(words.every(x=>x[1]>780/2));
+  drawCombo(ctx,50,780,435);assert.deepEqual(words.map(x=>x[0]),['COMBO','50']);assert.ok(words.every(x=>x[1]===780/2&&x[2]>435-75));
 });

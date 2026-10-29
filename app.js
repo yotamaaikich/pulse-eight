@@ -2,7 +2,7 @@ import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-
 import {referenceChart} from './reference-chart.mjs?v=score-attacks-1';
 import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
-import {NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment} from './note-style.mjs?v=glow-26';
+import {NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment} from './note-style.mjs?v=combo-27';
 import {importPianoScore,validatePianoProfile} from './score-import.mjs?v=melody-score-1';
 import {createPianoSound} from './piano-sound.mjs?v=source-piano-15';
 import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
@@ -50,6 +50,7 @@ let librarySort=read('pulse-sort','library');
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
 const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[],perfectHits=Array(8).fill(null);
+const comboPulse={value:0,at:-Infinity};
 const canvas=$('game'),ctx=canvas.getContext('2d');
 const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownSettledAt=null,countdownStarting=false,countdownProbeRaw=null,countdownPlayAt=0,countdownRepaired=false,bufferingSince=null,hasCountedIn=false;
 let W=600,H=535,dpr=1;
@@ -186,6 +187,9 @@ function pause(){if(!['running','buffering','loading','countdown'].includes(mode
 function resume(){if(mode!=='paused')return;pianoSound.warm();syncHeldKeys();mode='loading';countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
 function quit(){pianoSound.stop();upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();life=MAX_LIFE;events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
 function updateStats(){
+  if(stats.combo<comboPulse.value)comboPulse.at=-Infinity;
+  else if(Math.floor(stats.combo/100)>Math.floor(comboPulse.value/100))comboPulse.at=performance.now();
+  comboPulse.value=stats.combo;
   const count=notes.filter(n=>!n.assist).length||1,result=summary(stats,count);
   const score=String(result.score).padStart(7,'0');
   const judged=stats.perfect+stats.great+stats.good+stats.bad+stats.miss;
@@ -297,6 +301,7 @@ function draw(now){
   if(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil))visibleNotes=[];
   if(!active&&mode!=='results'){visibleNotes=Array.from({length:20},(_,i)=>({t:visualTime+(i*.31-(visualTime%3.1)),lane:[0,2,4,5,3,2,1,0,6,7][i%10],degree:[0,2,4,5,3,2,1,0,6,7][i%10]}));}
   drawAirRibbons(ctx,visibleNotes,{width:W,time:visualTime,lookahead,top,hitY,held:spaceHeld});
+  if(active)drawCombo(ctx,stats.combo,W,hitY,now-comboPulse.at);
   const chords=new Map();
   for(const n of visibleNotes){if(n.done||n.started||n.assist||!n.chord)continue;const diff=n.t-visualTime;if(diff>lookahead||diff<-.17)continue;if(!chords.has(n.t))chords.set(n.t,[]);chords.get(n.t).push(n);}
   for(const [at,group]of chords){
@@ -332,7 +337,6 @@ function draw(now){
   ctx.fillStyle='#fff';ctx.globalAlpha=.65;ctx.fillRect(0,hitY-1,W,2);ctx.globalAlpha=1;ctx.shadowColor=NOTE_COLORS.right;ctx.shadowBlur=12;ctx.fillStyle=NOTE_COLORS.right;ctx.fillRect(0,hitY,W,1);ctx.shadowBlur=0;
   drawKeyboard(ctx,{width:W,height:H,time:now,pressed,flashes,blackFlashes});
   if(active)for(let lane=0;lane<8;lane++){const hit=perfectHits[lane];if(!hit)continue;const age=now-hit.at;if(age>320){perfectHits[lane]=null;continue;}drawPerfectHit(ctx,{lane,width:W,hitY,age,heightScale,float:hit.float,top});}
-  if(active)drawCombo(ctx,stats.combo,W,hitY);
   if(active)drawJudgment(ctx,{result:lastJudge,delta:judgeDelta,width:W,hitY,age:now-judgeAt});
   for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=.035*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=p.spark?9*heightScale:0;ctx.fillRect(p.x,p.y,p.size??2,p.spark?p.size:3);if(p.life<=0)particles.splice(i,1);}ctx.globalAlpha=1;ctx.shadowBlur=0;
   $('spaceGuide').classList.toggle('pressed',spaceHeld);$('spaceGuide').classList.toggle('air-invalid',!!session?.spaceInvalid);$('spaceGuide').querySelector('span').textContent=session?.spaceInvalid?'Spaceを離して！ FLOAT区間の外ではコンボが切れます':'黄緑のFLOATの帯だけSpaceを押し、帯が終わったら離す';document.querySelectorAll('[data-key]').forEach(k=>k.classList.toggle('pressed',pressed.has(prefs.keys.indexOf(k.dataset.key))));requestAnimationFrame(draw);
