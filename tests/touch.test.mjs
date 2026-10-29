@@ -17,3 +17,9 @@ test('keyboard and touch ownership stay independent until the final source is re
  const events=[],m=createInputMixer({down:n=>events.push(['down',n]),up:n=>events.push(['up',n]),pedal:n=>events.push(['pedal',n])});m.down(0,'keyboard');m.down(0,'touch');m.up(0,'touch');assert.deepEqual(events,[['down',0]]);m.up(0,'keyboard');m.pedal('keyboard',true);m.pedal('touch',true);m.pedal('touch',false);assert.deepEqual(events,[['down',0],['up',0],['pedal',true]]);m.pedal('keyboard',false);assert.deepEqual(events.at(-1),['pedal',false]);
  const f=fixture([{t:1,lane:0,end:3}]);f.canvas.fire('pointerdown',1,50);f.canvas.fire('pointermove',1,-10);assert.equal(f.session.down.size,0);f.input.reset();f.input.destroy();
 });
+test('losing focus pauses before releasing touch so a held note is not missed by blur',()=>{
+  const session=new RhythmSession([{t:1,lane:0,end:3}],5),canvas=target(),win=target();let running=true;
+  const mixer=createInputMixer({down:lane=>session.press(1,lane),up:lane=>{if(running)session.release(1.1,lane);},pedal(){}});
+  bindTouchInput({canvas,mixer,window:win,beforeBlur(){running=false;}});canvas.fire('pointerdown',1,50);win.fire('blur',0);
+  assert.equal(session.stats.miss,0);assert.equal(session.notes[0].started,true);assert.equal(running,false);
+});

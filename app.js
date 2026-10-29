@@ -1,6 +1,6 @@
-import {createAccount} from './auth.mjs?v=desktop-30';
-import {initDesktop} from './desktop-ui.mjs?v=desktop-30';
-import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-30';
+import {createAccount} from './auth.mjs?v=desktop-31';
+import {initDesktop} from './desktop-ui.mjs?v=desktop-31';
+import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-31';
 import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-11';
 import {nextLife,MAX_LIFE} from './life.mjs?v=luminous-2';
 import {drawKeyboard,keyboardStrikeY} from './keyboard.mjs?v=compact-1';
@@ -11,9 +11,9 @@ import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
 import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=hands-19';
-import {chartForSong,difficultyMetrics,orderedSongs} from './catalog.mjs?v=desktop-30';
-import {drawAirRibbons,drawAirHead} from './air.mjs?v=compact-22';
-import {SONGS,DIFFICULTIES,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=desktop-30';
+import {chartForSong,difficultyMetrics,orderedSongs} from './catalog.mjs?v=desktop-31';
+import {drawAirRibbons,drawAirHead} from './air.mjs?v=desktop-31';
+import {SONGS,DIFFICULTIES,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=desktop-31';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
 import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from './playback.mjs?v=startup-29';
@@ -59,7 +59,7 @@ const inputMixer=createInputMixer({
   up(lane){pressed.delete(lane);releaseLane(lane,mode==='buffering');if(upperPressed.delete(lane))releaseUpper(lane,mode==='buffering');},
   pedal(on){spaceHeld=on;$('touchPedal').classList.toggle('pressed',on);$('touchPedal').setAttribute('aria-pressed',String(on));if(difficulty===2)spaceInput(on,mode==='buffering');if(on){if(difficulty===2)for(const lane of pressed){upperPressed.add(lane);hitUpper(lane);}}else{for(const lane of upperPressed)releaseUpper(lane,mode==='buffering');upperPressed.clear();}}
 });
-const touchInput=bindTouchInput({canvas,pedal:$('touchPedal'),mixer:inputMixer,enabled:()=>['running','buffering','countdown'].includes(mode),window});
+const touchInput=bindTouchInput({canvas,pedal:$('touchPedal'),mixer:inputMixer,enabled:()=>['running','buffering','countdown','paused'].includes(mode),beforeBlur:()=>{if(['running','buffering','loading','countdown'].includes(mode))pause();},window});
 function clearControls(){inputMixer.reset(true);touchInput.reset();pressed.clear();upperPressed.clear();spaceHeld=false;$('touchPedal').classList.remove('pressed');$('touchPedal').setAttribute('aria-pressed','false');}
 
 const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownSettledAt=null,countdownStarting=false,countdownProbeRaw=null,countdownPlayAt=0,countdownRepaired=false,bufferingSince=null,hasCountedIn=false;
@@ -441,7 +441,7 @@ $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mo
 savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
 
 let tutorial=null;
-async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=desktop-30');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
+async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=desktop-31');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
 $('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
 function renderAccount(){

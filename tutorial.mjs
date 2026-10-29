@@ -1,6 +1,6 @@
-import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-30';
+import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-31';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=float-21';
-import {RhythmSession,isFullCombo} from './engine.mjs?v=desktop-30';
+import {RhythmSession,isFullCombo} from './engine.mjs?v=desktop-31';
 import {projectPoint} from './geometry.mjs';
 
 export const LESSONS=[

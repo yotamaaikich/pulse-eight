@@ -8,7 +8,7 @@ export function createInputMixer({down,up,pedal}){
     reset(silent=false){for(let lane=0;lane<8;lane++){const active=lanes[lane].size;lanes[lane].clear();if(active&&!silent)up(lane);}const active=pedals.size;pedals.clear();if(active&&!silent)pedal(false);}
   };
 }
-export function bindTouchInput({canvas,pedal,mixer,enabled=()=>true,window:win=globalThis.window}){
+export function bindTouchInput({canvas,pedal,mixer,enabled=()=>true,beforeBlur=()=>{},window:win=globalThis.window}){
   const fingers=new Map(),pedalFingers=new Set(),counts=Array(8).fill(0),listeners=[];
   const listen=(target,type,fn)=>{target.addEventListener(type,fn,{passive:false});listeners.push([target,type,fn]);};
   const laneAt=e=>{const r=canvas.getBoundingClientRect();return r.width>0&&e.clientX>=r.left&&e.clientX<r.left+r.width&&e.clientY>=r.top&&e.clientY<=r.top+r.height?Math.min(7,Math.floor((e.clientX-r.left)/r.width*8)):null;};
@@ -26,6 +26,6 @@ export function bindTouchInput({canvas,pedal,mixer,enabled=()=>true,window:win=g
     listen(pedal,'click',e=>e.preventDefault());
   }
   function reset(){const ids=[...fingers.keys()],pedalIds=[...pedalFingers];for(const id of ids)move(id,null);fingers.clear();pedalFingers.clear();counts.fill(0);mixer.pedal('touch',false);for(const id of ids)try{canvas.releasePointerCapture(id);}catch{}for(const id of pedalIds)try{pedal?.releasePointerCapture(id);}catch{}}
-  if(win)listen(win,'blur',reset);
+  if(win)listen(win,'blur',()=>{beforeBlur();reset();});
   return {reset,destroy(){reset();for(const [target,type,fn]of listeners)target.removeEventListener(type,fn);}};
 }
