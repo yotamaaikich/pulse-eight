@@ -4,6 +4,8 @@ const {APP_URL,trustedGame,bundledPath,externalURL,oauthURL,authCallback}=requir
 const {DiscordPresence}=require('./discord.cjs');
 const root=path.resolve(__dirname,'..'),preload=path.join(__dirname,'preload.cjs');
 let mainWindow,settingsWindow,rpc,saveTimer,awake=null,pendingAuth=null;
+const smoke=process.argv.includes('--smoke-test');let smokeTimer;
+if(smoke){app.setPath('userData',path.join(app.getPath('temp'),'piano-pulse-smoke-'+process.pid));smokeTimer=setTimeout(()=>{console.error('PIANO PULSE renderer startup timed out');app.exit(1);},20000);}
 app.setName('PIANO PULSE');app.setAppUserModelId('io.github.yotamaaikich.pianopulse');
 if(!app.requestSingleInstanceLock()){app.quit();process.exit(0);}
 const settingsPath=()=>path.join(app.getPath('userData'),'desktop-settings.json');
@@ -32,20 +34,20 @@ app.whenReady().then(async()=>{
   ses.setPermissionCheckHandler((_contents,permission)=>permission==='fullscreen');
   const catalog=JSON.parse(fs.readFileSync(path.join(__dirname,'catalog.json'),'utf8'));
   const config=JSON.parse(fs.readFileSync(path.join(__dirname,'discord-config.json'),'utf8'));
-  rpc=new DiscordPresence({applicationId:config.applicationId,catalog,onStatus:publishStatus});rpc.enabled=prefs.discordEnabled;
+  rpc=new DiscordPresence({applicationId:config.applicationId,catalog,onStatus:publishStatus});rpc.enabled=smoke?false:prefs.discordEnabled;
   mainWindow=new BrowserWindow({width:prefs.width,height:prefs.height,minWidth:880,minHeight:620,show:false,backgroundColor:'#0c0e12',title:'PIANO PULSE',icon:path.join(__dirname,'assets','icon.ico'),autoHideMenuBar:true,webPreferences:{preload,partition:'persist:piano-pulse',nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,webviewTag:false}});
   secureWindow(mainWindow);
   Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'ゲーム',submenu:[{label:'アプリ設定',click:openSettings},{label:'全画面',role:'togglefullscreen'},{type:'separator'},{label:'終了',role:'quit'}]},{label:'表示',submenu:[{role:'reload',label:'再読み込み'},{role:'resetZoom',label:'標準サイズ'},{role:'zoomIn',label:'拡大'},{role:'zoomOut',label:'縮小'}]}]));
-  mainWindow.once('ready-to-show',()=>mainWindow.show());
+  mainWindow.once('ready-to-show',()=>{if(!smoke)mainWindow.show();});
   mainWindow.webContents.on('did-finish-load',()=>{publishStatus();if(pendingAuth){mainWindow.webContents.send('pulse:auth-callback',pendingAuth);pendingAuth=null;}});
   mainWindow.on('resize',()=>{clearTimeout(saveTimer);saveTimer=setTimeout(()=>{if(!mainWindow.isDestroyed()&&!mainWindow.isFullScreen()&&!mainWindow.isMaximized()){const size=mainWindow.getSize();prefs.width=size[0];prefs.height=size[1];save();}},400);});
   mainWindow.on('closed',()=>{settingsWindow?.close();rpc.stop();app.quit();});
-  ipcMain.on('pulse:presence',(event,state)=>{if(!senderOK(event)||!state||typeof state!=='object')return;rpc.update(state);if(state.phase==='running'&&awake===null)awake=powerSaveBlocker.start('prevent-display-sleep');else if(state.phase!=='running'&&awake!==null){powerSaveBlocker.stop(awake);awake=null;}});
+  ipcMain.on('pulse:presence',(event,state)=>{if(!senderOK(event)||!state||typeof state!=='object')return;if(smoke){clearTimeout(smokeTimer);console.log(JSON.stringify({startup:'passed',phase:state.phase,song:state.songId,version:app.getVersion()}));app.exit(0);return;}rpc.update(state);if(state.phase==='running'&&awake===null)awake=powerSaveBlocker.start('prevent-display-sleep');else if(state.phase!=='running'&&awake!==null){powerSaveBlocker.stop(awake);awake=null;}});
   ipcMain.handle('pulse:settings',event=>{if(senderOK(event))openSettings();});
   ipcMain.handle('pulse:status',event=>senderOK(event,true)?status():null);
   ipcMain.handle('pulse:discord',(event,enabled)=>{if(!senderOK(event,true))return;prefs.discordEnabled=enabled===true;save();rpc.setEnabled(prefs.discordEnabled);return status();});
   ipcMain.handle('pulse:google',async(event,url)=>{if(!senderOK(event)||typeof url!=='string')throw Error('ログインを開始できません。');const allowed=oauthURL(url);if(!allowed)throw Error('ログイン先を確認できません。');await shell.openExternal(allowed);return true;});
-  if(!app.isDefaultProtocolClient('pianopulse'))app.setAsDefaultProtocolClient('pianopulse');
+  if(!smoke&&!app.isDefaultProtocolClient('pianopulse'))app.setAsDefaultProtocolClient('pianopulse');
   const initial=process.argv.find(arg=>arg.startsWith('pianopulse:'));if(initial)pendingAuth=authCallback(initial);
   await mainWindow.loadURL(APP_URL);rpc.start();
 });

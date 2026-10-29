@@ -5,7 +5,7 @@ function createActivity(state,catalog,now=Date.now()){
   const phase=state?.phase;
   if(!song||!difficulty||!['idle','loading','countdown','running','buffering','paused','results'].includes(phase))return {type:0,details:'曲を選んでいます',state:'8キーのピアノ・リズムゲーム'};
   const labels={idle:'選曲中',loading:'動画を準備中',countdown:'スタート準備中',running:'プレイ中',buffering:'読み込み待ち',paused:'一時停止',results:'リザルト'};
-  const activity={type:0,details:[...song.title].slice(0,100).join(''),state:difficulty+' · '+labels[phase],assets:{large_image:'piano_pulse',large_text:'PIANO PULSE'},buttons:[{label:'PIANO PULSEをダウンロード',url:'https://github.com/yotamaaikich/pulse-eight/releases/latest'}]};
+  const activity={type:0,details:[...song.title].slice(0,100).join(''),state:difficulty+' · '+labels[phase],assets:{large_image:'https://yotamaaikich.github.io/pulse-eight/desktop/assets/icon.png',large_text:'PIANO PULSE'},buttons:[{label:'PIANO PULSEをダウンロード',url:'https://github.com/yotamaaikich/pulse-eight/releases/latest'}]};
   if(phase==='running'&&Number.isFinite(state.position)){const position=Math.max(0,Math.min(song.duration,state.position));activity.timestamps={start:Math.floor(now/1000-position),end:Math.floor(now/1000+song.duration-position)};}
   return activity;
 }

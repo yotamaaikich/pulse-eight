@@ -33,6 +33,12 @@ jobs:
       - run: node node_modules/esbuild/install.js
       - run: npm test
       - run: npm run desktop:build
+      - name: Check packaged app startup
+        shell: pwsh
+        run: |
+          $pianoSmoke = Start-Process -FilePath "$pwd/dist/win-unpacked/PIANO PULSE.exe" -ArgumentList '--smoke-test' -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput dist/startup-smoke.log -RedirectStandardError dist/startup-smoke-error.log
+          Get-Content -LiteralPath dist/startup-smoke.log
+          if ($pianoSmoke.ExitCode -ne 0) { Get-Content -LiteralPath dist/startup-smoke-error.log; throw "Packaged app startup failed: $($pianoSmoke.ExitCode)" }
       - name: Checksums
         shell: pwsh
         run: |
