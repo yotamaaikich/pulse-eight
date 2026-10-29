@@ -9,10 +9,10 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import {webcrypto} from 'node:crypto';
-import {chartMetrics,difficultyMetrics,orderedSongs} from '../catalog.mjs';
+import {chartMetrics,chartForSong,difficultyMetrics,orderedSongs} from '../catalog.mjs';
 import * as engine from '../engine.mjs';
 import {projectPoint} from '../geometry.mjs';
-import {PlaybackGate,inputClock} from '../playback.mjs';
+import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from '../playback.mjs';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from '../lead-in.mjs';
 import {pianoFeedbackAt} from '../source-piano.mjs';
 import {keySoundRequests} from '../key-sound.mjs';
@@ -23,11 +23,11 @@ let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new M
 const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:()=>{}});
 function element(id){if(!elements.has(id)){const classes=new Set();elements.set(id,{classList:{add:n=>classes.add(n),remove:n=>classes.delete(n),contains:n=>classes.has(n),toggle(n,on){if(on)classes.add(n);else classes.delete(n);}},textContent:'',value:'',innerHTML:'',style:{},open:false,setAttribute(){},addEventListener(){},replaceChildren(){},append(){},click(){this.clicked=true;},focus(){},close(){this.open=false;},showModal(){this.open=true;},getContext:()=>context2d,querySelector:selector=>element(id+' '+selector)});}return elements.get(id);}
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(){}},hidden:false};
-const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){this.seekCalls=(this.seekCalls||0)+1;if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.playCalls=(this.playCalls||0)+1;this.state=this.deferPlay?3:1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
-const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;return fakePlayer;}}};
-const scope=vm.createContext({...engine,MONITORING_PIANO_PROFILE,referenceChart,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
+const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById({videoId}){this.video=videoId;this.time=0;this.state=1;},cueVideoById(videoId){this.video=videoId;},getVideoUrl(){return this.urlOverride??"https://www.youtube.com/watch?v="+this.video;},getDuration(){return this.durationOverride??engine.SONGS.find(s=>s.video===this.video)?.duration??0;},seekTo(t){this.seekCalls=(this.seekCalls||0)+1;if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.playCalls=(this.playCalls||0)+1;this.state=this.deferPlay?3:1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
+const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;fakePlayer.video=options.videoId;return fakePlayer;}}};
+const scope=vm.createContext({...engine,MONITORING_PIANO_PROFILE,referenceChart,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,chartForSong,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,expectedVideo,countdownFrame,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},devicePixelRatio:2,location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
-vm.runInContext(source+`\nglobalThis.qa={quit,start,draw,finish,pause,resume,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get eligible(){return eligible},get referenceRun(){return referenceRun},get notes(){return notes},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
+vm.runInContext(source+`\nglobalThis.qa={quit,start,draw,finish,pause,resume,resize,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get eligible(){return eligible},get referenceRun(){return referenceRun},get notes(){return notes},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
 window.onYouTubeIframeAPIReady();fakePlayer.options.events.onReady();
 scope.qa.start();assert.equal(volumes.at(-1),0);assert.equal(elements.get('videoLoading').classList.contains('hidden'),false);assert.equal(JSON.parse(storage.get('pulse-prefs')).volume,50);
 for(wall=0;wall<30000;wall+=100)scope.qa.draw(wall);
@@ -201,3 +201,102 @@ fakePlayer.deferPlay=true;wall=scope.qa.countdownUntil-100;scope.qa.draw(wall);
 fakePlayer.options.events.onAutoplayBlocked();assert.equal(scope.qa.mode,'paused');assert.equal(elements.get('pauseMessage').querySelector('h2').textContent,'READY?');
 assert.equal(elements.get('pauseMessage').classList.contains('hidden'),false);assert.equal(scope.qa.stats.miss,0);fakePlayer.deferPlay=false;scope.qa.quit();
 console.log('PASS: a long interruption keeps a full count-in; a blocked final handoff returns to the resume prompt.');
+
+// YouTube's first timestamp may arrive after the old 250ms acceptance window.
+function prepareHandoff(index=1){
+ scope.qa.quit();fakePlayer.deferPlay=false;fakePlayer.deferSeek=false;
+ delete fakePlayer.durationOverride;delete fakePlayer.urlOverride;
+ scope.qa.selectSong(index);scope.qa.start();fakePlayer.options.events.onStateChange({data:1});
+ for(let i=0;i<30&&scope.qa.mode!=='countdown';i++){wall+=50;fakePlayer.time=i*.05;scope.qa.draw(wall);}
+ for(let i=0;i<8&&!scope.qa.countdownUntil;i++){wall+=50;scope.qa.draw(wall);}
+ assert.ok(scope.qa.countdownUntil>wall);
+ wall=scope.qa.countdownUntil-120;scope.qa.draw(wall);
+ return scope.qa.countdownUntil;
+}
+let sparseDeadline=prepareHandoff();
+wall=sparseDeadline+320;fakePlayer.time=.32;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'running','a delayed first timestamp must not leave the chart on 1 while the video plays');
+assert.equal(scope.qa.clock,.32);assert.equal(scope.qa.stats.miss,0);assert.equal(volumes.at(-1),50);
+scope.qa.quit();
+console.log('PASS: a first content timestamp after 250ms starts the chart instead of trapping the final count.');
+
+// An interrupted handoff leaves 1 for a loading indicator, then counts in only
+// after new content progress and the rewind have both been verified.
+let interruptedDeadline=prepareHandoff();
+wall=interruptedDeadline+1700;fakePlayer.time=0;scope.qa.draw(wall);
+assert.equal(elements.get('playCountdown').classList.contains('hidden'),true);
+assert.equal(elements.get('videoLoading').classList.contains('hidden'),false);
+for(let i=0;i<90;i++){wall+=1000;scope.qa.draw(wall);assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);}
+for(let i=1;i<=8&&scope.qa.countdownUntil;i++){wall+=100;fakePlayer.time=i*.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.countdownUntil,0);assert.equal(scope.qa.clock,0);
+for(let i=0;i<6&&!scope.qa.countdownUntil;i++){wall+=50;scope.qa.draw(wall);}
+assert.ok(scope.qa.countdownUntil>=wall+2700);
+wall=scope.qa.countdownUntil-120;scope.qa.draw(wall);fakePlayer.time=.02;wall+=140;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.stats.miss,0);
+console.log('PASS: even a 90-second stalled preroll leaves no frozen 1, advances no judgments, and receives a fresh count-in.');
+
+// Metadata is a negative signal only: a clearly different video/duration must
+// not start the chart, even if its clock advances normally. No ad DOM access.
+let metadataDeadline=prepareHandoff(),metadataSeeks=fakePlayer.seekCalls;
+fakePlayer.durationOverride=30;wall=metadataDeadline;fakePlayer.time=2;scope.qa.draw(wall);
+for(let i=0;i<90;i++){wall+=1000;fakePlayer.time=(i+2)%30;scope.qa.draw(wall);}
+assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);assert.equal(scope.qa.eligible,true);
+assert.equal(fakePlayer.seekCalls,metadataSeeks,'do not spam seek commands while metadata contradicts the MV');
+assert.equal(elements.get('playCountdown').classList.contains('hidden'),true);assert.equal(volumes.at(-1),0);
+delete fakePlayer.durationOverride;fakePlayer.urlOverride='https://www.youtube.com/watch?v=other';
+for(let i=0;i<8;i++){wall+=100;fakePlayer.time=i*.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.countdownUntil,metadataDeadline);delete fakePlayer.urlOverride;
+for(let i=0;i<10&&scope.qa.countdownUntil;i++){wall+=100;fakePlayer.time=i*.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.countdownUntil,0);
+for(let i=0;i<6&&!scope.qa.countdownUntil;i++){wall+=50;scope.qa.draw(wall);}
+assert.ok(scope.qa.countdownUntil>=wall+2700);assert.equal(scope.qa.clock,0);
+wall=scope.qa.countdownUntil-120;scope.qa.draw(wall);fakePlayer.time=.02;wall+=140;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.stats.miss,0);assert.equal(scope.qa.eligible,true);
+console.log('PASS: mismatched video metadata waits muted without seeking or scoring; returning MV metadata recovers without a new PLAYING event.');
+
+// A late ad/metadata change can happen before playVideo was issued. Once the
+// expected MV returns paused, issue play once so verification can make progress.
+scope.qa.quit();scope.qa.start();
+for(let i=0;i<30&&scope.qa.mode!=='countdown';i++){wall+=50;fakePlayer.time=i*.05;scope.qa.draw(wall);}
+for(let i=0;i<6&&!scope.qa.countdownUntil;i++){wall+=50;scope.qa.draw(wall);}
+assert.equal(fakePlayer.state,2);fakePlayer.durationOverride=30;wall+=50;scope.qa.draw(wall);
+const recoveryPlays=fakePlayer.playCalls;delete fakePlayer.durationOverride;wall+=50;scope.qa.draw(wall);
+assert.equal(fakePlayer.playCalls,recoveryPlays+1);assert.equal(fakePlayer.state,1);
+for(let i=0;i<10&&scope.qa.countdownUntil;i++){wall+=100;fakePlayer.time=i*.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.countdownUntil,0);assert.equal(fakePlayer.playCalls,recoveryPlays+1);scope.qa.quit();
+
+// If an early note already passed in the first report, seek rather than score
+// it as a miss. A failed seek must expose a usable resume prompt, not an endless 1.
+let earlyDeadline=prepareHandoff(engine.SONGS.findIndex(s=>s.id==='heat'));
+fakePlayer.deferSeek=true;fakePlayer.time=2;wall=earlyDeadline+600;scope.qa.draw(wall);
+assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);assert.equal(scope.qa.mode,'countdown');
+wall=earlyDeadline+1700;scope.qa.draw(wall);
+for(let i=1;i<=8&&scope.qa.countdownUntil;i++){wall+=100;fakePlayer.time=2+i*.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.countdownUntil,0);wall+=8100;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'paused');assert.equal(elements.get('pauseMessage').querySelector('h2').textContent,'READY?');
+assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);fakePlayer.deferSeek=false;
+scope.qa.quit();scope.qa.selectSong(1);scope.qa.start(); // deliberately omit onStateChange
+for(let i=0;i<30&&scope.qa.mode!=='countdown';i++){wall+=50;fakePlayer.time=i*.05;scope.qa.draw(wall);}
+assert.equal(scope.qa.mode,'countdown','polling recovers a missing PLAYING callback');
+scope.qa.quit();
+console.log('PASS: failed startup rewinds offer Enter to resume without lost notes; missing player callbacks do not strand loading.');
+
+// Actual note drawing remains present and at the same position while the video
+// buffers. The prepared highway must not blink empty on each state transition.
+let visualDeadline=prepareHandoff();fakePlayer.time=.02;wall=visualDeadline+20;scope.qa.draw(wall);
+const nativeDrawHead=scope.drawNoteHead;let headPositions=[];
+scope.drawNoteHead=(ctx,n)=>{headPositions.push([n.x,n.y]);nativeDrawHead(ctx,n);};
+wall+=20;scope.qa.draw(wall);const beforeBuffer=headPositions;assert.ok(beforeBuffer.length>0);
+fakePlayer.state=3;
+for(let i=0;i<6;i++){headPositions=[];wall+=100;scope.qa.draw(wall);assert.deepEqual(headPositions,beforeBuffer);}
+assert.equal(scope.qa.mode,'buffering');assert.equal(scope.qa.stats.miss,0);scope.drawNoteHead=nativeDrawHead;scope.qa.quit();
+
+// Canvas width/height assignment clears its bitmap. ResizeObserver can deliver
+// the same dimensions more than once; those deliveries must not clear a frame.
+const game=elements.get('game');let bitmapWidth=0,bitmapHeight=0,bitmapResets=0;
+Object.defineProperty(game,'width',{configurable:true,get:()=>bitmapWidth,set:value=>{bitmapWidth=value;bitmapResets++;}});
+Object.defineProperty(game,'height',{configurable:true,get:()=>bitmapHeight,set:value=>{bitmapHeight=value;bitmapResets++;}});
+game.getBoundingClientRect=()=>({width:600,height:535});scope.qa.resize();assert.equal(bitmapResets,2);
+scope.qa.resize();scope.qa.resize();assert.equal(bitmapResets,2);
+game.getBoundingClientRect=()=>({width:601,height:535});scope.qa.resize();assert.equal(bitmapResets,3);
+console.log('PASS: buffering keeps all note heads frozen and visible; unchanged resize notifications never clear the canvas.');

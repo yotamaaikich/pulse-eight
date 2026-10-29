@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PlaybackGate} from '../playback.mjs';
+import {PlaybackGate,expectedVideo,countdownFrame} from '../playback.mjs';
 import {RhythmSession} from '../engine.mjs';
 
 function playing(gate,from,until,wall=0){let result;for(let t=from;t<=until+.001;t+=.05)result=gate.observe(t,1,wall+(t-from)*1000);return result;}
@@ -44,4 +44,23 @@ test('late pause and buffering notifications do not restart a just-completed cou
 });
 test('a verified post-countdown resume exposes the first audio frame without another progress probe',()=>{
   const gate=new PlaybackGate();gate.resume(5000,12);const first=gate.observe(12.02,1,5020);assert.equal(first.waiting,false);assert.equal(first.time,12.02);
+});
+test('countdown accepts delayed timestamps without accepting a seek or skipping the first note',()=>{
+  assert.equal(countdownFrame(0,.32,0,440,1.453),true);
+  assert.equal(countdownFrame(0,.7,0,800,1.453),true);
+  assert.equal(countdownFrame(0,.4,0,600,.326),false);
+  assert.equal(countdownFrame(0,2,0,4000,10),false);
+  assert.equal(countdownFrame(0,0,0,4000,1),false);
+  assert.equal(countdownFrame(10,9.5,9.4,600,11),false);
+  assert.equal(countdownFrame(10,10.32,10,500,11),true);
+});
+test('known metadata mismatches veto startup while absent optional metadata remains compatible',()=>{
+  const song={video:'selected',duration:180},url='https://www.youtube.com/watch?v=selected';
+  assert.equal(expectedVideo({url,duration:180},song),true);
+  assert.equal(expectedVideo({url,duration:182},song),true);
+  assert.equal(expectedVideo({url,duration:0},song),false);
+  assert.equal(expectedVideo({url,duration:30},song),false);
+  assert.equal(expectedVideo({url:'https://www.youtube.com/watch?v=other',duration:180},song),false);
+  assert.equal(expectedVideo({url:'invalid',duration:180},song),false);
+  assert.equal(expectedVideo({},song),true);
 });

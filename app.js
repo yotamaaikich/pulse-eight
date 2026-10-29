@@ -9,12 +9,12 @@ import {pianoFeedbackAt} from './source-piano.mjs?v=hands-19';
 import {keySoundRequests} from './key-sound.mjs?v=source-piano-15';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from './lead-in.mjs?v=approach-13';
 import {pianoTrialChart,PIANO_TRIAL_SONG} from './piano-trial.mjs?v=hands-19';
-import {chartMetrics,difficultyMetrics,orderedSongs} from './catalog.mjs?v=levels-20';
+import {chartMetrics,chartForSong,difficultyMetrics,orderedSongs} from './catalog.mjs?v=startup-28';
 import {drawAirRibbons,drawAirHead} from './air.mjs?v=compact-22';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hands-19';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
-import {PlaybackGate,inputClock} from './playback.mjs?v=approach-13';
+import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from './playback.mjs?v=startup-28';
 
 const $=id=>document.getElementById(id);
 const DEFAULT_KEYS=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
@@ -49,10 +49,11 @@ let libraryPack='all',librarySearch='',spaceHeld=false;
 let librarySort=read('pulse-sort','library');
 let ready=false,player=null,clock=0,lastFrame=performance.now(),sequence=0;
 let lastJudge='',judgeAt=0,judgeDelta=0,toastTimer,remapping=false,remapKeys=[],leaderRequest=0,submitted=false;
-const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(0),blackFlashes=Array(5).fill(0),particles=[],perfectHits=Array(8).fill(null);
+const pressed=new Set(),upperPressed=new Set(),flashes=Array(8).fill(-Infinity),blackFlashes=Array(5).fill(-Infinity),particles=[],perfectHits=Array(8).fill(null);
 const comboPulse={value:0,at:-Infinity};
 const canvas=$('game'),ctx=canvas.getContext('2d');
 const playback=new PlaybackGate();let appliedVolume=null,playbackArmed=false,countdownUntil=0,countdownSettledAt=null,countdownStarting=false,countdownProbeRaw=null,countdownPlayAt=0,countdownRepaired=false,bufferingSince=null,hasCountedIn=false;
+let countdownWaiting=false,countdownRecoveryRequested=false,countdownPreparedAt=0,countdownRecoveries=0,chartVisible=false;
 let W=600,H=535,dpr=1;
 const label=code=>({Semicolon:';',Comma:',',Period:'.',Slash:'/'}[code]|| (code.startsWith('Key')?code.slice(3):code.startsWith('Digit')?code.slice(5):code));
 const song=()=>SONGS[selected];
@@ -123,29 +124,56 @@ function updateChartControls(){
   $('difficultySummary').textContent=DIFFICULTIES[difficulty]+(ref?'（参照試験）':'')+' · '+metric.count+' NOTES · LV.'+metric.level;
   document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),c=ref?referenceChart(song(),d,currentPianoProfile()):null,info=c?chartMetrics(c):difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+2）';button.disabled=false;button.classList.toggle('active',Number(button.dataset.difficulty)===difficulty);button.setAttribute('aria-pressed',String(Number(button.dataset.difficulty)===difficulty));});
 }
-function stateText(text){$('playState').textContent=text;}
-function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil)));$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil);updateChartControls();}
+function setText(id,text){if($(id).textContent!==text)$(id).textContent=text;}
+function stateText(text){setText('playState',text);}
+function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!(['loading','buffering'].includes(mode)||(mode==='countdown'&&(!countdownUntil||countdownWaiting))));$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil||countdownWaiting);updateChartControls();}
+function hasExpectedVideo(){return expectedVideo({url:player.getVideoUrl?.(),duration:player.getDuration?.()},song());}
 function applyVolume(){if(!ready)return;const volume=['loading','buffering','countdown'].includes(mode)?0:prefs.volume;if(appliedVolume!==volume){player.setVolume(volume);appliedVolume=volume;}}
 function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;pianoSound.stop();bufferingSince??=performance.now();mode='buffering';playback.hold(performance.now());show(null);stateText('動画読み込み中');applyVolume();}
 function beginCountdown(now){
-  mode='countdown';countdownUntil=0;countdownSettledAt=null;countdownStarting=false;countdownProbeRaw=null;countdownRepaired=false;bufferingSince=null;playbackArmed=false;
+  mode='countdown';countdownUntil=0;countdownSettledAt=null;countdownStarting=false;countdownProbeRaw=null;countdownRepaired=false;bufferingSince=null;playbackArmed=false;countdownWaiting=false;countdownPreparedAt=now;
   player.pauseVideo();player.seekTo(clock,true);player.pauseVideo();$('countdownNumber').textContent='3';show(null);stateText('動画読み込み中');applyVolume();
 }
+function awaitCountdownVideo(now){
+  countdownWaiting=true;countdownRecoveryRequested=false;countdownStarting=true;countdownProbeRaw=null;playback.reset(now,clock);
+  show(null);stateText('動画読み込み中');applyVolume();
+}
+function playbackPrompt(){
+  mode='paused';countdownStarting=false;countdownWaiting=false;countdownUntil=0;player.pauseVideo();
+  show('pauseMessage');$('pauseMessage').querySelector('h2').textContent='READY?';stateText('ENTER TO ALLOW PLAYBACK');toast('再生開始を確認できませんでした。Enterでもう一度再生してください。');
+}
 function completeCountdown(now,raw){
-  clock=Math.max(clock,raw);hasCountedIn=true;playback.resume(now,clock);playbackArmed=true;countdownStarting=false;countdownUntil=0;bufferingSince=null;mode='running';syncHeldKeys();show(null);stateText('NOW PLAYING');applyVolume();canvas.focus();
+  clock=Math.max(clock,raw);hasCountedIn=true;playback.resume(now,clock);playbackArmed=true;countdownStarting=false;countdownWaiting=false;countdownRecoveries=0;countdownUntil=0;bufferingSince=null;mode='running';syncHeldKeys();show(null);stateText('NOW PLAYING');applyVolume();canvas.focus();
 }
 function syncPlayback(now){
+  if(!ready||!['running','buffering','loading','countdown'].includes(mode))return;
+  const raw=player.getCurrentTime(),state=player.getPlayerState(),expected=hasExpectedVideo();
   if(mode==='countdown'){
+    if(!expected){if(!countdownWaiting)awaitCountdownVideo(now);playback.hold(now);return;}
+    if(countdownWaiting){
+      // Leave the final 1 after a real interruption. Wait for fresh progress,
+      // then prepare a new count-in, rather than accepting a stale ad clock.
+      if([0,2,5].includes(state)&&!countdownRecoveryRequested){countdownRecoveryRequested=true;player.playVideo();return;}
+      if(!playback.observe(raw,state,now).waiting){
+        if(++countdownRecoveries>2)playbackPrompt();else beginCountdown(now);
+      }
+      return;
+    }
     // Do not start the 3 seconds until the asynchronous rewind has actually settled.
     if(!countdownUntil){
-      const raw=player.getCurrentTime(),settled=player.getPlayerState()===2&&Number.isFinite(raw)&&Math.abs(raw-clock)<=(clock===0?.04:.25);
-      if(!settled){countdownSettledAt=null;return;}
+      const settled=state===2&&Number.isFinite(raw)&&Math.abs(raw-clock)<=(clock===0?.04:.25);
+      if(!settled){
+        countdownSettledAt=null;
+        if(state===1&&now-countdownPreparedAt>2000)awaitCountdownVideo(now);
+        else if(state===2&&now-countdownPreparedAt>8000)playbackPrompt();
+        return;
+      }
       countdownSettledAt??=now;
       if(now-countdownSettledAt<150)return;
       const first=notes.find(n=>!n.done&&!n.started&&!n.assist&&n.t>=clock);
-      countdownUntil=now+leadInSeconds(prefs.speed,(first?first.t-clock:0)+prefs.offset/1000)*1000;show(null);stateText('GET READY');
+      countdownUntil=now+leadInSeconds(prefs.speed,(first?first.t-clock:0)+prefs.offset/1000)*1000;chartVisible=true;show(null);stateText('GET READY');
     }
-    const remaining=Math.max(0,Math.ceil((countdownUntil-now)/1000));$('countdownNumber').textContent=remaining>3?'READY':String(remaining||1);stateText(remaining>3?'GET READY':'GET READY · '+Math.max(1,remaining));
+    const remaining=Math.max(0,Math.ceil((countdownUntil-now)/1000));setText('countdownNumber',remaining>3?'READY':String(remaining||1));stateText(remaining>3?'GET READY':'GET READY · '+Math.max(1,remaining));
     // Send the asynchronous play command just before GO. Keep the final count
     // visible until an actual forward content frame arrives, rather than
     // hiding it into a second loading screen or starting on a stale PLAYING.
@@ -153,15 +181,23 @@ function syncPlayback(now){
     if(countdownStarting){
       const raw=player.getCurrentTime(),state=player.getPlayerState(),previous=countdownProbeRaw;
       countdownProbeRaw=Number.isFinite(raw)?raw:null;
-      if(state===1&&Number.isFinite(raw)&&raw>=clock-.02&&raw<=clock+.25&&raw>(previous??clock)+.0001){completeCountdown(now,raw);return;}
+      const first=notes.find(n=>!n.done&&!n.started&&!n.assist&&n.t+prefs.offset/1000>=clock);
+      if(state===1&&countdownFrame(clock,raw,previous,now-countdownPlayAt,first?first.t+prefs.offset/1000:Infinity)){completeCountdown(now,raw);return;}
       // A genuinely stale seek report is repaired once, without resetting the
       // visible countdown or silently skipping the song's first notes.
       if(state===1&&Number.isFinite(raw)&&raw>clock+.25&&!countdownRepaired&&now-countdownPlayAt>=500){countdownRepaired=true;countdownProbeRaw=null;player.seekTo(clock,true);player.playVideo();}
+      if(now-countdownPlayAt>=1500)awaitCountdownVideo(now);
     }
     return;
   }
-  if(!ready||!playbackArmed||!['running','buffering','loading'].includes(mode))return;
-  const raw=player.getCurrentTime(),state=player.getPlayerState();
+  if(!['running','buffering','loading'].includes(mode))return;
+  if(!expected){
+    if(mode==='running')waitForVideo();
+    hasCountedIn=false;playback.hold(now);return;
+  }
+  // Poll as well as listen: a late/missing PLAYING callback must not strand loading.
+  if(!playbackArmed&&state===1){playbackArmed=true;playback.hold(now);}
+  if(!playbackArmed)return;
   // A brief post-count pause already has a verified content origin. Accept its
   // first fresh frame instead of muting and consuming a new .35-second probe.
   if(mode==='buffering'&&hasCountedIn&&bufferingSince!==null&&now-bufferingSince<1500&&state===1&&raw>clock+.0001&&raw<=clock+.25)playback.resume(now,clock);
@@ -177,14 +213,15 @@ function start(){
   if(!ready){toast('公式プレイヤーを読み込み中です。準備完了後にEnterを押してください。');return;}
   if(mode==='loading')return;
   if(prefs.pianoOn&&prefs.pianoLevel){pianoSound.warm();pianoSound.prepare().then(ok=>{if(!ok&&prefs.pianoOn&&prefs.pianoLevel)toast('ピアノ音源を読み込めませんでした。設定の試し弾きから確認してください。');});}pianoSound.stop();
-  let chart;try{referenceRun=referenceEnabled();chart=referenceRun?referenceChart(song(),difficulty,currentPianoProfile()):pianoTrialChart(song(),makeChart(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
+  let chart;try{referenceRun=referenceEnabled();chart=referenceRun?referenceChart(song(),difficulty,currentPianoProfile()):pianoTrialChart(song(),chartForSong(song(),difficulty),currentPianoProfile());}catch(error){toast(error.message);return;}
   upperPressed.clear();spaceHeld=false;sequence++;const seq=sequence;mode='loading';countdownUntil=0;countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now());playbackArmed=false;document.body.classList.add('focus-play');window.scrollTo({top:0,behavior:'instant'});clock=0;session=new RhythmSession(chart,song().duration);notes=session.notes;stats=session.stats;life=MAX_LIFE;events=[];eligible=!referenceRun;runId=null;submitted=false;lastJudge='';pressed.clear();particles.length=0;perfectHits.fill(null);
+  countdownWaiting=false;countdownRecoveries=0;chartVisible=false;flashes.fill(-Infinity);blackFlashes.fill(-Infinity);
   show(null);$('stage').classList.add('running');$('pauseButton').disabled=false;$('progress').style.width='0%';resetTimer();stateText('動画読み込み中');updateStats();canvas.focus();
   runPromise=referenceRun?Promise.resolve():api('/start',{song:song().id,difficulty,playerToken:token,version:CHART_VERSION}).then(data=>{if(seq===sequence)runId=data.runId;}).catch(()=>{if(seq===sequence)toast('クラウドに接続できないため、この回は端末に保存します。');});
   applyVolume();player.setPlaybackRate(1);player.loadVideoById({videoId:song().video,startSeconds:0});
 }
 function pause(){if(!['running','buffering','loading','countdown'].includes(mode))return;mode='paused';pianoSound.stop();countdownUntil=0;countdownStarting=false;player?.pauseVideo();$('pauseMessage').querySelector('h2').textContent='PAUSED.';show('pauseMessage');stateText('PAUSED');}
-function resume(){if(mode!=='paused')return;pianoSound.warm();syncHeldKeys();mode='loading';countdownStarting=false;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
+function resume(){if(mode!=='paused')return;pianoSound.warm();syncHeldKeys();mode='loading';countdownStarting=false;countdownWaiting=false;countdownRecoveries=0;hasCountedIn=false;bufferingSince=null;playback.reset(performance.now(),clock);playbackArmed=false;show(null);stateText('動画読み込み中');applyVolume();player.playVideo();canvas.focus();}
 function quit(){pianoSound.stop();upperPressed.clear();spaceHeld=false;sequence++;mode='idle';session=null;notes=[];stats=newStats();life=MAX_LIFE;events=[];runId=null;eligible=false;clock=0;updateStats();document.body.classList.remove('focus-play');player?.pauseVideo();show('stageMessage');$('stage').classList.remove('running');$('pauseButton').disabled=true;pressed.clear();stateText('READY TO PLAY');resetTimer();$('progress').style.width='0%';selectSong(selected);selectDifficulty(difficulty);}
 function updateStats(){
   if(stats.combo<comboPulse.value)comboPulse.at=-Infinity;
@@ -264,21 +301,22 @@ function loadPlayer(){
       onStateChange:event=>{
         if(event.data===1){
           if(['loading','buffering'].includes(mode)&&!playbackArmed){playbackArmed=true;playback.hold(performance.now());}
-          else if(['paused','idle','results'].includes(mode)||(mode==='countdown'&&!countdownStarting))player.pauseVideo();
+          else if(['paused','idle','results'].includes(mode)||(mode==='countdown'&&!countdownStarting&&hasExpectedVideo()))player.pauseVideo();
         }
         // PAUSED/BUFFERING are sampled by PlaybackGate, which filters seek transitions.
         if(event.data===0&&['running','buffering','loading'].includes(mode)){
-          if(clock>=song().duration-2)finish();else waitForVideo();
+          if(clock>=song().duration-2&&hasExpectedVideo())finish();else waitForVideo();
         }
+        if(event.data===0&&mode==='countdown')awaitCountdownVideo(performance.now());
       },
       onPlaybackRateChange:event=>{if(event.data!==1&&mode!=='idle'){eligible=false;toast('再生速度が変わったため練習プレイになりました。');}},
       onError:()=>{quit();stateText('VIDEO UNAVAILABLE');$('startHint').textContent='この動画は現在再生できません。別の曲を選んでください。';toast('公式動画の埋め込み再生に失敗しました。別の曲を選んでください。');},
-      onAutoplayBlocked:()=>{if(mode==='loading'||mode==='countdown'&&countdownStarting){mode='paused';countdownStarting=false;countdownUntil=0;show('pauseMessage');$('pauseMessage').querySelector('h2').textContent='READY?';stateText('ENTER TO ALLOW PLAYBACK');toast('Enterでもう一度再生してください。');}}
+      onAutoplayBlocked:()=>{if(mode==='loading'||mode==='countdown'&&countdownStarting)playbackPrompt();}
     }});
   };
   document.head.append(script);
 }
-function resize(){const rect=canvas.getBoundingClientRect();W=rect.width;H=rect.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+function resize(){const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;W=rect.width;H=rect.height;dpr=Math.min(devicePixelRatio||1,2);const width=Math.round(W*dpr),height=Math.round(H*dpr);if(canvas.width!==width)canvas.width=width;if(canvas.height!==height)canvas.height=height;ctx.setTransform(dpr,0,0,dpr,0,0);}
 new ResizeObserver(resize).observe(canvas);
 function project(x,depth){return projectPoint(x,W,depth,40,keyboardStrikeY(W,H)).x;}
 function draw(now){
@@ -298,7 +336,8 @@ function draw(now){
   const lookahead=noteTravelSeconds(prefs.speed);const beat=60/song().bpm;const visualTime=active?t:now/1000*.65;
   for(let b=Math.floor(visualTime/beat);b<visualTime/beat+lookahead/beat+2;b++){const diff=b*beat-visualTime;if(diff<0||diff>lookahead)continue;const depth=1-diff/lookahead,y=top+span*depth*depth;ctx.strokeStyle=b%(song().meter||4)===0?'#c2decd1f':'#c2decd0b';ctx.beginPath();ctx.moveTo(project(0,depth),y);ctx.lineTo(project(W,depth),y);ctx.stroke();}
   let visibleNotes=notes;
-  if(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil))visibleNotes=[];
+  // Freeze a prepared highway during buffering; hiding/showing it caused flashes.
+  if(!chartVisible&&(['loading','buffering'].includes(mode)||(mode==='countdown'&&!countdownUntil)))visibleNotes=[];
   if(!active&&mode!=='results'){visibleNotes=Array.from({length:20},(_,i)=>({t:visualTime+(i*.31-(visualTime%3.1)),lane:[0,2,4,5,3,2,1,0,6,7][i%10],degree:[0,2,4,5,3,2,1,0,6,7][i%10]}));}
   drawAirRibbons(ctx,visibleNotes,{width:W,time:visualTime,lookahead,top,hitY,held:spaceHeld});
   if(active)drawCombo(ctx,stats.combo,W,hitY,now-comboPulse.at);
@@ -339,7 +378,7 @@ function draw(now){
   if(active)for(let lane=0;lane<8;lane++){const hit=perfectHits[lane];if(!hit)continue;const age=now-hit.at;if(age>320){perfectHits[lane]=null;continue;}drawPerfectHit(ctx,{lane,width:W,hitY,age,heightScale,float:hit.float,top});}
   if(active)drawJudgment(ctx,{result:lastJudge,delta:judgeDelta,width:W,hitY,age:now-judgeAt});
   for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=.035*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=p.spark?9*heightScale:0;ctx.fillRect(p.x,p.y,p.size??2,p.spark?p.size:3);if(p.life<=0)particles.splice(i,1);}ctx.globalAlpha=1;ctx.shadowBlur=0;
-  $('spaceGuide').classList.toggle('pressed',spaceHeld);$('spaceGuide').classList.toggle('air-invalid',!!session?.spaceInvalid);$('spaceGuide').querySelector('span').textContent=session?.spaceInvalid?'Spaceを離して！ FLOAT区間の外ではコンボが切れます':'黄緑のFLOATの帯だけSpaceを押し、帯が終わったら離す';document.querySelectorAll('[data-key]').forEach(k=>k.classList.toggle('pressed',pressed.has(prefs.keys.indexOf(k.dataset.key))));requestAnimationFrame(draw);
+  $('spaceGuide').classList.toggle('pressed',spaceHeld);$('spaceGuide').classList.toggle('air-invalid',!!session?.spaceInvalid);const guide=$('spaceGuide').querySelector('span'),guideText=session?.spaceInvalid?'Spaceを離して！ FLOAT区間の外ではコンボが切れます':'黄緑のFLOATの帯だけSpaceを押し、帯が終わったら離す';if(guide.textContent!==guideText)guide.textContent=guideText;document.querySelectorAll('[data-key]').forEach(k=>k.classList.toggle('pressed',pressed.has(prefs.keys.indexOf(k.dataset.key))));requestAnimationFrame(draw);
 }
 function openDialog(id){if(['running','buffering','loading','countdown'].includes(mode))pause();$(id).showModal();}
 document.addEventListener('keydown',event=>{

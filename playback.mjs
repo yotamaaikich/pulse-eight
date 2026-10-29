@@ -2,6 +2,20 @@
 // waiting instead, and require fresh forward progress before resuming play.
 // A key event may arrive between animation frames. Sample its content time
 // without accepting a seek, a rewind, or a paused/buffering clock.
+export function expectedVideo({url,duration},song){
+  // Metadata can contradict the selected MV, but cannot prove that an ad ended.
+  if(Number.isFinite(duration)&&(duration<=0||Math.abs(duration-song.duration)>Math.max(15,song.duration*.2)))return false;
+  if(typeof url==='string'){
+    try{const parsed=new URL(url),id=parsed.searchParams.get('v')||(parsed.hostname==='youtu.be'?parsed.pathname.slice(1):null);if(id!==song.video)return false;}catch{return false;}
+  }
+  return true;
+}
+export function countdownFrame(origin,raw,previous,elapsedMs,nextNoteAt=Infinity){
+  // IFrame timestamps arrive asynchronously, sometimes more than 250ms apart.
+  // Allow a late report only before the next unplayed note, never a large seek.
+  const advance=Math.min(.75,Math.max(.25,Math.max(0,elapsedMs)/1000+.1));
+  return Number.isFinite(raw)&&raw>=origin-.02&&raw<=Math.min(origin+advance,nextNoteAt)&&raw>(previous??origin)+.0001;
+}
 export function inputClock(frameTime,raw,state,frameAgeMs=0){
  const advance=Math.max(.12,Math.min(.75,Math.max(0,frameAgeMs)/1000+.04));
  return state===1&&Number.isFinite(raw)&&raw>=frameTime-.02&&raw<=frameTime+advance?Math.max(frameTime,raw):frameTime;
