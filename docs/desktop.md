@@ -23,7 +23,7 @@ npm run desktop:dev
 npm run desktop:build
 ```
 
-成果物は`dist/PIANO-PULSE-Setup-1.5.0.exe`と`dist/PIANO-PULSE-1.5.0-x64.zip`。GitHub Releaseの公開でWindowsビルドを実行し、テストが通った成果物とSHA-256を添付します。コード署名証明書は未設定です。
+成果物は`dist/PIANO-PULSE-Setup-1.5.1.exe`と`dist/PIANO-PULSE-1.5.1-x64.zip`。GitHub Releaseの公開でWindowsビルドを実行し、テストが通った成果物とSHA-256を添付します。コード署名証明書は未設定です。
 
 CIでは生成したEXEを`--smoke-test`で起動し、同梱Rendererがメインプロセスへ初回の状態を送れることも確認します。専用の一時データ領域を使い、Discordの表示・カスタムURLの登録・ゲームウィンドウの表示を行いません。これは起動検証であり、実動画や実際のDiscordプロフィール表示の検証とは別です。
 

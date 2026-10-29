@@ -6,7 +6,7 @@ function bundledPath(raw,root){
   const u=new URL(raw);if(u.origin!=='https://yotamaaikich.github.io'||!u.pathname.startsWith('/pulse-eight/'))return null;
   let relative;try{relative=decodeURIComponent(u.pathname.slice('/pulse-eight/'.length))||'index.html';}catch{return false;}
   if(relative.includes('\\')||relative.includes('\0')||relative.split('/').some(p=>p==='..')||relative.startsWith('.'))return false;
-  if(!(relative==='index.html'||relative==='privacy.html'||relative==='icon.svg'||/^[\w-]+\.(m?js|css)$/.test(relative)||/^audio\/piano\/[\w.-]+\.(mp3|txt)$/.test(relative)||/^vendor\/[\w.-]+\.mjs$/.test(relative)||/^desktop\/(settings\.(html|css|js)|assets\/icon\.(png|ico))$/.test(relative)))return false;
+  if(!(relative==='index.html'||relative==='privacy.html'||relative==='icon.svg'||/^[\w-]+\.(m?js|css)$/.test(relative)||/^audio\/piano\/[\w.-]+\.(mp3|txt)$/.test(relative)||/^vendor\/[\w.-]+\.(mjs|txt)$/.test(relative)||/^desktop\/(settings\.(html|css|js)|assets\/icon\.(png|ico))$/.test(relative)))return false;
   const file=path.resolve(root,relative),inside=path.relative(root,file);return inside&&!inside.startsWith('..')&&!path.isAbsolute(inside)?file:false;
 }
 function externalURL(raw){try{const u=new URL(raw);return u.protocol==='https:'&&!u.username&&!u.password&&['github.com','yotamaaikich.github.io','www.youtube.com','youtube.com','discord.com','www.hanshin.co.jp','osu.ppy.sh','www.ymm.co.jp','store.piascore.com','www.gcmstyle.com','pjsekai.sega.jp','www.billboard-japan.com','www.deco27.com','musicalnexus.net'].includes(u.hostname)?u.href:null;}catch{return null;}}

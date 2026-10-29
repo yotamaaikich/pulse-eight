@@ -78,6 +78,7 @@ Windows版はインストーラーまたはZIPから起動できます。Discord
 - [プロジェクトセカイ公式](https://pjsekai.sega.jp/)
 - [CHUNITHM公式](https://chunithm.sega.jp/)
 - [太鼓の達人公式](https://taiko.namco-ch.net/)
+- [ライブラリのライセンス](vendor/THIRD-PARTY-NOTICES.txt)
 - [ピアノ音源クレジット](audio/piano/CREDITS.txt)
 - [音程・参考データのクレジット](audio/piano/MELODY-CREDITS.txt)
 - [モニタリングの参考MML](https://musicalnexus.net/games/mabinogi/songs/deco27-monitoring-full-ver-jab3-r1-required-r9090)
