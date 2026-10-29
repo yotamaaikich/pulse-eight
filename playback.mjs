@@ -13,7 +13,7 @@ export function expectedVideo({url,duration},song){
 export function countdownFrame(origin,raw,previous,elapsedMs,nextNoteAt=Infinity){
   // IFrame timestamps arrive asynchronously, sometimes more than 250ms apart.
   // Allow a late report only before the next unplayed note, never a large seek.
-  const advance=Math.min(.75,Math.max(.25,Math.max(0,elapsedMs)/1000+.1));
+  const advance=Math.min(.75,Math.max(.04,Math.max(0,elapsedMs)/1000+.04));
   return Number.isFinite(raw)&&raw>=origin-.02&&raw<=Math.min(origin+advance,nextNoteAt)&&raw>(previous??origin)+.0001;
 }
 export function inputClock(frameTime,raw,state,frameAgeMs=0){

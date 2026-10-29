@@ -14,7 +14,7 @@ import {drawAirRibbons,drawAirHead} from './air.mjs?v=compact-22';
 import {SONGS,DIFFICULTIES,makeChart,newStats,summary,CHART_VERSION,RhythmSession,isFullCombo} from './engine.mjs?v=hands-19';
 import {API_URL,PUBLIC_KEY} from './config.js';
 import {projectPoint} from './geometry.mjs';
-import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from './playback.mjs?v=startup-28';
+import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from './playback.mjs?v=startup-29';
 
 const $=id=>document.getElementById(id);
 const DEFAULT_KEYS=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
@@ -126,10 +126,15 @@ function updateChartControls(){
 }
 function setText(id,text){if($(id).textContent!==text)$(id).textContent=text;}
 function stateText(text){setText('playState',text);}
-function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);$('videoLoading').classList.toggle('hidden',!(['loading','buffering'].includes(mode)||(mode==='countdown'&&(!countdownUntil||countdownWaiting))));$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil||countdownWaiting);updateChartControls();}
+function bufferingGrace(now=performance.now()){return mode==='buffering'&&bufferingSince!==null&&now-bufferingSince<300;}
+function playbackOverlays(now=performance.now()){
+  const waiting=mode==='loading'||mode==='buffering'&&!bufferingGrace(now)||mode==='countdown'&&(!countdownUntil||countdownWaiting);
+  $('videoLoading').classList.toggle('hidden',!waiting);$('playCountdown').classList.toggle('hidden',mode!=='countdown'||!countdownUntil||countdownWaiting);
+}
+function show(id){for(const name of ['stageMessage','pauseMessage','resultMessage'])$(name).classList.toggle('hidden',name!==id);playbackOverlays();updateChartControls();}
 function hasExpectedVideo(){return expectedVideo({url:player.getVideoUrl?.(),duration:player.getDuration?.()},song());}
 function applyVolume(){if(!ready)return;const volume=['loading','buffering','countdown'].includes(mode)?0:prefs.volume;if(appliedVolume!==volume){player.setVolume(volume);appliedVolume=volume;}}
-function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;pianoSound.stop();bufferingSince??=performance.now();mode='buffering';playback.hold(performance.now());show(null);stateText('動画読み込み中');applyVolume();}
+function waitForVideo(){if(!['running','buffering','loading'].includes(mode))return;pianoSound.stop();bufferingSince??=performance.now();mode='buffering';playback.hold(performance.now());show(null);stateText(bufferingGrace()?'NOW PLAYING':'動画読み込み中');applyVolume();}
 function beginCountdown(now){
   mode='countdown';countdownUntil=0;countdownSettledAt=null;countdownStarting=false;countdownProbeRaw=null;countdownRepaired=false;bufferingSince=null;playbackArmed=false;countdownWaiting=false;countdownPreparedAt=now;
   player.pauseVideo();player.seekTo(clock,true);player.pauseVideo();$('countdownNumber').textContent='3';show(null);stateText('動画読み込み中');applyVolume();
@@ -193,7 +198,7 @@ function syncPlayback(now){
   if(!['running','buffering','loading'].includes(mode))return;
   if(!expected){
     if(mode==='running')waitForVideo();
-    hasCountedIn=false;playback.hold(now);return;
+    hasCountedIn=false;playback.hold(now);playbackOverlays(now);stateText(bufferingGrace(now)?'NOW PLAYING':'動画読み込み中');return;
   }
   // Poll as well as listen: a late/missing PLAYING callback must not strand loading.
   if(!playbackArmed&&state===1){playbackArmed=true;playback.hold(now);}
@@ -205,7 +210,7 @@ function syncPlayback(now){
   if(next.seek)eligible=false;
   if(!next.waiting&&mode!=='running'&&(!hasCountedIn||mode==='loading'||bufferingSince===null||now-bufferingSince>=1500)){beginCountdown(now);return;}
   clock=next.time;
-  if(next.waiting){if(mode==='running'){bufferingSince=now;mode='buffering';pianoSound.stop();show(null);}stateText('動画読み込み中');}
+  if(next.waiting){if(mode==='running'){bufferingSince=now;mode='buffering';pianoSound.stop();show(null);}playbackOverlays(now);stateText(bufferingGrace(now)?'NOW PLAYING':'動画読み込み中');}
   else if(mode!=='running'){bufferingSince=null;mode='running';syncHeldKeys();show(null);stateText('NOW PLAYING');canvas.focus();}
   applyVolume();
 }

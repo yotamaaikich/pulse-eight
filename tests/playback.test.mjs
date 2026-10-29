@@ -46,6 +46,8 @@ test('a verified post-countdown resume exposes the first audio frame without ano
   const gate=new PlaybackGate();gate.resume(5000,12);const first=gate.observe(12.02,1,5020);assert.equal(first.waiting,false);assert.equal(first.time,12.02);
 });
 test('countdown accepts delayed timestamps without accepting a seek or skipping the first note',()=>{
+  assert.equal(countdownFrame(0,.23,0,40,1.453),false,'a queued pre-count timestamp cannot be 230ms ahead only 40ms after play');
+  assert.equal(countdownFrame(0,.03,0,40,1.453),true);
   assert.equal(countdownFrame(0,.32,0,440,1.453),true);
   assert.equal(countdownFrame(0,.7,0,800,1.453),true);
   assert.equal(countdownFrame(0,.4,0,600,.326),false);

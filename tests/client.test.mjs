@@ -300,3 +300,23 @@ game.getBoundingClientRect=()=>({width:600,height:535});scope.qa.resize();assert
 scope.qa.resize();scope.qa.resize();assert.equal(bitmapResets,2);
 game.getBoundingClientRect=()=>({width:601,height:535});scope.qa.resize();assert.equal(bitmapResets,3);
 console.log('PASS: buffering keeps all note heads frozen and visible; unchanged resize notifications never clear the canvas.');
+
+// A queued timestamp from before the count can arrive before the real first
+// frame. It must fit the time elapsed since playVideo, not just a fixed window.
+let queuedDeadline=prepareHandoff();fakePlayer.time=.23;wall=queuedDeadline-80;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.clock,0);
+fakePlayer.time=.02;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');
+fakePlayer.time=.04;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.clock,.04);
+
+// Short startup state changes still freeze the clock and mute immediately,
+// but must not flash a loading overlay/text for a 200ms interruption.
+let graceDeadline=prepareHandoff();wall=graceDeadline+320;fakePlayer.time=.32;scope.qa.draw(wall);
+fakePlayer.time=0;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'buffering');
+assert.equal(scope.qa.clock,.32);assert.equal(volumes.at(-1),0);
+assert.equal(elements.get('videoLoading').classList.contains('hidden'),true);assert.equal(elements.get('playState').textContent,'NOW PLAYING');
+wall+=200;fakePlayer.time=.37;scope.qa.draw(wall);assert.equal(scope.qa.mode,'running');
+assert.equal(elements.get('videoLoading').classList.contains('hidden'),true);assert.equal(scope.qa.stats.miss,0);assert.equal(volumes.at(-1),50);
+fakePlayer.time=0;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'buffering');
+wall+=320;scope.qa.draw(wall);assert.equal(elements.get('videoLoading').classList.contains('hidden'),false);
+assert.equal(elements.get('playState').textContent,'動画読み込み中');assert.equal(scope.qa.clock,.37);assert.equal(scope.qa.stats.miss,0);scope.qa.quit();
+console.log('PASS: stale startup timestamps cannot run ahead of the play command; 200ms transitions never flash loading while real stalls still show it.');
