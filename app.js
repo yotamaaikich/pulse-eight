@@ -438,7 +438,7 @@ document.querySelectorAll('[data-pack]').forEach(button=>button.onclick=()=>{lib
 $('pauseChange').onclick=()=>requestSelection();$('changeSong').onchange=updateSelectionWarning;$('changeDifficulty').onchange=updateSelectionWarning;$('confirmTrackChange').onclick=confirmSelection;
 $('fullscreenButton').onclick=toggleFullscreen;$('playFullscreen').onclick=toggleFullscreen;
 $('exitChartFullscreen').onclick=toggleFullscreen;$('chartPause').onclick=()=>mode==='paused'?resume():pause();
-savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);loadPlayer();requestAnimationFrame(draw);
+savePrefs();setName();renderSongs();selectSong(0);selectDifficulty(1);requestAnimationFrame(draw);
 
 let tutorial=null;
 async function openTutorial(){if(['running','buffering','loading','countdown'].includes(mode))pause();$('helpDialog').close();if(!tutorial){const {createTutorial}=await import('./tutorial.mjs?v=desktop-31');tutorial=createTutorial({dialog:$('tutorialDialog'),getKeys:()=>prefs.keys,getDifficulty:()=>difficulty});}tutorial.open();}
@@ -456,6 +456,15 @@ function applyAccountPending(){
   const request=++accountRequest;if(user)api('/profile',{},user.id).then(data=>{if(request!==accountRequest||accountUser?.id!==user.id)return;for(const row of data.scores??[]){const key=row.chart_version+':'+row.song+':'+row.difficulty;if(!bests[key]||row.score>bests[key].score)bests[key]={score:row.score,accuracy:row.accuracy,maxCombo:row.max_combo};}write(bestStorage,bests);updateBest();}).catch(()=>toast('アカウントの記録を取得できませんでした。再ログインで読み直せます。'));
 }
 account=createAccount({bridge:window.pianoPulse,onChange:user=>{accountPending=user;applyAccountPending();},onError:message=>{$('accountStatus').textContent=message;}});
+// Complete PKCE URL cleanup before the embedded player reads its parent URL.
+// Auth failure still leaves the game available to guests.
+function startPlayerAfterAuth(){
+  const url=new URL(location.href);
+  for(const key of ['code','error','error_code','error_description'])url.searchParams.delete(key);
+  if(url.href!==location.href)history.replaceState(history.state,'',url.href);
+  loadPlayer();
+}
+account.ready.then(startPlayerAfterAuth,startPlayerAfterAuth);
 $('googleSignIn').onclick=async()=>{if(mode!=='idle'){toast('選曲に戻ってからログインしてください。');return;}$('googleSignIn').disabled=true;try{await account.signIn();$('accountStatus').textContent='ブラウザでGoogleログインを完了してください';}catch(error){$('accountStatus').textContent=error.message;}finally{$('googleSignIn').disabled=mode!=='idle';}};
 $('googleSignOut').onclick=async()=>{if(mode!=='idle')return;$('googleSignOut').disabled=true;try{await account.signOut();}catch(error){$('accountStatus').textContent=error.message;}finally{$('googleSignOut').disabled=mode!=='idle';}};
 renderAccount();
