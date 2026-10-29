@@ -21,9 +21,9 @@ const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async
 const createPianoSound=()=>soundStub;
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map();
 const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:()=>{}});
-function element(id){if(!elements.has(id)){const classes=new Set();elements.set(id,{classList:{add:n=>classes.add(n),remove:n=>classes.delete(n),contains:n=>classes.has(n),toggle(n,on){if(on)classes.add(n);else classes.delete(n);}},textContent:'',value:'',innerHTML:'',style:{},open:false,setAttribute(){},addEventListener(){},replaceChildren(){},append(){},click(){this.clicked=true;},focus(){},close(){this.open=false;},showModal(){this.open=true;},getContext:()=>context2d,querySelector:()=>({textContent:''})});}return elements.get(id);}
+function element(id){if(!elements.has(id)){const classes=new Set();elements.set(id,{classList:{add:n=>classes.add(n),remove:n=>classes.delete(n),contains:n=>classes.has(n),toggle(n,on){if(on)classes.add(n);else classes.delete(n);}},textContent:'',value:'',innerHTML:'',style:{},open:false,setAttribute(){},addEventListener(){},replaceChildren(){},append(){},click(){this.clicked=true;},focus(){},close(){this.open=false;},showModal(){this.open=true;},getContext:()=>context2d,querySelector:selector=>element(id+' '+selector)});}return elements.get(id);}
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(){}},hidden:false};
-const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.state=1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
+const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById(){this.time=0;this.state=1;},cueVideoById(){},seekTo(t){this.seekCalls=(this.seekCalls||0)+1;if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.playCalls=(this.playCalls||0)+1;this.state=this.deferPlay?3:1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;return fakePlayer;}}};
 const scope=vm.createContext({...engine,MONITORING_PIANO_PROFILE,referenceChart,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},location:{origin:'http://localhost'},fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
@@ -40,7 +40,7 @@ assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.clock,0);assert.eq
 for(let i=0;i<5;i++){wall+=50;scope.qa.draw(wall);}
 const countStart=wall;for(let i=0;i<29;i++){wall+=100;scope.qa.draw(wall);}
 assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);
-wall=countStart+3000;scope.qa.draw(wall);assert.equal(scope.qa.mode,'loading');assert.equal(fakePlayer.time,0);
+wall=countStart+3000;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');assert.equal(fakePlayer.time,0);
 function becomeRunning(){fakePlayer.state=1;fakePlayer.options.events.onStateChange({data:1});for(let i=0;i<100&&scope.qa.mode!=='running';i++){wall+=50;const wasCountdown=scope.qa.mode==='countdown';if(fakePlayer.state===1)fakePlayer.time+=.05;scope.qa.draw(wall);if(wasCountdown&&scope.qa.mode==='loading'&&fakePlayer.state===1)fakePlayer.options.events.onStateChange({data:1});}assert.equal(scope.qa.mode,'running');}
 becomeRunning();
 assert.equal(scope.qa.mode,'running');assert.equal(volumes.at(-1),50);
@@ -90,12 +90,13 @@ for(let i=0;i<40;i++){wall+=100;scope.qa.draw(wall);}assert.equal(scope.qa.count
 fakePlayer.time=fakePlayer.seekTarget;fakePlayer.state=2;fakePlayer.deferSeek=false;
 for(let i=0;i<5;i++){wall+=50;scope.qa.draw(wall);}const deadline=scope.qa.countdownUntil;assert.ok(deadline>wall);
 wall=deadline-1;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');
-wall=deadline;scope.qa.draw(wall);assert.equal(scope.qa.mode,'loading');
-// A stale pre-seek timestamp is repaired without replaying the three-second count.
-fakePlayer.state=1;fakePlayer.time=2;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.countdownUntil,0);assert.equal(scope.qa.clock,0);
-for(let i=0;i<4;i++){wall+=50;scope.qa.draw(wall);}assert.equal(scope.qa.mode,'loading');
+wall=deadline;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');
+// A stale pre-seek timestamp is repaired once, without resetting the visible count.
+const seekBeforeRepair=fakePlayer.seekCalls;
+fakePlayer.state=1;fakePlayer.time=2;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.countdownUntil,deadline);assert.equal(scope.qa.clock,0);
+for(let i=0;i<12;i++){wall+=50;scope.qa.draw(wall);}assert.equal(scope.qa.mode,'countdown');assert.equal(fakePlayer.seekCalls,seekBeforeRepair+1);assert.equal(scope.qa.countdownUntil,deadline);
 // A late PAUSED callback during handoff does not consume another countdown.
-fakePlayer.state=2;fakePlayer.options.events.onStateChange({data:2});wall+=30;scope.qa.draw(wall);assert.equal(scope.qa.mode,'loading');
+fakePlayer.state=2;fakePlayer.options.events.onStateChange({data:2});wall+=30;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown');
 fakePlayer.state=1;fakePlayer.time=.02;fakePlayer.options.events.onStateChange({data:1});fakePlayer.options.events.onStateChange({data:1});wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.clock,.02);assert.equal(volumes.at(-1),50); // first content frame is audible, without a silent .35-second probe
 fakePlayer.state=3;fakePlayer.options.events.onStateChange({data:3});wall+=50;scope.qa.draw(wall);assert.equal(scope.qa.mode,'running');
 fakePlayer.state=2;fakePlayer.options.events.onStateChange({data:2});wall+=100;scope.qa.draw(wall);assert.equal(scope.qa.mode,'running');
@@ -157,3 +158,46 @@ elements.get('settingsDialog').showModal();soundCalls.length=0;
 elements.get('testSongPiano').onclick();assert.equal(soundCalls.length,1);assert.ok(Number.isFinite(soundCalls[0].midi));assert.equal(soundCalls[0].percussive,undefined);
 elements.get('testPiano').onclick();assert.equal(soundCalls.length,4);assert.ok(soundCalls.slice(1).every(n=>Number.isFinite(n.midi)&&!n.percussive));
 elements.get('settingsDialog').close();
+
+// Delayed playVideo: the last count stays visible until the content clock moves.
+// A short startup buffer must not seek back and run another three-second count.
+scope.qa.quit();elements.get('volume').value='50';elements.get('volume').oninput();
+fakePlayer.deferPlay=false;scope.qa.start();fakePlayer.options.events.onStateChange({data:1});
+for(let i=0;i<20&&scope.qa.mode!=='countdown';i++){wall+=50;fakePlayer.time=i*.05;scope.qa.draw(wall);}
+for(let i=0;i<6&&!scope.qa.countdownUntil;i++){wall+=50;scope.qa.draw(wall);}
+const delayedDeadline=scope.qa.countdownUntil;assert.ok(delayedDeadline>wall);
+const startupSeeks=fakePlayer.seekCalls,startupPlays=fakePlayer.playCalls;
+fakePlayer.deferPlay=true;wall=delayedDeadline-120;scope.qa.draw(wall);wall=delayedDeadline;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'countdown','finishing 321 must not expose a loading/frozen highway while playVideo is pending');
+for(let i=0;i<6;i++){wall+=50;scope.qa.draw(wall);assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);}
+fakePlayer.deferPlay=false;fakePlayer.state=1;fakePlayer.time=0;
+fakePlayer.options.events.onStateChange({data:1});
+for(let i=0;i<4;i++){wall+=50;scope.qa.draw(wall);assert.equal(scope.qa.mode,'countdown','PLAYING with a stale zero clock is not a started song');}
+fakePlayer.time=.02;wall+=20;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.clock,.02);assert.equal(volumes.at(-1),50);
+assert.equal(fakePlayer.seekCalls,startupSeeks);assert.equal(fakePlayer.playCalls,startupPlays+1);
+fakePlayer.state=3;
+for(let i=0;i<6;i++){wall+=100;scope.qa.draw(wall);}
+assert.equal(scope.qa.mode,'buffering');
+fakePlayer.state=1;fakePlayer.options.events.onStateChange({data:1});
+wall+=50;fakePlayer.time=.07;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'running','a short handoff buffer must resume without a new 321');
+assert.equal(scope.qa.clock,.07);assert.equal(volumes.at(-1),50,'the first resumed frame must be audible, not another silent .35-second probe');
+assert.equal(fakePlayer.seekCalls,startupSeeks);assert.equal(scope.qa.stats.miss,0);
+console.log('PASS: delayed video start, stale PLAYING clock, and brief startup buffering use one countdown without a rewind.');
+
+
+// Long interruptions still receive a fresh count-in and do not advance judgment.
+const beforeLongBuffer=scope.qa.clock;fakePlayer.state=3;
+for(let i=0;i<30;i++){wall+=100;scope.qa.draw(wall);}
+assert.equal(scope.qa.mode,'buffering');assert.equal(scope.qa.clock,beforeLongBuffer);assert.equal(scope.qa.stats.miss,0);
+fakePlayer.state=1;fakePlayer.options.events.onStateChange({data:1});
+for(let i=0;i<12&&scope.qa.mode!=='countdown';i++){wall+=50;fakePlayer.time+=.05;scope.qa.draw(wall);}
+assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.clock,beforeLongBuffer);assert.equal(fakePlayer.seekCalls,startupSeeks+1);
+for(let i=0;i<6&&!scope.qa.countdownUntil;i++){wall+=50;scope.qa.draw(wall);}
+assert.ok(scope.qa.countdownUntil>=wall+2700,'a long stop still prepares a full three seconds');
+// Autoplay can be denied during the final handoff too; leave a usable Enter prompt.
+fakePlayer.deferPlay=true;wall=scope.qa.countdownUntil-100;scope.qa.draw(wall);
+fakePlayer.options.events.onAutoplayBlocked();assert.equal(scope.qa.mode,'paused');assert.equal(elements.get('pauseMessage').querySelector('h2').textContent,'READY?');
+assert.equal(elements.get('pauseMessage').classList.contains('hidden'),false);assert.equal(scope.qa.stats.miss,0);fakePlayer.deferPlay=false;scope.qa.quit();
+console.log('PASS: a long interruption keeps a full count-in; a blocked final handoff returns to the resume prompt.');
