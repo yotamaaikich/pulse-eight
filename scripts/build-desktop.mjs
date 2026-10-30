@@ -3,6 +3,7 @@ import {fileURLToPath} from 'node:url';
 import {SONGS} from '../engine.mjs';
 import {build} from 'esbuild';
 import {collectLicenses} from './collect-licenses.mjs';
+await import('./generate-chart-metrics.mjs');
 const root=new URL('../',import.meta.url);
 await fs.mkdir(new URL('vendor/',root),{recursive:true});
 const bundle=await build({stdin:{contents:"export {createClient} from '@supabase/supabase-js';",resolveDir:fileURLToPath(root)},outfile:fileURLToPath(new URL('vendor/supabase.mjs',root)),bundle:true,format:'esm',platform:'browser',target:'chrome120',minify:true,legalComments:'eof',metafile:true});

@@ -23,7 +23,7 @@ npm run desktop:dev
 npm run desktop:build
 ```
 
-成果物は`dist/PIANO-PULSE-Setup-1.5.3.exe`と`dist/PIANO-PULSE-1.5.3-x64.zip`。GitHub Releaseの公開でWindowsビルドを実行し、テストが通った成果物とSHA-256を添付します。コード署名証明書は未設定です。
+成果物は`dist/PIANO-PULSE-Setup-1.5.4.exe`と`dist/PIANO-PULSE-1.5.4-x64.zip`。GitHub Releaseの公開でWindowsビルドを実行し、テストが通った成果物とSHA-256を添付します。コード署名証明書は未設定です。
 
 CIでは生成したEXEを`--smoke-test`で起動し、同梱Rendererがメインプロセスへ初回の状態を送れることも確認します。専用の一時データ領域を使い、Discordの表示・カスタムURLの登録・ゲームウィンドウの表示を行いません。これは起動検証であり、実動画や実際のDiscordプロフィール表示の検証とは別です。
 
@@ -36,3 +36,5 @@ Supabaseの許可リダイレクトは公開サイトと`pianopulse://auth/callb
 ## タッチ
 
 Pointer Eventsとpointer captureを使用します。複数の指・キーボードを混ぜた長押しは最後の入力元が離れるまで継続します。ペダルはHARDだけ、44pxの押せる範囲と32pxの下部余白。通常の長押しとFLOATのSpace状態は独立しています。
+
+開始処理では一覧のレベルに集計済みノーツ数を使い、選択した譜面と音程付けをモジュールWorkerで準備します。Workerが使えない環境は従来の生成処理へ戻ります。準備中は判定を進めず、取り消した開始への応答も破棄します。MVの先読み量は初回カウント前だけ確認し、取得不能・古い値で待ち続けない上限を設けています。

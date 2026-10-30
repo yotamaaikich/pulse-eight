@@ -20,6 +20,12 @@ export function inputClock(frameTime,raw,state,frameAgeMs=0){
  const advance=Math.max(.12,Math.min(.75,Math.max(0,frameAgeMs)/1000+.04));
  return state===1&&Number.isFinite(raw)&&raw>=frameTime-.02&&raw<=frameTime+advance?Math.max(frameTime,raw):frameTime;
 }
+// Bounded prebuffer hint at the start of a verified MV. Missing optional
+// API data must never strand the loading screen.
+export function startupBufferReady(fraction,duration,elapsedMs){
+  if(!Number.isFinite(fraction)||fraction<=0||fraction>1||!Number.isFinite(duration)||duration<=0)return true;
+  return fraction*duration>=Math.min(3.5,duration)||elapsedMs>=4500;
+}
 export class PlaybackGate {
   constructor(){this.reset(0);}
   reset(now,time=0){this.time=time;this.lastRaw=time;this.lastSample=now;this.lastMoving=now;this.progress=0;this.waiting=true;this.nonPlayingSince=null;}

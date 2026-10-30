@@ -1,3 +1,4 @@
+import {createChartPreparation} from '../chart-preparation.mjs';
 import {createInputMixer,bindTouchInput} from '../touch.mjs';
 import {MONITORING_PIANO_PROFILE} from '../monitoring-vocal.mjs';
 import {nextLife,MAX_LIFE} from '../life.mjs';
@@ -12,7 +13,7 @@ import {webcrypto} from 'node:crypto';
 import {chartMetrics,chartForSong,difficultyMetrics,orderedSongs} from '../catalog.mjs';
 import * as engine from '../engine.mjs';
 import {projectPoint} from '../geometry.mjs';
-import {PlaybackGate,inputClock,expectedVideo,countdownFrame} from '../playback.mjs';
+import {PlaybackGate,inputClock,expectedVideo,countdownFrame,startupBufferReady} from '../playback.mjs';
 import {noteTravelSeconds,leadInSeconds,leadInClock} from '../lead-in.mjs';
 import {pianoFeedbackAt} from '../source-piano.mjs';
 import {keySoundRequests} from '../key-sound.mjs';
@@ -20,6 +21,7 @@ import {drawAirRibbons,drawAirHead} from '../air.mjs';
 const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async prepare(){return true;},stop(){},configure(o){Object.assign(this,o);},play(o){if(!this.enabled||!this.volume)return false;soundCalls.push(o);return true;}};
 const createPianoSound=()=>soundStub;
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map();
+let deferredPreparation=null;const realPreparation=createChartPreparation({workerFactory:null});
 let finishAccount;const accountReady=new Promise(resolve=>{finishAccount=resolve;});
 const location={origin:'http://localhost',href:'http://localhost/?code=one-use-secret&login-check=1'},playerLoads=[];
 const history={state:null,replaceState(_state,_title,url){location.href=url;}};
@@ -29,7 +31,7 @@ for(const [,id] of (await fs.readFile(new URL('../index.html',import.meta.url),'
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(script){playerLoads.push({src:script.src,parent:location.href});}},hidden:false};
 const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById({videoId}){this.video=videoId;this.time=0;this.state=1;},cueVideoById(videoId){this.video=videoId;},getVideoUrl(){return this.urlOverride??"https://www.youtube.com/watch?v="+this.video;},getDuration(){return this.durationOverride??engine.SONGS.find(s=>s.video===this.video)?.duration??0;},seekTo(t){this.seekCalls=(this.seekCalls||0)+1;if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.playCalls=(this.playCalls||0)+1;this.state=this.deferPlay?3:1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;fakePlayer.video=options.videoId;return fakePlayer;}}};
-const scope=vm.createContext({createAccount:()=>({ready:accountReady,headers:async()=>({})}),initDesktop:()=>()=>{},...engine,createInputMixer,bindTouchInput,MONITORING_PIANO_PROFILE,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,chartForSong,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,expectedVideo,countdownFrame,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},devicePixelRatio:2,location,history,fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
+const scope=vm.createContext({createChartPreparation:()=>({prepare:(...args)=>deferredPreparation??realPreparation.prepare(...args)}),createAccount:()=>({ready:accountReady,headers:async()=>({})}),initDesktop:()=>()=>{},...engine,createInputMixer,bindTouchInput,MONITORING_PIANO_PROFILE,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,chartForSong,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,expectedVideo,countdownFrame,startupBufferReady,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},devicePixelRatio:2,location,history,fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
 vm.runInContext(source+`\nglobalThis.qa={quit,start,draw,finish,pause,resume,resize,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get eligible(){return eligible},get notes(){return notes},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];inputMixer.reset(true);pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];inputMixer.reset(true);pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
 assert.equal(playerLoads.length,0,'video must wait until account callback settles');
@@ -62,7 +64,7 @@ elements.get('volume').value='0';elements.get('volume').oninput();becomeRunning(
 scope.qa.pause();const before=scope.qa.clock,stats=scope.qa.stats;scope.qa.selectSong(1);assert.equal(elements.get('changeTrackDialog').open,true);assert.equal(scope.qa.selected,0);assert.equal(scope.qa.clock,before);assert.equal(scope.qa.stats,stats);elements.get('changeTrackDialog').close();assert.equal(scope.qa.mode,'paused');
 scope.qa.selectDifficulty(2);assert.equal(scope.qa.difficulty,1);scope.qa.confirmSelection();assert.equal(scope.qa.mode,'idle');assert.equal(scope.qa.difficulty,2);assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);
 const key=(code,shiftKey=false)=>({code,key:code,shiftKey,preventDefault(){},target:{closest(){return null;}}});
-assert.ok(source.includes('pianoTrialChart'),'piano pitches are assigned from a timed score');
+assert.ok(source.includes('chartPreparation.prepare'),'start uses the prepared pitched chart');
 const down=code=>listeners.get('keydown')(key(code)),up=code=>listeners.get('keyup')(key(code));
 scope.qa.setHard();down('KeyF');scope.qa.setClock(1.08);down('Space');up('Space');up('KeyF');assert.equal(scope.qa.mode,'running');assert.equal(scope.qa.stats.perfect,1);assert.deepEqual(Array.from(scope.qa.events,e=>Array.from(e)),[[1000,3,1],[1080,0,4],[1080,3,2],[1080,0,5],[1080,3,3],[1080,3,0]]);
 // Space alone never scores; holding it allows fresh lane presses across the chart.
@@ -327,3 +329,31 @@ fakePlayer.time=0;wall+=20;scope.qa.draw(wall);assert.equal(scope.qa.mode,'buffe
 wall+=320;scope.qa.draw(wall);assert.equal(elements.get('videoLoading').classList.contains('hidden'),false);
 assert.equal(elements.get('playState').textContent,'動画読み込み中');assert.equal(scope.qa.clock,.37);assert.equal(scope.qa.stats.miss,0);scope.qa.quit();
 console.log('PASS: stale startup timestamps cannot run ahead of the play command; 200ms transitions never flash loading while real stalls still show it.');
+
+// A cold worker must not start judgment on an empty chart or lose a pause.
+scope.qa.quit();let finishChart;
+deferredPreparation={chart:null,promise:new Promise(resolve=>{finishChart=resolve;})};
+scope.qa.start();assert.equal(scope.qa.mode,'loading');assert.equal(scope.qa.notes.length,0);
+for(let i=0;i<30;i++){wall+=100;fakePlayer.time+=.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);assert.equal(scope.qa.mode,'loading');
+scope.qa.pause();finishChart(pianoTrialChart(engine.SONGS[scope.qa.selected],chartForSong(engine.SONGS[scope.qa.selected],scope.qa.difficulty)));
+await deferredPreparation.promise;await Promise.resolve();assert.equal(scope.qa.mode,'paused');assert.ok(scope.qa.notes.length>0);
+scope.qa.quit();let finishOldChart;
+deferredPreparation={chart:null,promise:new Promise(resolve=>{finishOldChart=resolve;})};
+scope.qa.start();scope.qa.quit();scope.qa.selectSong(2);
+finishOldChart([{t:1,lane:7}]);await deferredPreparation.promise;await Promise.resolve();
+assert.equal(scope.qa.mode,'idle');assert.equal(scope.qa.selected,2);assert.equal(scope.qa.notes.length,0);
+deferredPreparation=null;
+console.log('PASS: asynchronous chart preparation freezes judgment, preserves pause, and discards cancelled-start replies.');
+
+// Verified content progress alone is not enough on a nearly empty stream.
+scope.qa.quit();fakePlayer.getVideoLoadedFraction=()=>.001;scope.qa.start();
+for(let i=0;i<15;i++){wall+=100;fakePlayer.time+=.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.mode,'loading');assert.equal(scope.qa.clock,0);assert.equal(scope.qa.stats.miss,0);
+fakePlayer.getVideoLoadedFraction=()=>.1;wall+=100;fakePlayer.time+=.1;scope.qa.draw(wall);
+assert.equal(scope.qa.mode,'countdown');assert.equal(scope.qa.clock,0);assert.equal(fakePlayer.time,0);
+scope.qa.quit();fakePlayer.getVideoLoadedFraction=()=>.001;scope.qa.start();
+for(let i=0;i<65&&scope.qa.mode!=='countdown';i++){wall+=100;fakePlayer.time+=.1;scope.qa.draw(wall);}
+assert.equal(scope.qa.mode,'countdown','stale buffer metadata must not trap startup');
+assert.equal(scope.qa.stats.miss,0);scope.qa.quit();delete fakePlayer.getVideoLoadedFraction;
+console.log('PASS: a nearly empty startup buffer waits before count-in, while stale buffer reports time out safely.');
