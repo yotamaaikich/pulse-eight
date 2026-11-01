@@ -22,7 +22,7 @@ function loginError(error){
 export function createAccount({bridge,load=()=>import('./vendor/supabase.mjs'),fetcher=fetch,navigate=url=>location.assign(url),getUrl=()=>globalThis.location?.href??WEB_REDIRECT,onChange=()=>{},onError=()=>{},timeoutMs=12000}={}){
   let connection,signInTask,callbacks=Promise.resolve();const seenCodes=new Set();
   const initial=bridge?.desktop?{}:callbackParams(getUrl());
-  function within(task){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{const error=new Error();error.name='TimeoutError';reject(error);},timeoutMs);Promise.resolve(task).then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});});}
+  function within(task){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{const error=new Error('認証処理がタイムアウトしました。通信を確認してもう一度お試しください。');error.name='TimeoutError';reject(error);},timeoutMs);Promise.resolve(task).then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});});}
   function connect(){
     if(!connection){connection=(async()=>{const {createClient}=await load();const client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:!bridge?.desktop,storageKey:'piano-pulse-auth'}});
       // Keep this callback synchronous: SDK Auth methods acquire the same lock.
@@ -52,7 +52,7 @@ export function createAccount({bridge,load=()=>import('./vendor/supabase.mjs'),f
     }).catch(error=>onError(loginError(error)));return callbacks;
   });
   async function beginSignIn(){
-    await ready;const client=await within(connect());let configured=false;
+    await ready;let client;try{client=await within(connect());}catch(error){throw Error(loginError(error));}let configured=false;
     try{const r=await within(fetcher(SUPABASE_URL+'/auth/v1/settings',{headers:{apikey:PUBLIC_KEY},signal:AbortSignal.timeout(8000)}));if(!r.ok)throw Error();configured=(await r.json()).external?.google===true;}catch{throw Error('ログイン先に接続できませんでした。ゲストではそのまま遊べます。');}
     if(!configured)throw Error('Googleログインは設定中です。ゲストではそのまま遊べます。');
     let result;try{result=await within(client.auth.signInWithOAuth({provider:'google',options:{redirectTo:bridge?.desktop?DESKTOP_REDIRECT:WEB_REDIRECT,skipBrowserRedirect:true,queryParams:{prompt:'select_account'}}}));}catch(error){throw Error(loginError(error));}
@@ -62,7 +62,7 @@ export function createAccount({bridge,load=()=>import('./vendor/supabase.mjs'),f
   return {
     ready,
     signIn(){if(!signInTask)signInTask=beginSignIn().finally(()=>{signInTask=null;});return signInTask;},
-    async signOut(){await ready;const client=await within(connect());const {error}=await within(client.auth.signOut({scope:'local'}));if(error)throw Error('ログアウトできませんでした。通信を確認してもう一度お試しください。');},
+    async signOut(){try{await ready;const client=await within(connect());const {error}=await within(client.auth.signOut({scope:'local'}));if(error)throw error;}catch{throw Error('ログアウトできませんでした。通信を確認してもう一度お試しください。');}},
     async headers(owner){if(!owner)return {};await ready;const client=await within(connect());const {data,error}=await within(client.auth.getSession());if(error||data?.session?.user?.id!==owner||!data.session.access_token)throw Error('このプレイを始めたGoogleアカウントでログインし直してください。');return {Authorization:'Bearer '+data.session.access_token};}
   };
 }

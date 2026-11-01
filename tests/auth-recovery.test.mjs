@@ -77,3 +77,11 @@ test('the pinned Supabase SDK generates a matching PKCE challenge, exchanges it,
     await account.signOut();assert.equal(changes.at(-1),null);assert.equal(memory.get('piano-pulse-auth'),undefined);
   }finally{await client?.auth.stopAutoRefresh();}
 });
+
+test('sign-out timeouts and repeated import failures show actionable messages and remain retryable',async()=>{
+  const f=harness({timeoutMs:25});await f.account.ready;let attempts=0;
+  f.auth.signOut=async()=>{if(++attempts===1)await new Promise(()=>{});return {};};
+  await assert.rejects(f.account.signOut(),/ログアウトできませんでした。通信を確認/);await f.account.signOut();assert.equal(attempts,2);
+  const unavailable=harness({loader:async()=>{throw new TypeError('Failed to fetch dynamically imported module');}});
+  await unavailable.account.ready;await assert.rejects(unavailable.account.signIn(),/通信を確認/);
+});

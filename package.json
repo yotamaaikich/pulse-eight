@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node dev.mjs",
     "test": "node --test tests/*.test.mjs",
+    "test:auth": "node --test tests/auth*.test.mjs tests/desktop.test.mjs",
     "desktop:prepare": "node scripts/build-desktop.mjs",
     "desktop:dev": "npm run desktop:prepare && electron .",
     "desktop:build": "npm run desktop:prepare && electron-builder --win nsis zip --x64 --publish never"
