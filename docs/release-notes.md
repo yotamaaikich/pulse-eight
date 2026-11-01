@@ -1,15 +1,15 @@
-Googleログインの失敗後に再試行できなくなる問題を修正したWindows版です。
+セキュリティを強化したWindows版です。
 
-- ログインのキャンセル・期限切れ・通信失敗をプレイヤー画面で案内
-- 保存済み認証情報やライブラリの読み込みに失敗した後も、再ログインできるよう修正
-- 認証待ちに上限を設け、ゲストでの起動を止めないよう調整
-- アプリへ戻る認証結果の取りこぼしと、ログインの重複開始を防止
-- 認証用URLのクエリとフラグメントを動画の読み込み前に除去
+- 認証情報をWindowsの暗号化機能で保存。旧形式は移行後に削除
+- CSP、危険な起動機能の無効化、ASARの整合性検証を追加
+- APIの全体・接続元・アカウント別アクセス制限と、送信サイズ・待ち時間の制限を追加
+- ビルド依存を更新し、既知の脆弱性0件を確認
+- GitHubのビルド来歴証明とSHA-256を添付
 
-110件の自動テスト、Windowsビルド、生成EXEの起動チェックを通った配布ファイルです。使用中のSupabase SDKでPKCEの照合・認証コード交換・ログアウトもテストしています。
+114件のテスト、保護設定を有効にしたEXEの起動、OS暗号化の往復検証、本番APIの拒否テストを実施しています。
 
-PIANO-PULSE-Setup-1.5.5.exe はインストーラー、PIANO-PULSE-1.5.5-x64.zip は展開して「PIANO PULSE.exe」を起動します。
+PIANO-PULSE-Setup-1.6.0.exe はインストーラー、PIANO-PULSE-1.6.0-x64.zip は展開して「PIANO PULSE.exe」を起動します。
 
-音楽・動画・オンライン機能にはインターネットが必要です。YouTube公式動画のため広告が入る場合があります。コード署名証明書は未設定です。
+正式なWindowsの発行元署名は未設定です。GitHubの来歴証明はSmartScreen警告を消す仕組みではありません。音楽・動画・オンライン機能には接続が必要で、YouTube広告が入る場合があります。
 
-[遊び方](https://github.com/yotamaaikich/pulse-eight#遊び方) · [ブラウザ版](https://yotamaaikich.github.io/pulse-eight/)
+[遊び方](https://github.com/yotamaaikich/pulse-eight#遊び方) · [セキュリティの詳細](https://github.com/yotamaaikich/pulse-eight/blob/main/docs/security.md) · [ブラウザ版](https://yotamaaikich.github.io/pulse-eight/)

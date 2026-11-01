@@ -1,7 +1,7 @@
 {
   "name": "pulse-eight",
   "private": true,
-  "version": "1.5.5",
+  "version": "1.6.0",
   "type": "module",
   "scripts": {
     "dev": "node dev.mjs",
@@ -9,7 +9,8 @@
     "test:auth": "node --test tests/auth*.test.mjs tests/desktop.test.mjs",
     "desktop:prepare": "node scripts/build-desktop.mjs",
     "desktop:dev": "npm run desktop:prepare && electron .",
-    "desktop:build": "npm run desktop:prepare && electron-builder --win nsis zip --x64 --publish never"
+    "desktop:build": "npm run desktop:prepare && electron-builder --win nsis zip --x64 --publish never",
+    "security:check": "node scripts/check-security.mjs"
   },
   "devDependencies": {
     "@supabase/supabase-js": "2.118.0",
@@ -79,6 +80,21 @@
       "shortcutName": "PIANO PULSE",
       "deleteAppDataOnUninstall": false,
       "artifactName": "PIANO-PULSE-Setup-${version}.${ext}"
+    },
+    "electronFuses": {
+      "runAsNode": false,
+      "enableCookieEncryption": true,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true,
+      "grantFileProtocolExtraPrivileges": false
     }
+  },
+  "overrides": {
+    "@electron/asar": "4.3.1",
+    "@electron/universal": "3.0.6",
+    "minimatch": "11.0.3",
+    "glob@>=9.0.0": "14.0.3"
   }
 }

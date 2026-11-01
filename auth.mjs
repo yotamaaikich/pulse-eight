@@ -1,4 +1,5 @@
 import {SUPABASE_URL,PUBLIC_KEY} from './config.js';
+import {desktopAuthStorage} from './desktop-auth-storage.mjs?v=security-36';
 export const WEB_REDIRECT='https://yotamaaikich.github.io/pulse-eight/';
 export const DESKTOP_REDIRECT='pianopulse://auth/callback';
 const AUTH_PARAMS=['code','sb_flow_id','state','session_state','error','error_code','error_description','access_token','refresh_token','provider_token','provider_refresh_token','token_type','expires_in','expires_at'];
@@ -24,7 +25,7 @@ export function createAccount({bridge,load=()=>import('./vendor/supabase.mjs'),f
   const initial=bridge?.desktop?{}:callbackParams(getUrl());
   function within(task){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{const error=new Error('認証処理がタイムアウトしました。通信を確認してもう一度お試しください。');error.name='TimeoutError';reject(error);},timeoutMs);Promise.resolve(task).then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});});}
   function connect(){
-    if(!connection){connection=(async()=>{const {createClient}=await load();const client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:!bridge?.desktop,storageKey:'piano-pulse-auth'}});
+    if(!connection){connection=(async()=>{const {createClient}=await load();const client=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:!bridge?.desktop,storageKey:'piano-pulse-auth',...(bridge?.desktop&&bridge.authStorage?{storage:desktopAuthStorage(bridge.authStorage)}:{})}});
       // Keep this callback synchronous: SDK Auth methods acquire the same lock.
       client.auth.onAuthStateChange((event,value)=>onChange(value?.user??null,event));return client;
     })();connection.catch(()=>{connection=null;});}return connection;

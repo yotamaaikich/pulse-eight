@@ -1,8 +1,9 @@
-const {app,BrowserWindow,Menu,session,ipcMain,shell,powerSaveBlocker}=require('electron');
+const {app,BrowserWindow,Menu,session,ipcMain,shell,powerSaveBlocker,safeStorage}=require('electron');
 const fs=require('node:fs'),path=require('node:path');
 const {APP_URL,trustedGame,bundledPath,externalURL,oauthURL,authCallback}=require('./security.cjs');
 const {DiscordPresence}=require('./discord.cjs');
 const {forwardingOptions}=require('./network.cjs');
+const {createAuthVault}=require('./auth-vault.cjs');
 const root=path.resolve(__dirname,'..'),preload=path.join(__dirname,'preload.cjs');
 let mainWindow,settingsWindow,rpc,saveTimer,awake=null,pendingAuth=null;
 const smoke=process.argv.includes('--smoke-test');let smokeTimer;
@@ -26,11 +27,26 @@ function secureWindow(win){
 }
 function openSettings(){if(settingsWindow&&!settingsWindow.isDestroyed()){settingsWindow.focus();return;}settingsWindow=new BrowserWindow({width:520,height:380,resizable:false,parent:mainWindow,backgroundColor:'#0c0e12',title:'PIANO PULSE · アプリ設定',autoHideMenuBar:true,webPreferences:{preload,partition:'persist:piano-pulse',nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,webviewTag:false}});secureWindow(settingsWindow);settingsWindow.loadURL(new URL('desktop/settings.html',APP_URL).href);settingsWindow.on('closed',()=>{settingsWindow=null;});}
 app.whenReady().then(async()=>{
+  const authVault=createAuthVault({file:path.join(app.getPath('userData'),'auth-vault.json'),safeStorage});
+  if(smoke){if(!await safeStorage.isAsyncEncryptionAvailable())throw Error('OS encryption unavailable');const key='piano-pulse-auth-flow-smoketest1-code-verifier';await authVault.setItem(key,'smoke-only');if(await authVault.getItem(key)!=='smoke-only')throw Error('OS encryption round trip failed');await authVault.removeItem(key);console.log(JSON.stringify({authStorage:'passed'}));}
+  for(const [channel,method] of [['pulse:auth-get','getItem'],['pulse:auth-set','setItem'],['pulse:auth-remove','removeItem']])ipcMain.handle(channel,(event,...args)=>{if(!senderOK(event))throw Error('認証保存を許可できません。');return authVault[method](...args);});
   const ses=session.fromPartition('persist:piano-pulse');
   const types={'.html':'text/html; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.ico':'image/x-icon','.mp3':'audio/mpeg','.txt':'text/plain; charset=utf-8'};
   // Bundled game assets retain the published app origin, including YouTube's
   // required Referer identity. Other HTTPS requests use normal Chromium TLS.
-  ses.protocol.handle('https',async request=>{const file=bundledPath(request.url,root);if(file===null)return ses.fetch(request,forwardingOptions(request));if(!file||request.method!=='GET')return new Response('Not found',{status:404});try{return new Response(await fs.promises.readFile(file),{headers:{'Content-Type':types[path.extname(file)]||'application/octet-stream','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin'}});}catch{return new Response('Not found',{status:404});}});
+  ses.protocol.handle('https',async request=>{
+    const file=bundledPath(request.url,root);if(file===null)return ses.fetch(request,forwardingOptions(request));
+    if(!file||request.method!=='GET')return new Response('Not found',{status:404});
+    try{
+      const bytes=await fs.promises.readFile(file),headers={'Content-Type':types[path.extname(file)]||'application/octet-stream','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','Cache-Control':'no-store'};
+      if(path.extname(file)==='.html'){
+        const policy=bytes.toString('utf8').match(/http-equiv="Content-Security-Policy" content="([^"]+)"/i)?.[1];
+        if(policy)headers['Content-Security-Policy']=policy+"; frame-ancestors 'none'";
+        headers['Permissions-Policy']='camera=(), microphone=(), geolocation=(), payment=(), usb=()';
+      }
+      return new Response(bytes,{headers});
+    }catch{return new Response('Not found',{status:404});}
+  });
   ses.setPermissionRequestHandler((_contents,permission,callback)=>callback(permission==='fullscreen'));
   ses.setPermissionCheckHandler((_contents,permission)=>permission==='fullscreen');
   const catalog=JSON.parse(fs.readFileSync(path.join(__dirname,'catalog.json'),'utf8'));

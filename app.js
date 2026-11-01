@@ -1,4 +1,4 @@
-import {createAccount,cleanAuthUrl} from './auth.mjs?v=auth-35';
+import {createAccount,cleanAuthUrl} from './auth.mjs?v=security-36';
 import {initDesktop} from './desktop-ui.mjs?v=desktop-31';
 import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-31';
 import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-11';
@@ -37,7 +37,7 @@ configurePiano();
 const pianoProfiles=Object.create(null);
 for(const track of SONGS){try{const stored=read('pulse-piano-score:'+track.id,null)??(track.id===PIANO_TRIAL_SONG?read('pulse-monitoring-piano-score',null):null);if(stored)pianoProfiles[track.id]=validatePianoProfile(stored);}catch{}}
 const currentPianoProfile=()=>song().id==='monitoring'?MONITORING_PIANO_PROFILE:pianoProfiles[song().id]??null;
-if(!Array.isArray(prefs.keys)||prefs.keys.length!==8||new Set(prefs.keys).size!==8||prefs.keys.some(code=>['Space','KeyV','KeyR','KeyO'].includes(code)))prefs.keys=[...DEFAULT_KEYS];
+if(!Array.isArray(prefs.keys)||prefs.keys.length!==8||new Set(prefs.keys).size!==8||prefs.keys.some(code=>typeof code!=='string'||!/^Key[A-Z]$|^Digit[0-9]$|^Semicolon$|^Comma$|^Period$|^Slash$/.test(code)||['Space','KeyV','KeyR','KeyO'].includes(code)))prefs.keys=[...DEFAULT_KEYS];
 prefs.speed=Math.min(2,Math.max(.5,Number(prefs.speed)||1));
 prefs.offset=Math.min(500,Math.max(-500,Number(prefs.offset)||0));
 prefs.volume=Math.min(100,Math.max(0,Number(prefs.volume)||0));

@@ -10,5 +10,6 @@ contextBridge.exposeInMainWorld('pianoPulse',Object.freeze({
   setDiscordEnabled:enabled=>ipcRenderer.invoke('pulse:discord',enabled===true),
   onStatus:callback=>listen('pulse:status',callback),
   beginGoogleSignIn:url=>ipcRenderer.invoke('pulse:google',url),
+  authStorage:Object.freeze({getItem:key=>ipcRenderer.invoke('pulse:auth-get',key),setItem:(key,value)=>ipcRenderer.invoke('pulse:auth-set',key,value),removeItem:key=>ipcRenderer.invoke('pulse:auth-remove',key)}),
   onAuthCallback:callback=>{if(typeof callback!=='function')return()=>{};authCallback=callback;if(pendingAuth){const value=pendingAuth;pendingAuth=null;callback(value);}return()=>{authCallback=null;};}
 }));
