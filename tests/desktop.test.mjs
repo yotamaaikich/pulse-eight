@@ -8,6 +8,11 @@ test('bundled content and IPC origin cannot escape into local files or arbitrary
   assert.equal(externalURL('javascript:alert(1)'),null);assert.equal(externalURL('file:///C:/private.txt'),null);assert.equal(externalURL('https://github.com.evil.invalid/'),null);
   const oauth='https://yowhxryuxsqvjddizrts.supabase.co/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent('pianopulse://auth/callback');assert.equal(oauthURL(oauth),oauth);assert.equal(oauthURL(oauth.replace('provider=google','provider=github')),null);assert.equal(oauthURL(oauth.replace('yowhxryuxsqvjddizrts','wrong')),null);
   assert.deepEqual(authCallback('pianopulse://auth/callback?code=one-time'),{code:'one-time'});assert.equal(authCallback('https://auth/callback?code=steal'),null);assert.equal(authCallback('pianopulse://auth/callback#access_token=secret'),null);
+  assert.deepEqual(authCallback('pianopulse://auth/callback?code=one-time&sb_flow_id=flow_1234'),{code:'one-time',flowId:'flow_1234'});
+  assert.equal(authCallback('pianopulse://auth/callback?code=one-time&sb_flow_id=../bad'),null);
+  assert.equal(authCallback('pianopulse://other@auth/callback?code=steal'),null);
+  assert.deepEqual(authCallback('pianopulse://auth/callback#error=access_denied&error_description=private'),{error:'access_denied'});
+  assert.deepEqual(authCallback('pianopulse://auth/callback?code=old&error=server_error'),{error:'oauth_failed'});
 });
 test('Discord local RPC handles split frames, handshake, PING, valid presence and clearing on exit',async()=>{
   const pipe=process.platform==='win32'?'\\\\?\\pipe\\piano-pulse-test-'+randomUUID():path.join(os.tmpdir(),'pulse-'+randomUUID()),messages=[];let readyResolve;const sent=new Promise(resolve=>{readyResolve=resolve;});

@@ -1,4 +1,5 @@
 import {createChartPreparation} from '../chart-preparation.mjs';
+import {cleanAuthUrl} from '../auth.mjs';
 import {createInputMixer,bindTouchInput} from '../touch.mjs';
 import {MONITORING_PIANO_PROFILE} from '../monitoring-vocal.mjs';
 import {nextLife,MAX_LIFE} from '../life.mjs';
@@ -22,6 +23,7 @@ const soundCalls=[],soundStub={enabled:true,volume:18,warm(){return true;},async
 const createPianoSound=()=>soundStub;
 let wall=0;const elements=new Map(),storage=new Map(),volumes=[],listeners=new Map();
 let deferredPreparation=null;const realPreparation=createChartPreparation({workerFactory:null});
+let accountOptions,signInResult=async()=>{};
 let finishAccount;const accountReady=new Promise(resolve=>{finishAccount=resolve;});
 const location={origin:'http://localhost',href:'http://localhost/?code=one-use-secret&login-check=1'},playerLoads=[];
 const history={state:null,replaceState(_state,_title,url){location.href=url;}};
@@ -31,7 +33,7 @@ for(const [,id] of (await fs.readFile(new URL('../index.html',import.meta.url),'
 const document={getElementById:element,querySelectorAll:()=>[],querySelector:()=>elements.get('changeTrackDialog')?.open?elements.get('changeTrackDialog'):null,createElement:()=>element('generated'),addEventListener:(key,fn)=>listeners.set(key,fn),body:element('body'),head:{append(script){playerLoads.push({src:script.src,parent:location.href});}},hidden:false};
 const fakePlayer={time:0,state:5,options:null,setVolume:v=>volumes.push(v),setPlaybackRate(){},loadVideoById({videoId}){this.video=videoId;this.time=0;this.state=1;},cueVideoById(videoId){this.video=videoId;},getVideoUrl(){return this.urlOverride??"https://www.youtube.com/watch?v="+this.video;},getDuration(){return this.durationOverride??engine.SONGS.find(s=>s.video===this.video)?.duration??0;},seekTo(t){this.seekCalls=(this.seekCalls||0)+1;if(this.deferSeek){this.seekTarget=t;return;}this.time=t;},pauseVideo(){this.state=2;},playVideo(){this.playCalls=(this.playCalls||0)+1;this.state=this.deferPlay?3:1;},getCurrentTime(){return this.time;},getPlayerState(){return this.state;}};
 const window={addEventListener(){},scrollTo(){},YT:{Player:function(id,options){fakePlayer.options=options;fakePlayer.video=options.videoId;return fakePlayer;}}};
-const scope=vm.createContext({createChartPreparation:()=>({prepare:(...args)=>deferredPreparation??realPreparation.prepare(...args)}),createAccount:()=>({ready:accountReady,headers:async()=>({})}),initDesktop:()=>()=>{},...engine,createInputMixer,bindTouchInput,MONITORING_PIANO_PROFILE,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,chartForSong,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,expectedVideo,countdownFrame,startupBufferReady,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},devicePixelRatio:2,location,history,fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
+const scope=vm.createContext({createChartPreparation:()=>({prepare:(...args)=>deferredPreparation??realPreparation.prepare(...args)}),cleanAuthUrl,createAccount:options=>{accountOptions=options;return {ready:accountReady,headers:async()=>({}),signIn:()=>signInResult(),signOut:async()=>{options.onChange(null,'SIGNED_OUT');}};},initDesktop:()=>()=>{},...engine,createInputMixer,bindTouchInput,MONITORING_PIANO_PROFILE,nextLife,MAX_LIFE,drawKeyboard,keyboardStrikeY,NOTE_COLORS,drawNoteHead,drawPerfectHit,drawCombo,drawJudgment,importPianoScore,validatePianoProfile,createPianoSound,pianoTrialChart,PIANO_TRIAL_SONG,chartMetrics,chartForSong,difficultyMetrics,orderedSongs,projectPoint,PlaybackGate,inputClock,expectedVideo,countdownFrame,startupBufferReady,noteTravelSeconds,leadInSeconds,leadInClock,pianoFeedbackAt,keySoundRequests,drawAirRibbons,drawAirHead,API_URL:'https://qa.invalid',PUBLIC_KEY:'qa',document,window,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},crypto:webcrypto,performance:{now:()=>wall},requestAnimationFrame(){},ResizeObserver:class{observe(){}},devicePixelRatio:2,location,history,fetch:async(url)=>({ok:true,json:async()=>url.includes('/leaderboard')?{scores:[]}:{runId:'local-mock'}}),AbortSignal,URL,console,setTimeout,clearTimeout});
 const source=(await fs.readFile(new URL('../app.js',import.meta.url),'utf8')).replace(/^import .+;\r?\n/gm,'');
 vm.runInContext(source+`\nglobalThis.qa={quit,start,draw,finish,pause,resume,resize,requestSelection,confirmSelection,selectSong,selectDifficulty,setTrial(){selected=0;},get countdownUntil(){return countdownUntil},get mode(){return mode},get clock(){return clock},get stats(){return stats},get selected(){return selected},get difficulty(){return difficulty},get eligible(){return eligible},get notes(){return notes},get events(){return events},setPractice(chart,diff=2){difficulty=diff;mode='running';clock=1;session=new RhythmSession(chart,5);notes=session.notes;stats=session.stats;events=[];inputMixer.reset(true);pressed.clear();upperPressed.clear();spaceHeld=false;},setHard(){spaceHeld=false;difficulty=2;mode='running';clock=1;session=new RhythmSession([{t:1,lane:3,flick:true,midi:66}],181);notes=session.notes;stats=session.stats;events=[];inputMixer.reset(true);pressed.clear();upperPressed.clear();},setClock(t){clock=t;}};`,scope);
 assert.equal(playerLoads.length,0,'video must wait until account callback settles');
@@ -357,3 +359,19 @@ for(let i=0;i<65&&scope.qa.mode!=='countdown';i++){wall+=100;fakePlayer.time+=.1
 assert.equal(scope.qa.mode,'countdown','stale buffer metadata must not trap startup');
 assert.equal(scope.qa.stats.miss,0);scope.qa.quit();delete fakePlayer.getVideoLoadedFraction;
 console.log('PASS: a nearly empty startup buffer waits before count-in, while stale buffer reports time out safely.');
+
+// Auth notices survive initial-session notifications and are cleared by a real login.
+scope.qa.quit();accountOptions.onError('ログインをキャンセルしました。');
+assert.match(elements.get('accountStatus').textContent,/キャンセル/);
+accountOptions.onChange(null,'INITIAL_SESSION');assert.match(elements.get('accountStatus').textContent,/キャンセル/);
+accountOptions.onChange({id:'qa-account'},'SIGNED_IN');assert.match(elements.get('accountStatus').textContent,/Googleログイン中/);
+assert.equal(elements.get('googleSignIn').hidden,true);assert.equal(elements.get('googleSignOut').hidden,false);
+await elements.get('googleSignOut').onclick();assert.match(elements.get('accountStatus').textContent,/ゲスト/);
+let finishSignIn;signInResult=()=>new Promise(resolve=>{finishSignIn=resolve;});
+const signingIn=elements.get('googleSignIn').onclick();
+assert.equal(elements.get('googleSignIn').disabled,true);scope.qa.selectSong(0);
+assert.equal(elements.get('googleSignIn').disabled,true,'song selection must not enable a pending sign-in');
+finishSignIn();await signingIn;assert.equal(elements.get('googleSignIn').disabled,false);
+signInResult=async()=>{throw Error('通信を確認してください');};await elements.get('googleSignIn').onclick();
+assert.match(elements.get('accountStatus').textContent,/通信を確認/);assert.equal(elements.get('googleSignIn').disabled,false);
+console.log('PASS: account errors stay visible, successful login/logout refresh the profile, and pending sign-in stays disabled across selection.');

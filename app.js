@@ -1,4 +1,4 @@
-import {createAccount} from './auth.mjs?v=desktop-32';
+import {createAccount,cleanAuthUrl} from './auth.mjs?v=auth-35';
 import {initDesktop} from './desktop-ui.mjs?v=desktop-31';
 import {createInputMixer,bindTouchInput} from './touch.mjs?v=desktop-31';
 import {MONITORING_PIANO_PROFILE} from './monitoring-vocal.mjs?v=library-review-11';
@@ -46,7 +46,7 @@ if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)){token=Array.from(cryp
 let name=read('pulse-name','PLAYER-'+token.slice(0,4).toUpperCase());
 if(typeof name!=='string')name='PLAYER';
 let bestStorage='pulse-bests',bests=read(bestStorage,{}),accountUser=null,accountPending=undefined,runOwner=null;
-let account=null,accountRequest=0;
+let account=null,accountRequest=0,accountBusy=false,accountMessage='';
 let selected=0,difficulty=1,mode='idle',session=null,notes=[],stats=newStats(),events=[],runId=null,runPromise=null,eligible=true;
 let life=MAX_LIFE;
 let libraryPack='all',librarySearch='',spaceHeld=false;
@@ -135,7 +135,7 @@ function updateChartControls(){document.body.classList.toggle('touch-hard',diffi
   document.querySelectorAll('[data-difficulty]').forEach(button=>{const d=Number(button.dataset.difficulty),info=difficultyMetrics(song(),d);button.querySelector('span').textContent='LV.'+info.level;button.title=info.count+'ノーツ（100ノーツごとにレベル+2）';button.disabled=false;button.classList.toggle('active',d===difficulty);button.setAttribute('aria-pressed',String(d===difficulty));});
 }
 function setText(id,text){if($(id).textContent!==text)$(id).textContent=text;}
-function stateText(text){setText('playState',text);$('googleSignIn').disabled=mode!=='idle';$('googleSignOut').disabled=mode!=='idle';}
+function stateText(text){setText('playState',text);$('googleSignIn').disabled=mode!=='idle'||accountBusy;$('googleSignOut').disabled=mode!=='idle'||accountBusy;}
 function bufferingGrace(now=performance.now()){return mode==='buffering'&&bufferingSince!==null&&now-bufferingSince<300;}
 function playbackOverlays(now=performance.now()){
   const waiting=mode==='loading'||mode==='buffering'&&!bufferingGrace(now)||mode==='countdown'&&(!countdownUntil||countdownWaiting);
@@ -460,8 +460,9 @@ async function openTutorial(){if(['running','buffering','loading','countdown'].i
 $('tutorialButton').onclick=openTutorial;$('helpTutorial').onclick=openTutorial;
 
 function renderAccount(){
-  $('accountStatus').textContent=accountUser?'Googleログイン中 · 自己ベストを共有':'ゲストでプレイ中 · ログインは任意です';
+  $('accountStatus').textContent=accountMessage||(accountUser?'Googleログイン中 · 自己ベストを共有':'ゲストでプレイ中 · ログインは任意です');
   $('googleSignIn').hidden=!!accountUser;$('googleSignOut').hidden=!accountUser;
+  $('googleSignIn').disabled=mode!=='idle'||accountBusy;$('googleSignOut').disabled=mode!=='idle'||accountBusy;
   $('accountHint').textContent=accountUser?'同じGoogleアカウントでブラウザ・アプリの登録済み自己ベストを表示できます。':'ログインしなくても全曲プレイ・ランキング登録ができます。ゲストの記録はこの端末に保存します。';
 }
 function applyAccountPending(){
@@ -470,17 +471,17 @@ function applyAccountPending(){
   accountUser=user;bestStorage=user?'pulse-bests:'+user.id:'pulse-bests';bests=read(bestStorage,{});updateBest();renderAccount();
   const request=++accountRequest;if(user)api('/profile',{},user.id).then(data=>{if(request!==accountRequest||accountUser?.id!==user.id)return;for(const row of data.scores??[]){const key=row.chart_version+':'+row.song+':'+row.difficulty;if(!bests[key]||row.score>bests[key].score)bests[key]={score:row.score,accuracy:row.accuracy,maxCombo:row.max_combo};}write(bestStorage,bests);updateBest();}).catch(()=>toast('アカウントの記録を取得できませんでした。再ログインで読み直せます。'));
 }
-account=createAccount({bridge:window.pianoPulse,onChange:user=>{accountPending=user;applyAccountPending();},onError:message=>{$('accountStatus').textContent=message;}});
+function accountError(message){accountMessage=message;renderAccount();toast(message);}
+account=createAccount({bridge:window.pianoPulse,onChange:(user,event)=>{if(event==='SIGNED_IN'||event==='SIGNED_OUT')accountMessage='';accountPending=user;applyAccountPending();},onError:accountError});
 // Complete PKCE URL cleanup before the embedded player reads its parent URL.
 // Auth failure still leaves the game available to guests.
 function startPlayerAfterAuth(){
-  const url=new URL(location.href);
-  for(const key of ['code','error','error_code','error_description'])url.searchParams.delete(key);
-  if(url.href!==location.href)history.replaceState(history.state,'',url.href);
+  const url=cleanAuthUrl(location.href);
+  if(url!==location.href)history.replaceState(history.state,'',url);
   loadPlayer();
 }
 account.ready.then(startPlayerAfterAuth,startPlayerAfterAuth);
-$('googleSignIn').onclick=async()=>{if(mode!=='idle'){toast('選曲に戻ってからログインしてください。');return;}$('googleSignIn').disabled=true;try{await account.signIn();$('accountStatus').textContent='ブラウザでGoogleログインを完了してください';}catch(error){$('accountStatus').textContent=error.message;}finally{$('googleSignIn').disabled=mode!=='idle';}};
-$('googleSignOut').onclick=async()=>{if(mode!=='idle')return;$('googleSignOut').disabled=true;try{await account.signOut();}catch(error){$('accountStatus').textContent=error.message;}finally{$('googleSignOut').disabled=mode!=='idle';}};
+$('googleSignIn').onclick=async()=>{if(mode!=='idle'){toast('選曲に戻ってからログインしてください。');return;}if(accountBusy)return;accountBusy=true;accountMessage='Googleログインを準備しています…';renderAccount();try{await account.signIn();if(!accountUser)accountMessage='ブラウザでGoogleログインを完了してください';}catch(error){accountError(error.message);}finally{accountBusy=false;renderAccount();}};
+$('googleSignOut').onclick=async()=>{if(mode!=='idle'||accountBusy)return;accountBusy=true;accountMessage='ログアウトしています…';renderAccount();try{await account.signOut();accountMessage='';}catch(error){accountError(error.message);}finally{accountBusy=false;renderAccount();}};
 renderAccount();
 initDesktop({bridge:window.pianoPulse,button:$('desktopSettings'),snapshot:()=>({songId:song().id,difficulty,phase:mode,position:clock})});
