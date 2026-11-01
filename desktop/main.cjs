@@ -1,9 +1,10 @@
-const {app,BrowserWindow,Menu,session,ipcMain,shell,powerSaveBlocker,safeStorage}=require('electron');
+const {app,BrowserWindow,Menu,session,ipcMain,shell,powerSaveBlocker,safeStorage,dialog}=require('electron');
 const fs=require('node:fs'),path=require('node:path');
 const {APP_URL,trustedGame,bundledPath,externalURL,oauthURL,authCallback}=require('./security.cjs');
 const {DiscordPresence}=require('./discord.cjs');
 const {forwardingOptions}=require('./network.cjs');
 const {createAuthVault}=require('./auth-vault.cjs');
+const {notifyUpdate}=require('./updates.cjs');
 const root=path.resolve(__dirname,'..'),preload=path.join(__dirname,'preload.cjs');
 let mainWindow,settingsWindow,rpc,saveTimer,awake=null,pendingAuth=null;
 const smoke=process.argv.includes('--smoke-test');let smokeTimer;
@@ -27,6 +28,11 @@ function secureWindow(win){
 }
 function openSettings(){if(settingsWindow&&!settingsWindow.isDestroyed()){settingsWindow.focus();return;}settingsWindow=new BrowserWindow({width:520,height:380,resizable:false,parent:mainWindow,backgroundColor:'#0c0e12',title:'PIANO PULSE · アプリ設定',autoHideMenuBar:true,webPreferences:{preload,partition:'persist:piano-pulse',nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,webviewTag:false}});secureWindow(settingsWindow);settingsWindow.loadURL(new URL('desktop/settings.html',APP_URL).href);settingsWindow.on('closed',()=>{settingsWindow=null;});}
 app.whenReady().then(async()=>{
+  // OAuth return handling and isolated startup tests must never wait for updates.
+  if(app.isPackaged&&!smoke&&!pendingAuth&&!process.argv.some(arg=>authCallback(arg))){
+    const proceed=await notifyUpdate({current:app.getVersion(),showMessageBox:options=>dialog.showMessageBox(options),openExternal:url=>shell.openExternal(url),canPrompt:()=>!pendingAuth});
+    if(!proceed){app.quit();return;}
+  }
   const authVault=createAuthVault({file:path.join(app.getPath('userData'),'auth-vault.json'),safeStorage});
   if(smoke){if(!await safeStorage.isAsyncEncryptionAvailable())throw Error('OS encryption unavailable');const key='piano-pulse-auth-flow-smoketest1-code-verifier';await authVault.setItem(key,'smoke-only');if(await authVault.getItem(key)!=='smoke-only')throw Error('OS encryption round trip failed');await authVault.removeItem(key);console.log(JSON.stringify({authStorage:'passed'}));}
   for(const [channel,method] of [['pulse:auth-get','getItem'],['pulse:auth-set','setItem'],['pulse:auth-remove','removeItem']])ipcMain.handle(channel,(event,...args)=>{if(!senderOK(event))throw Error('認証保存を許可できません。');return authVault[method](...args);});
